@@ -1,0 +1,183 @@
+<form name="fields" id="fields" action="#">
+<table>
+
+    <tr>
+        <td>
+            Playlist-ID:
+        </td>
+        <td>
+            <input type="text" 
+                class="readonly w400" 
+                id="playlist_id" 
+                name="playlist_id" 
+                value="(:playlist_id:)" 
+                readonly="true" />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Title:
+        </td>
+        <td>
+            <input type="text" 
+                class="w400" 
+                id="pl_title" 
+                name="pl_title" 
+                value="(:pl_title:)" 
+                onkeypress="$('savebutton').disabled = false;" />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Description:
+        </td>
+        <td>
+            <textarea rows="3" 
+                class="w400" 
+                id="pl_description" 
+                name="pl_description" 
+                onkeypress="$('savebutton').disabled = false;">(:pl_description:)</textarea>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Series:
+        </td>
+        <td>
+            <select type="text" 
+                class="w400" 
+                id="reciever_id" 
+                name="reciever_id" 
+                onchange="$('savebutton').disabled = false;" >
+                    (:series_options:)
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td align="center">
+            <div id="old_series_id" 
+                style="display: none;">(:reciever_id:)</div>
+            <input type="button" id="savebutton" disabled="disabled" 
+                onclick="playlisteditor.save()" value="save playlist (not entries)" />
+        </td>
+    </tr>
+    
+    <tr>
+        <td />
+        <td style="text-align: center; padding-bottom: 15px;" id="playlist_response" />
+    </tr>
+
+    <tr>
+        <td />
+        <td style="text-align: center; padding-top: 15px; border-top: 1px solid grey;">
+            <input type="button" id="deletebutton"
+                onclick="playlisteditor.remove((:playlist_id:), (:reciever_id:))" 
+                value="delete playlist with all entries" />
+        </td>
+    </tr>
+</table>
+</form>
+
+<table id="playlist_entries">
+    <tr>
+        <td class="tbl_head">position</td>
+        <td class="tbl_head">mediaobject</td>
+        <td class="tbl_head">access</td>
+        <td class="tbl_head">start_access</td>
+        <td class="tbl_head">stop_access</td>
+        <td class="tbl_head" />
+    </tr>
+    (:playlist_entries:)
+    <tr id="entry_list_end">
+        <td colspan="6" style="text-align: center; padding-top: 15px; border-top: 1px solid grey;">
+            <input type="button" id="saveallbutton" disabled="disabled"
+                onclick="playlisteditor.saveall()" value="save playlist and entries" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6" style="text-align: center; padding-bottom: 15px;" id="playlist_entry_response" />
+    </tr>
+    <tr>
+        <td colspan="6" style="text-align: center; padding-top: 15px; border-top: 1px solid grey;">
+            <input type="button" id="addentrybutton"
+                onclick="$('new_entry_editor').style.display = 'inline';" value="add new entry" />
+        </td>
+    </tr>
+</table>
+
+<!-- Entry Editor -->
+
+<div style="position: absolute; left: 50%; top: 50%; padding: 10px; background-color: white;  text-align: left;
+            width: 420px; margin-top: -250px; margin-left: -210px; border: 1px solid black; display: none;"
+    id="new_entry_editor">
+    <div style="float: right; width: 20px; height: 20px; text-align: center; cursor: pointer;" onclick="playlisteditor.closeentryeditor();">X</div>
+    <form name="new_entry_fields" id="new_entry_fields" action="#">
+        <h3>add playlistentry</h3>
+
+        <input type="hidden" id="new_playlist_id" name="playlist_id" value="(:playlist_id:)" />
+        
+        <div>position</div>
+        <div class="hidden" id="max_index_position">(:max_index:)</div>
+        <input type="text" id="new_index_position" name="index_position" class="w400" value="(:max_index:)" />
+
+        <div>mediaobject</div>
+
+        <div>
+            <div style="width: 100px; display: inline-block; margin-left: 20px;">
+                filter series:
+            </div>
+            <input type="text"
+                class="w200"
+                id="new_object_series_search"
+                onkeyup="playlisteditor.trigger_new_object_series_search();" />
+        </div>
+
+        <div>
+            <div style="width: 100px; display: inline-block; margin-left: 20px;">
+                filter objects:
+            </div>
+            <input type="text"
+                class="w200"
+                id="new_object_search"
+                onkeyup="playlisteditor.trigger_new_object_series_search();" />
+        </div>
+
+        <select type="text"
+            size="6"
+            class="w400"
+            name="object_id"
+            id="new_object_id"
+            onchange="$('savenewentrybutton').disabled = false;" >
+            <option value="-1">loading data...</option>
+        </select>
+
+        <div>access</div>
+        <select type="text" 
+            class="w400" 
+            id="new_access_id" 
+            name="access_id" 
+            onchange="$('savenewentrybutton').disabled = false;" >
+                (:access_options:)
+        </select>
+
+        <div>start_access</div>
+        <input type="text" id="new_start_access" name="start_access" class="w370rm0" value="" onchange="checkDateFormat('new_start_access');" />
+        <input type="button" style="margin-left: 0px;" onclick="show_cal(this, 'new_start_access');" value="..." />
+
+        <div>stop_access</div>
+        <input type="text" id="new_stop_access" name="stop_access" class="w370rm0" value="" onchange="checkDateFormat('new_stop_access');" />
+        <input type="button" style="margin-left: 0px;" onclick="show_cal(this, 'new_stop_access');" value="..." />
+        
+        <div style="text-align: center; margin: 10px;">
+            <input type="button" id="savenewentrybutton"
+                onclick="playlisteditor.addentry();" value="add playlistentry" />
+        </div>
+        
+        <div style="text-align: center; padding-top: 15px;" id="add_entry_response" />
+    </form>
+</div>
