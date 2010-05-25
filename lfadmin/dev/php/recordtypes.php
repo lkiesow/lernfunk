@@ -1,7 +1,7 @@
 <?php
 /* 
 	Copyright (c) 2006 - 2010  Universitaet Osnabrueck, virtUOS 
-	Authors: Lars Kiesow, Benjamin Wulff
+	Authors: Nils Birnbaum, Lars Kiesow, Benjamin Wulff
 
 	This file is part of Lernfunk. 
 
