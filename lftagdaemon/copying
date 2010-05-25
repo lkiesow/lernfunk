@@ -1,18 +1,4 @@
-This ist the virtPresenter Powerpoint Listener
-It is part of the Lernfunk AV-Content_Management-System, developed at Center for Information-Management and Virtual Teaching (virtUOS) at the University of Osnabrueck. 
-
-The aim of Lernfunk is to offer a framework for the conten mangement of educational audio-visual content 
-
-These are the scripts that contsauns the databease scheme.
-
-The scripts  needs a mySQL database.
-
-You can find more information on the virtPresenter framework under:
-http://code.google.com/p/lernfunk/
-
-If you are interested in virtUOS check out our website http://www.virtuos.uni-osnabrueck.de
-
-This software is free software under GPL 3.                    GNU GENERAL PUBLIC LICENSE
+                   GNU GENERAL PUBLIC LICENSE
                       Version 3, 29 June 2007
 
 Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
