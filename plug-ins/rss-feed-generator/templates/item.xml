@@ -1,0 +1,12 @@
+
+   		<item>
+            <title>(:title:)</title>
+            <description>(:description:)</description>
+            <link>(:site_link:)</link>
+            <enclosure url="(:url:)" length="(:duration:)" type="(:mimetype:)"></enclosure>
+            <guid>http://www.lernfunk.de/guid/(:object_id:)</guid>
+            <pubDate>(:date:)</pubDate>
+            <itunes:duration>(:duration:)</itunes:duration>
+            <itunes:author>(:author:)</itunes:author>
+            <itunesu:category itunesu:code="(:itunesu_class:)" />
+        </item>

@@ -1,0 +1,22 @@
+<table>
+    <tr>
+        <td><select id="record_select" size="10" style="width:400px;" onclick="recordeditor.load_record()">(:records:)</select></td>
+        <td valign="middle">
+            <input type="button" onclick="recordeditor.add();" style="width:80px" value="new" /> <br />
+            <input type="button" onclick="recordeditor.remove()" style="width:80px" value="delete" /> <br />
+            <input type="button" onclick="recordeditor.dublicate()" style="width:80px" value="dublicate" />
+        </td>
+    </tr>
+</table>
+<form action="" name="fields" id="fields">
+<table>
+    (:fields:)
+</table>
+</form>
+<table>
+    <tr>
+        <td colspan="2">
+            <input id="savebutton" type="button" onclick="recordeditor.save();" disabled="disabled" value="save" />
+        </td>
+    </tr>
+</table>

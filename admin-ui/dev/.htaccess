@@ -1,0 +1,7 @@
+AddDefaultCharset UTF-8
+AuthType Basic
+AuthName "Admin Interface"
+AuthUserFile /www/wiki/lernfunk/pub/admin/.htusers
+<Limit GET> 
+require valid-user
+</Limit> 
