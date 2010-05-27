@@ -537,17 +537,24 @@ class LFService {
 					$data['academy']	= array( $r->academy_id => $r->ac_name  );
 					$data['department'] = array( $r->dep_id	 => $r->dep_name );
 					
-					$sql2 = 'select s.series_id, s.name '
-						   .'from lecturer_series ls '
-						   .'natural join series s '
-						   .'where s.access_id = 1 and ls.lecturer_id = '.$r->lecturer_id.';';
+					$sql2 = 'select ls.series_id, s.name, s.description, t.term_id, t.term_lg '
+						.'from lecturer_series ls '
+						.'natural join series s '
+						.'left outer join terms t on s.term_id = t.term_id '
+						.'where lecturer_id = '.$r->lecturer_id.' '
+						.'order by s.term_id asc;';
 
 					if ( $rs2 = Lernfunk::query($sql2) ) {
 
 						$series = array();
 				
 						foreach ($rs2 as $r2) {
-							$series[$r2->series_id] = $r2->name;
+							$series[$r2->series_id] = array( 
+									'name'    => $r2->name, 
+									'desc'    => $r2->description,
+									'term_id' => $r2->term_id,
+									'term'    => $r2->term_lg
+								);
 						}
 
 						$data['series']   = $series;

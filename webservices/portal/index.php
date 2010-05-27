@@ -23,7 +23,7 @@
 	require_once(dirname(__FILE__).'/config.php');
 	require_once(dirname(__FILE__).'/lfservice.php');
 
-	header('Content-Type: text/plain; charset=utf8');
+	header('Content-Type: application/json; charset=utf8');
 	
 	// check if there is any data request passed to this script
 	if (!array_key_exists('request', $_REQUEST) || !$_REQUEST['request'])
