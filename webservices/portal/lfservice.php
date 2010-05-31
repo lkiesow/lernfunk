@@ -623,7 +623,7 @@ class LFService {
 					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
 			} // end !sql
 
-		// ## MEDIATYPE = VIDEO ###############################################
+		// ## MEDIATYPE = SLIDES ##############################################
 		} elseif ($mediatype == 'slides') {
 			
 			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
@@ -722,7 +722,7 @@ class LFService {
 					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
 			} // end !sql
 				
-		// ## MEDIATYPE = VIDEO ###############################################
+		// ## MEDIATYPE = SERIES ##############################################
 		} elseif ($mediatype == 'series') {
 			
 			$sql = 'SELECT s.series_id, s.name, s.description, s.description_sh, '
@@ -780,6 +780,36 @@ class LFService {
 						$data['academy']	= $academy;
 						
 					} // end sql2
+
+					$sql3 = 'select m.object_id, m.title, m.description, f.mimetype '
+						.'from mediaobject m '
+						.'natural join format f '
+						.'where (series_id = '.$identifier.') '
+						.'order by date asc;';
+
+					if ( $rs3 = Lernfunk::query($sql3) ) {
+
+						$slides = array();
+						$videos = array();
+				
+						foreach ($rs3 as $r3) {
+							if ( strpos( $r3->mimetype, 'video' ) === FALSE ) {
+								$slides[$r3->object_id] = array(
+										'title' => $r3->title,
+										'desc'  => $r3->description
+									);
+							} else {
+								$videos[$r3->object_id] = array(
+										'title' => $r3->title,
+										'desc'  => $r3->description
+									);
+							}
+						}
+
+						$data['videos'] = $videos;
+						$data['slides'] = $slides;
+						
+					} // end sql3
 				}
 				
 				$result['details'] = $data;
