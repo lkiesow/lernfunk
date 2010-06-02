@@ -112,13 +112,14 @@ class LFService {
 					} // end sql2
 					
 					if ($insert_this_dataset) {
-						$data['title']	 = $r->title;
-						$data['desc']	  = $r->description;
-						$data['img']	   = $r->thumbnail_url;
+						$data['title']     = $r->title;
+						$data['desc']      = $r->description;
+						$data['date']      = $r->date;
+						$data['img']       = $r->thumbnail_url;
 						$data['duration']  = $r->duration;
-						$data['format']	= $r->formatname;
+						$data['format']    = $r->formatname;
 						$data['mimetype']  = $r->mimetype;
-						$data['series']	= $r->seriesname;
+						$data['series']    = $r->seriesname;
 						$data['series_id'] = $r->series_id;
 						$result['video'][$r->object_id] = $data;
 						$count++;
@@ -301,6 +302,7 @@ class LFService {
 					if ($insert_this_dataset) {
 						$data['title']	 = $r->title;
 						$data['desc']	  = $r->description;
+						$data['date']      = $r->date;
 						$data['img']	   = $r->thumbnail_url;
 						$data['duration']  = $r->duration;
 						$data['format']	= $r->formatname;
@@ -321,7 +323,8 @@ class LFService {
 		// ## Get series result ###############################################
 		if ($mediatypes['series'] && !$date) {
 
-			$sql = 'SELECT s.series_id, s.name, s.description_sh, s.description, s.thumbnail_url FROM series s ';
+			$sql = 'SELECT s.series_id, s.name, s.description_sh, s.description, s.thumbnail_url, s.term_id, t.term_lg '
+				.'FROM series s natural join terms t ';
 			if ($filter) {
 				$sql .= ' where s.name like "%'.$filter.'%"';
 			}
@@ -369,10 +372,12 @@ class LFService {
 					} // end sql2
 					
 					if ($insert_this_dataset) {
-						$data['title']	 = $r->name;
-						$data['desc']	  = $r->description;
-						$data['desc_sh']   = $r->description_sh;
-						$data['img']	   = $r->thumbnail_url;
+						$data['title']   = $r->name;
+						$data['term']    = $r->term_lg;
+						$data['term_id'] = $r->term_id;
+						$data['desc']    = $r->description;
+						$data['desc_sh'] = $r->description_sh;
+						$data['img']     = $r->thumbnail_url;
 						$result['series'][$r->series_id] = $data;
 						$count++;
 					}
