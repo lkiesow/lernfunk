@@ -919,7 +919,7 @@ class LFService {
 
 			if (__DEBUG__)
 				print_r($result);
-			return json_encode( array('type' => 'result', 'tags' => $result) );
+			return json_encode( array('type' => 'result', 'formats' => $result) );
 
 		} else { // end sql
 			if (mysql_error())
