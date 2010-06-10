@@ -24,7 +24,7 @@ require_once(dirname(__FILE__).'/config.php');
 
 class LFService {
 
-	private static $commands = array('getdata', 'getdetails', 'getdepartments', 'getdbdata', 'gettags');
+	private static $commands = array('getdata', 'getdetails', 'getdepartments', 'getdbdata', 'gettags', 'getvideoformats');
 
 	/**
 	 * Returns if the command-string is valid or not
@@ -890,6 +890,31 @@ class LFService {
 				if ( !array_key_exists($r->tagname, $result) )
 					$result[$r->tagname] = array();
 				$result[$r->tagname] = $r->count;
+			}
+
+			if (__DEBUG__)
+				print_r($result);
+			return json_encode( array('type' => 'result', 'tags' => $result) );
+
+		} else { // end sql
+			if (mysql_error())
+				return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+		} // end !sql
+		
+	}
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+	public static function getvideoformats($args) {
+		
+		$sql = 'select name from format where mimetype like "%video%" order by name asc;';
+		if ( $rs = Lernfunk::query($sql) ) {
+
+			$result = array();
+			
+			foreach ($rs as $r) {
+				$result[] = $r->name;
 			}
 
 			if (__DEBUG__)
