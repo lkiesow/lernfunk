@@ -6,7 +6,7 @@
 
 /* 
 	Copyright (c) 2006 - 2010  Universitaet Osnabrueck, virtUOS 
-	Authors: Lars Kiesow
+	Authors: Nils Birnbaum, Lars Kiesow, Benjamin Wulff
 
 	This file is part of Lernfunk. 
 
@@ -23,6 +23,7 @@
 	You should have received a copy of the GNU General Public License 
 	along with Lernfunk.  If not, see <http://www.gnu.org/licenses/>. 
 */
+
 /*****************************************************************************/
 /*****************************************************************************/
 /* Non-editor-specific javascript functions                                  */
