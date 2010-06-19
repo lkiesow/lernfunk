@@ -24,7 +24,14 @@ require_once(dirname(__FILE__).'/config.php');
 
 class LFService {
 
-	private static $commands = array('getdata', 'getdetails', 'getdepartments', 'getdbdata', 'gettags', 'getvideoformats');
+	private static $commands = array(
+			'getdata', 
+			'getdetails', 
+			'getdepartments', 
+			'getdbdata', 
+			'gettags', 
+			'getvideoformats'
+		);
 
 	/**
 	 * Returns if the command-string is valid or not
@@ -36,15 +43,19 @@ class LFService {
 	public static function getdata($args) {
 		// check what data is requested
 		$all_mediatypes = !array_key_exists('mediatype', $args);// || empty($args['mediatype']);
-		$mediatypes = array('video'	=> ( $all_mediatypes || array_search('video'   , $args['mediatype']) !== false ),
-							'lecturer' => ( $all_mediatypes || array_search('lecturer', $args['mediatype']) !== false ),
-							'podcast'  => ( $all_mediatypes || array_search('podcast' , $args['mediatype']) !== false ),
-							'slides'   => ( $all_mediatypes || array_search('slides'  , $args['mediatype']) !== false ),
-							'series'   => ( $all_mediatypes || array_search('series'  , $args['mediatype']) !== false ) );
+		$mediatypes = array(
+			'video'    => ( $all_mediatypes || array_search('video'   , $args['mediatype']) !== false ),
+			'lecturer' => ( $all_mediatypes || array_search('lecturer', $args['mediatype']) !== false ),
+			'podcast'  => ( $all_mediatypes || array_search('podcast' , $args['mediatype']) !== false ),
+			'slides'   => ( $all_mediatypes || array_search('slides'  , $args['mediatype']) !== false ),
+			'series'   => ( $all_mediatypes || array_search('series'  , $args['mediatype']) !== false ) );
 
-		$date	   = ( array_key_exists('date', $args)	   && !empty($args['date']) )	   ? mysql_escape_string($args['date'])	   : null;
-		$filter	 = ( array_key_exists('filter', $args)	 && !empty($args['filter']) )	 ? mysql_escape_string($args['filter'])	 : null;
-		$dep_filter = ( array_key_exists('department', $args) && !empty($args['department']) ) ? mysql_escape_string($args['department']) : null;
+		$date       = ( array_key_exists('date', $args)       && !empty($args['date']) )
+			? mysql_escape_string($args['date'])	   : null;
+		$filter     = ( array_key_exists('filter', $args)     && !empty($args['filter']) )
+			? mysql_escape_string($args['filter'])	 : null;
+		$dep_filter = ( array_key_exists('department', $args) && !empty($args['department']) )
+			? mysql_escape_string($args['department']) : null;
 		
 		$result = array();
 
@@ -128,7 +139,12 @@ class LFService {
 				}
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 		}
 
@@ -168,7 +184,12 @@ class LFService {
 				}
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 			
 		}
@@ -239,7 +260,12 @@ class LFService {
 				}
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 		}
 		
@@ -247,9 +273,12 @@ class LFService {
 		if ($mediatypes['slides']) {
 
 			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
-				  .'m.thumbnail_url, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
-				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
-				  .'where (f.mimetype like "%virtpresenter%") and (m.access_id = 1)'; // access_id 1 is public
+				  .'m.thumbnail_url, m.duration, f.name as formatname, '
+				  .'f.mimetype, s.name as seriesname '
+				  .'FROM mediaobject m NATURAL JOIN format f '
+				  .'left outer join series s on s.series_id = m.series_id '
+				  .'where (f.mimetype like "%virtpresenter%" or f.mimetype = "slides") '
+				  .'and (m.access_id = 1)'; // access_id 1 is public
 			if ($filter) {
 				$sql .= ' and ( (m.title like "%'.$filter.'%") or (m.description like "%'.$filter.'%") '
 					   .'or (s.name like "%'.$filter.'%") )';
@@ -316,14 +345,20 @@ class LFService {
 				}
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 		}
 
 		// ## Get series result ###############################################
 		if ($mediatypes['series'] && !$date) {
 
-			$sql = 'SELECT s.series_id, s.name, s.description_sh, s.description, s.thumbnail_url, s.term_id, t.term_lg '
+			$sql = 'SELECT s.series_id, s.name, s.description_sh, '
+				.'s.description, s.thumbnail_url, s.term_id, t.term_lg '
 				.'FROM series s natural join terms t ';
 			if ($filter) {
 				$sql .= ' where s.name like "%'.$filter.'%"';
@@ -385,13 +420,22 @@ class LFService {
 				}
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 		}
 
 		if (__DEBUG__)
 			print_r($result);
-		return json_encode( array('type' => 'result', 'count' => $count, 'data' => $result) );
+		return json_encode( array(
+				'type' => 'result', 
+				'count' => $count, 
+				'data' => $result
+			) );
 	}
 
 /*****************************************************************************/
@@ -431,7 +475,8 @@ class LFService {
 				  .'left outer join series s on m.series_id = s.series_id '
 				  .'left outer join terms t on s.term_id = t.term_id '
 				  .'left outer join category c on s.cat_id = c.cat_id '
-				  .'where m.object_id = '.$identifier.' and f.mimetype like "%video%" and m.access_id = 1 '
+				  .'where m.object_id = '.$identifier
+				  .' and f.mimetype like "%video%" and m.access_id = 1 '
 				  .'limit 0,1;';
 				  
 			if ( $rs = Lernfunk::query($sql) ) {
@@ -511,7 +556,12 @@ class LFService {
 				
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 
 		// ## MEDIATYPE = LECTURER ############################################
@@ -576,7 +626,12 @@ class LFService {
 				
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 
 		// ## MEDIATYPE = PODCAST #############################################
@@ -625,7 +680,12 @@ class LFService {
 				
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 
 		// ## MEDIATYPE = SLIDES ##############################################
@@ -644,7 +704,9 @@ class LFService {
 				  .'left outer join series s on m.series_id = s.series_id '
 				  .'left outer join terms t on s.term_id = t.term_id '
 				  .'left outer join category c on s.cat_id = c.cat_id '
-				  .'where m.object_id = '.$identifier.' and f.mimetype like "%virtpresenter%" and m.access_id = 1 '
+				  .'where m.object_id = '.$identifier
+				  .' and ( f.mimetype like "%virtpresenter%" or f.mimetype = "slides" ) '
+				  .'and m.access_id = 1 '
 				  .'limit 0,1;';
 				  
 			if ( $rs = Lernfunk::query($sql) ) {
@@ -724,7 +786,12 @@ class LFService {
 
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 				
 		// ## MEDIATYPE = SERIES ##############################################
@@ -826,15 +893,21 @@ class LFService {
 				
 			} else { // end sql
 				if (mysql_error())
-					return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql
+						) );
 			} // end !sql
 
 		// ## UNKNOWN MEDIATYPE ###############################################
 		} else {
-			return json_encode( array('type' => 'error', 
-									  'errtype' => 'invalid_mediatype', 
-									  'errmsg' => '\''.$mediatype.'\' is not a valid mediatype.')
-							  );
+			return json_encode( array(
+					'type' => 'error', 
+					'errtype' => 'invalid_mediatype', 
+					'errmsg' => '\''.$mediatype.'\' is not a valid mediatype.'
+				) );
 		}
 		
 		return '{}';
@@ -862,11 +935,19 @@ class LFService {
 
 			if (__DEBUG__)
 				print_r($result);
-			return json_encode( array('type' => 'result', 'departments' => $result) );
+			return json_encode( array(
+					'type' => 'result', 
+					'departments' => $result
+				) );
 
 		} else { // end sql
 			if (mysql_error())
-				return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+				return json_encode( array(
+						'type' => 'error', 
+						'errtype' => 'sql_error', 
+						'errmsg' => mysql_error(), 
+						'sql_statement' => $sql
+					) );
 		} // end !sql
 	}
 
