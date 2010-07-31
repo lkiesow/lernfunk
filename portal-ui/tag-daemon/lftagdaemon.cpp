@@ -265,96 +265,96 @@ void log_success(const config & cfg, string msg) {
 
 void generate_tags(const config & cfg) {
 
-    MYSQL * conn = mysql_init(NULL);
+	MYSQL * conn = mysql_init(NULL);
 
-    /* Connect to database */
-    if (!mysql_real_connect(conn, cfg.mysql.server.c_str(),
-                cfg.mysql.user.c_str(), cfg.mysql.password.c_str(),
-								cfg.mysql.database.c_str(), 0, NULL, 0)) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
+	/* Connect to database */
+	if (!mysql_real_connect(conn, cfg.mysql.server.c_str(),
+			cfg.mysql.user.c_str(), cfg.mysql.password.c_str(),
+			cfg.mysql.database.c_str(), 0, NULL, 0)) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
 
-    /* send SQL query for mediaobjects */
-    if (mysql_query(conn, "SELECT object_id, title, description FROM mediaobject;")) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
+	/* send SQL query for mediaobjects */
+	if (mysql_query(conn, "SELECT object_id, title, description FROM mediaobject;")) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
 
-		tagmap tags;
-    MYSQL_ROW row;
-    MYSQL_RES * res( mysql_use_result(conn) );
+	tagmap tags;
+	MYSQL_ROW row;
+	MYSQL_RES * res( mysql_use_result(conn) );
 
-    /* output fields 1 and 2 of each row */
-    while ((row = mysql_fetch_row(res)) != NULL) {
-			get_tags(cfg, row[1] + string(" ") + row[2], tags);
+	/* output fields 1 and 2 of each row */
+	while ((row = mysql_fetch_row(res)) != NULL) {
+		get_tags(cfg, row[1] + string(" ") + row[2], tags);
+	}
+
+	/* The same for series */
+	if (mysql_query(conn, "SELECT s.name, s.description FROM series s;")) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+
+	/* Release memory used to store results and get new*/
+	mysql_free_result(res);
+	res = mysql_use_result(conn);
+
+	/* output fields 1 and 2 of each row */
+	while ((row = mysql_fetch_row(res)) != NULL) {
+		get_tags(cfg, row[1] + string(" ") + row[2], tags);
+	}
+
+	/* Release memory used to store results */
+	mysql_free_result(res);
+
+	// create query for tag table
+	string tag_table_create("CREATE TABLE `tag` ( `tagname` VARCHAR( 64 ) NOT NULL , "
+			"`count` INT UNSIGNED NOT NULL , PRIMARY KEY ( `tagname` ) ) "
+			"COMMENT = \"Generated " + timestr() + " by lftagdaemon\";");
+
+	// insert values in query
+	string values("");
+	tagmap::iterator it;
+	for ( it=tags.begin(); it != tags.end(); it++ ) {
+		// filter
+		if (it->second > cfg.tag.minquantity) {
+			char escstr[it->first.length()*2+15];
+			mysql_real_escape_string(conn, escstr, it->first.c_str(), it->first.length());
+			sprintf(escstr, "(\"%s\", \"%d\")", string(escstr).c_str(), it->second);
+			values += string(values == "" ? "" : ", ") + escstr;
 		}
+	}
+	string tag_table_insert("INSERT INTO `tag` ( `tagname` , `count` ) VALUES " +  values + ";");
 
-		/* The same for series */
-    if (mysql_query(conn, "SELECT s.name, s.description FROM series s;")) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
+	//cout << tag_table_insert << endl;
 
-    /* Release memory used to store results and get new*/
-    mysql_free_result(res);
-    res = mysql_use_result(conn);
+	/* insert data */
+	if (mysql_query(conn, "START TRANSACTION;")) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+	if (mysql_query(conn, "DROP TABLE IF EXISTS `tag`;")) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+	if (mysql_query(conn, tag_table_create.c_str())) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+	if (mysql_query(conn, tag_table_insert.c_str())) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+	if (mysql_query(conn, "COMMIT;")) {
+		log_error(cfg, mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
 
-    /* output fields 1 and 2 of each row */
-    while ((row = mysql_fetch_row(res)) != NULL) {
-			get_tags(cfg, row[1] + string(" ") + row[2], tags);
-		}
+	/* Close connection */
+	mysql_close(conn);
 
-    /* Release memory used to store results */
-    mysql_free_result(res);
-
-		// create query for tag table
-		string tag_table_create("CREATE TABLE `tag` ( `tagname` VARCHAR( 64 ) NOT NULL , "
-				"`count` INT UNSIGNED NOT NULL , PRIMARY KEY ( `tagname` ) ) "
-				"COMMENT = \"Generated " + timestr() + " by lftagdaemon\";");
-				
-		// insert values in query
-		string values("");
-		tagmap::iterator it;
-		for ( it=tags.begin(); it != tags.end(); it++ ) {
-			// filter
-			if (it->second > cfg.tag.minquantity) {
-				char escstr[it->first.length()*2+15];
-				mysql_real_escape_string(conn, escstr, it->first.c_str(), it->first.length());
-				sprintf(escstr, "(\"%s\", \"%d\")", string(escstr).c_str(), it->second);
-				values += string(values == "" ? "" : ", ") + escstr;
-			}
-		}
-		string tag_table_insert("INSERT INTO `tag` ( `tagname` , `count` ) VALUES " +  values + ";");
-
-		//cout << tag_table_insert << endl;
-
-		/* insert data */
-    if (mysql_query(conn, "START TRANSACTION;")) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
-    if (mysql_query(conn, "DROP TABLE IF EXISTS `tag`;")) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
-    if (mysql_query(conn, tag_table_create.c_str())) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
-    if (mysql_query(conn, tag_table_insert.c_str())) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
-    if (mysql_query(conn, "COMMIT;")) {
-			log_error(cfg, mysql_error(conn));
-			exit(EXIT_FAILURE);
-    }
-
-    /* Close connection */
-    mysql_close(conn);
-
-		log_success(cfg, "Tags successful generated.");
+	log_success(cfg, "Tags successful generated.");
 		// show content:
 		// map<string, unsigned int>::iterator it;
 		/*
@@ -368,6 +368,11 @@ void generate_tags(const config & cfg) {
 }
 
 
+/**
+ * Calculate next runtime and write it into the configuration
+ * 
+ * @param cfg Pointer to the configuration-struct
+ */
 time_t next_runtime(config & cfg) {
 	
 	// check if there is no next time
