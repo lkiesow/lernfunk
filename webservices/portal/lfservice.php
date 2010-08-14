@@ -1054,7 +1054,7 @@ class LFService {
 					} // end sql2
 
 					// get recordings
-					$sql3 = 'select m.object_id, m.title, m.description, f.mimetype '
+					$sql3 = 'select m.object_id, m.date, m.title, m.description, m.cou_id, f.mimetype, f.name as formatname '
 						.'from mediaobject m '
 						.'natural join format f '
 						.'where (series_id = '.$identifier.') '
@@ -1065,9 +1065,14 @@ class LFService {
 						$recordings = array();
 				
 						foreach ($rs3 as $r3) {
-							$recordings[$r3->object_id] = array(
-									'title' => $r3->title,
-									'desc'  => $r3->description
+							$recordings[] = array(
+									'id'       => $r3->object_id,
+									'title'    => $r3->title,
+									'desc'     => $r3->description,
+									'date'     => $r3->date,
+									'cou_id'   => $r3->cou_id,
+									'mimetype' => $r3->mimetype,
+									'format'   => $r3->formatname
 								);
 						}
 
@@ -1181,7 +1186,26 @@ class LFService {
 
 	public static function getnews( $args ) {
 		
+		// check if only some mediatypes are requested
+		$mimetypefilter = '';
+		if (array_key_exists( 'mimetypefilter', $args ) 
+				&& is_array( $args['mimetypefilter'] ) ) {
+			foreach ( $args['mimetypefilter'] as $key => $value ) {
+				if ( $mimetypefilter == '' ) {
+					$mimetypefilter = ' and ( f.mimetype like "'.mysql_escape_string($value).'" ';
+				} else {
+					$mimetypefilter .= ' or f.mimetype like "'.mysql_escape_string($value).'" ';
+				}
+			}
+			// close bracket
+			if ( $mimetypefilter != '' ) {
+				$mimetypefilter .= ' ) ';
+			}
+		}
+
+		// number of datasets to return
 		$count = intval( $args['count'] );
+
 		$result = array();
 
 		$sql = 'SELECT m.object_id, m.title, m.description, '
@@ -1194,6 +1218,7 @@ class LFService {
 			.'left outer join series s '
 			.'on s.series_id = m.series_id '
 			.'where m.access_id = 1 '
+			.$mimetypefilter
 			.'and s.access_id = 1 '
 			.'group by series_id '
 			.'order by date desc '
@@ -1227,7 +1252,12 @@ class LFService {
 
 		} else { // end sql
 			if (mysql_error())
-				return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+				return json_encode( array(
+						'type' => 'error', 
+						'errtype' => 'sql_error', 
+						'errmsg' => mysql_error(), 
+						'sql_statement' => $sql ) 
+					);
 		} // end !sql
 		
 	}
