@@ -4,7 +4,7 @@ tpl.home = {};
 
 tpl.home.videoplayer = '	<object type="application/x-shockwave-flash"\n'
 	+ '		data="app/hd-player/Videodisplay.swf"\n'
-	+ '		style="width: 320px; height: 180px;">\n'
+	+ '		style="width: 280px; height: 210px;">\n'
 	+ '		<param name="allowScriptAccess" value="always" />\n'
 	+ '		<param name="allowFullScreen" value="true" />\n'
 	+ '		<param name="movie" value="app/hd-player/Videodisplay.swf" />\n'

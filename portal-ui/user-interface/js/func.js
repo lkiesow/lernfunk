@@ -124,7 +124,13 @@ function init() {
 		});
 
 	// get start view
-	requestWebservices( {"cmd" : "getNews", "args" : { "count" : cfg.newscount } }, loadStartpage );
+	requestWebservices( {
+			"cmd" : "getNews", 
+			"args" : { 
+				"count"      : Math.max( cfg.newscount, cfg.newreccount ),
+				"mimetypefilter" : cfg.newsrecfilter 
+			} 
+		}, loadStartpage );
 	
 	loadTemplate( 'loading.tpl' );
 	loadTemplate( 'error.tpl' );
@@ -140,42 +146,65 @@ function init() {
 }
 
 
+/**
+ * Load welcome page with news, new video-recordings, ...
+ **/
 function loadStartpage( data ) {
 	if (handleError(data)) {
 		var recordings = '';
 		var series     = '';
+		var count = 0;
 		for (i in data.news) {
+			count++;
 			var n = data.news[i];
-			// shorten description
-			var desc = ( n.description.length < 120 ) 
-				? n.description 
-				: n.description.substr(0, 120) + '&hellip;';
-			series += fillTemplate( tpl.home.series_update, 
-				{ 'seriesname' : n.seriesname, 'desc' : desc, 'id' : n.series_id } );
-			var player = '';
-			var replaceData = {
-					'date' : n.date, 
-					'title' : n.title, 
-					'url' : n.url
-				};
-			if ( n.mimetype.match( /.*video.*/ ) ) {
-				replaceData.mediatype = 'Video';
-				replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
-				recordings += fillTemplate( tpl.home.new_recording, replaceData );
-			} else if ( n.mimetype.match( /.*audio.*/ ) ) {
-				replaceData.mediatype = 'Audio';
-				replaceData.img = 'img/audioplayer_nopreview.png';
-				recordings += fillTemplate( tpl.home.new_recording, replaceData );
-			} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
-				replaceData.mediatype = 'virtPresenter';
-				replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
-				recordings += fillTemplate( tpl.home.new_recording, replaceData );
+			// series
+			if (count <= cfg.newscount) {
+				// shorten description
+				var desc = ( n.description.length < 120 ) 
+					? n.description 
+					: n.description.substr(0, 120) + '&hellip;';
+				series += fillTemplate( tpl.home.series_update, 
+					{ 'seriesname' : n.seriesname, 'desc' : desc, 'id' : n.series_id } );
+			}
+
+			// recordings
+			if (count <= cfg.newreccount) {
+				var player = '';
+				var replaceData = {
+						'date' : n.date, 
+						'title' : n.title, 
+						'url' : n.url
+					};
+				if ( n.mimetype.match( /.*video.*/ ) ) {
+					replaceData.mediatype = 'Video';
+					replaceData.img = getImageFromRecObj( n, 'img/player_nopreview.png');
+					//replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
+					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+				} else if ( n.mimetype.match( /.*audio.*/ ) ) {
+					replaceData.mediatype = 'Audio';
+					replaceData.img = 'img/audioplayer_nopreview.png';
+					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+				} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
+					replaceData.mediatype = 'virtPresenter';
+					replaceData.img = getImageFromRecObj( n, 'img/player_nopreview.png');
+					//replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
+					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+				}
 			}
 		}
 		loadTemplate( 'home.tpl', 
 			{ 'new_recordings' : recordings, 'series_updates' : series },
 			setContent );
 	}
+}
+
+
+function getImageFromRecObj( o, stdimg ) {
+	// do not use preview_url as it is often a link to the videofile
+	// -> o.preview_url ? o.preview_url 
+	return  o.image_url ? o.image_url 
+			: ( o.thumbnail_url ? o.thumbnail_url 
+				: stdimg );
 }
 
 

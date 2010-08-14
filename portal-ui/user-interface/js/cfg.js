@@ -1,13 +1,16 @@
-const cfg = {
+cfg = {
 	// how much news are shown
-	'newscount'      : 4,
+	'newscount'      : 5,
+	'newreccount'    : 2,
+	// filter recordings that are shown on the startpage by mimetype
+	'newsrecfilter'  : [ '%video%' ],
 	// how much objects should be displayed
 	'objectsPerPage' : 4,
 	// adress of the preview image shown when nothing is defined in database
 	'stdPreviewImg'  : 'img/std_preview.jpg'
 };
 
-var webservices = [
+webservices = [
 		{
 			'name' : 'Lernfunk',
 			'url' : 'http://vm083.rz.uos.de/webservices/portal/',
