@@ -20,6 +20,7 @@
 */
 
 
+	// include configuration and functionality
 	require_once(dirname(__FILE__).'/config.php');
 	require_once(dirname(__FILE__).'/lfservice.php');
 
@@ -27,28 +28,45 @@
 	
 	// check if there is any data request passed to this script
 	if (!array_key_exists('request', $_REQUEST) || !$_REQUEST['request'])
-		die( json_encode( array('type' => 'error', 'errtype' => 'request_error', 'errmsg' => 'No request data.', 'request_data' => $_REQUEST) ) );
+		die( json_encode( array(
+				'type' => 'error', 
+				'errtype' => 'request_error', 
+				'errmsg' => 'No request data.', 
+				'request_data' => $_REQUEST) ) );
 
 	// try to decode the json to an assoc array
 	$request = json_decode( $_REQUEST['request'], true );
 	if (!$request)
-		die( json_encode( array('type' => 'error', 'errtype' => 'request_error', 'errmsg' => 'Could not parse JSON data passed as request.', 'request_data' => $_REQUEST) ) );
+		die( json_encode( array(
+				'type' => 'error', 
+				'errtype' => 'request_error', 
+				'errmsg' => 'Could not parse JSON data passed as request.', 
+				'request_data' => $_REQUEST) ) );
 		
 	// check if access key is correct
 	if (ACCESS_KEY != '')
 		if (!array_key_exists('key', $request) || $request['key'] != ACCESS_KEY)
-			die( json_encode( array('type' => 'error',
+			die( json_encode( array(
+				'type' => 'error',
 				'errtype' => 'security_error',
-				'errmsg' => 'Invalid access key \''.(is_array($request) && array_key_exists('key', $request) ? $request['key'] : '').'\'.') ) );
+				'errmsg' => 'Invalid access key \''
+					.(is_array($request) && array_key_exists('key', $request) ? $request['key'] : '').'\'.') ) );
 		
 	// check if there is a command
 	if (!array_key_exists('cmd', $request) || empty($request['cmd']))
-		die( json_encode( array('type' => 'error', 'errtype' => 'request_error', 'errmsg' => 'No request command.', 'request_data' => $_REQUEST) ) );
+		die( json_encode( array(
+				'type' => 'error', 
+				'errtype' => 'request_error', 
+				'errmsg' => 'No request command.', 
+				'request_data' => $_REQUEST) ) );
 
 	// convert command to lowercase and check if it is a valid command
 	$request['cmd'] = strtolower($request['cmd']);
 	if ( !LFService::isvalidcmd($request['cmd']) )
-		die( json_encode( array('type' => 'error', 'errtype' => 'request_error', 'errmsg' => 'Invalid request command \''.$request['cmd'].'\'.', 'request	_data' => $_REQUEST) ) );
+		die( json_encode( array(
+				'type' => 'error', 
+				'errtype' => 'request_error', 
+				'errmsg' => 'Invalid request command \''.$request['cmd'].'\'.', 'request_data' => $_REQUEST) ) );
 
 	// call the service function assosiated with the given command
 	echo LFService::$request['cmd'](array_key_exists('args', $request) ? $request['args'] : null);
