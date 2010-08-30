@@ -636,8 +636,11 @@ function triggerSearch() {
 
 
 function filterResults( mediatype, hashIsSet, subFilter ) {
-	if (!lastSearch)
+
+	if (!lastSearch) {
+		window.location.hash = '#resultfilter=' + mediatype + '&cmd=search';
 		return;
+	}
 
 	if ( !hashIsSet ) {
 		var params = { 'resultfilter' : mediatype };
@@ -700,8 +703,9 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 	} else if (mediatype == 'series') {
 		$('#pagetitle').text('Suchergebnisse in der Kategorie Vorlesungen');
 		addTab('alph', 'Alphabetisch', "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-		addTab('series', 'Fachbereich', "alert('Wie nach FB sortieren? Mehrere FBs möglich...');");					
-		addTab('chrono', 'Semester', "sortResults(function(a, b) { return lexCompare(parseInt(a.term_id), parseInt(b.term_id)); })");
+		//addTab('series', 'Fachbereich', "alert('Wie nach FB sortieren? Mehrere FBs möglich...');");					
+		addTab('chrono_up', 'Semester (⬆)', "sortResults(function(a, b) { return lexCompare(parseInt(a.term_id), parseInt(b.term_id)); })");
+		addTab('chrono_down', 'Semester (⬇)', "sortResults(function(a, b) { return lexCompare(parseInt(b.term_id), parseInt(a.term_id)); })");
 	} else if (mediatype == 'lecturer') {
 		$('#pagetitle').text('Suchergebnisse in der Kategorie Personen');
 		addTab('alph', 'Alphabetisch',  "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
@@ -1276,7 +1280,7 @@ function showSubmenu( menu_item ) {
 	} else if ( menu_item == 'lecturer' ) {
 		subfilter += makeSubmenuTab( 'department', menu_item, 'Fachbereich' );
 	} else if ( menu_item == 'podcast' ) {
-		subfilter += makeSubmenuTab( 'type',       menu_item, 'Feedtype'    );
+		subfilter += makeSubmenuTab( 'type',       menu_item, 'Type'    );
 		subfilter += makeSubmenuTab( 'department', menu_item, 'Fachbereich' );
 		subfilter += makeSubmenuTab( 'lecturer',   menu_item, 'Dozent'      );
 	}
