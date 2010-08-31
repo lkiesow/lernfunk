@@ -212,6 +212,16 @@ function replaceBy( node, type, url ) {
 
 	type = type.toLowerCase();
 	if ( type == 'virtpresenter' || type == 'video' || type == 'audio' ) {
+		
+		// WARNING! 
+		//   This is a UOS specific thing.
+		//   And a dirty workaround!
+		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+		if (rtmp) {
+			rtmp = rtmp[0].split( '&' );
+			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+		}
+
 		$(node).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
 	}
 
@@ -1047,6 +1057,17 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					// if recording is a video
 					} else if ( data.mimetype.match( /.*video.*/ ) ) {
 					data.player  = '<p style="text-align: center;">';
+					
+					// WARNING! 
+					//   This is a UOS specific thing.
+					//   And a dirty workaround!
+					var rtmp = data.url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+					if (rtmp) {
+						rtmp = rtmp[0].split( '&' );
+						data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+					}
+					data.player += fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
+					/*
 					data.player += '	<object id="oc_Videodisplay" type="application/x-shockwave-flash"';
 					data.player += '		data="app/hd-player/Videodisplay.swf"';
 					data.player += '		style="width: 480px; height: 270px;">';
@@ -1057,6 +1078,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.player += '		<param name="bgcolor" value="#000000" />';
 					data.player += '		<param name="flashvars" value="video_url="' + data.url + '" />';
 					data.player += '	</object>';
+					*/
 					data.player += '</p>';
 
 					// if recording is virtpresenter recording
