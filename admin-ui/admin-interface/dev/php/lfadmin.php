@@ -733,6 +733,8 @@ class LFAdmin {
                 $subs[$r->COLUMN_NAME] = '';
         }
         $subs['series_id'] = $ser_id;
+		  if (isset($_SERVER['PHP_AUTH_USER']))
+			  $subs['author'] = $_SERVER['PHP_AUTH_USER'];
 
         // fill selects
         $subs['series_options'] = self::make_options('series', 'series_id', array('name'), $ser_id);
