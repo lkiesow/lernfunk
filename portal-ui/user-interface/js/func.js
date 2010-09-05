@@ -1022,6 +1022,12 @@ function toLastSavepoint() {
 }
 
 
+/**
+ * Shows the detail page
+ *   mediatype    the type of the dataset to show information about
+ *   identifier   the identifier of the dataset
+ *   hashIsSet    defines if the hash has to be set or not
+ */
 function getDetails( mediatype, identifier, hashIsSet ) {
 
 	if ( !hashIsSet ) {
@@ -1034,6 +1040,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 	requestWebservices( { "cmd" : "getDetails", "args" : { "mediatype" : mediatype, "identifier" : identifier } },
 		function(data) {
 			if (handleError(data)) {
+
 				/**** LECTURER ***************************************************/
 				if ( mediatype == 'lecturer' ) {
 					setBackPager();
@@ -1042,6 +1049,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.department = addDepartmentBlock( data );
 					data.series = makeSeriesTable( data.series );
 					loadTemplate( 'lecturerDetails.tpl', data, setContent );
+			
 				/**** RECORDING **************************************************/
 				} else if ( mediatype == 'recordings' ) {
 					setBackPager();
@@ -1052,34 +1060,23 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.player = '';
 					// if recordings is a set of slides
 					if ( data.mimetype == 'slides' ) {
-						data.player = '<div id="slideplayer_container" style="width: 600px; height: 304px; overflow-y: hidden; overflow-x: scroll;">'
+						data.player = '<div id="slideplayer_container" '
+							+ 'style="width: 600px; height: 304px; overflow-y: hidden; overflow-x: scroll;">'
 							+ '<div id="slideplayer" style="max-height: 300px;"></div></div>';
 					// if recording is a video
 					} else if ( data.mimetype.match( /.*video.*/ ) ) {
-					data.player  = '<p style="text-align: center;">';
 					
-					// WARNING! 
-					//   This is a UOS specific thing.
-					//   And a dirty workaround!
-					var rtmp = data.url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-					if (rtmp) {
-						rtmp = rtmp[0].split( '&' );
-						data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-					}
-					data.player += fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
-					/*
-					data.player += '	<object id="oc_Videodisplay" type="application/x-shockwave-flash"';
-					data.player += '		data="app/hd-player/Videodisplay.swf"';
-					data.player += '		style="width: 480px; height: 270px;">';
-					data.player += '		<param name="allowScriptAccess" value="always" />';
-					data.player += '		<param name="allowFullScreen" value="true" />';
-					data.player += '		<param name="movie" value="app/hd-player/Videodisplay.swf" />';
-					data.player += '		<param name="quality" value="high" />';
-					data.player += '		<param name="bgcolor" value="#000000" />';
-					data.player += '		<param name="flashvars" value="video_url="' + data.url + '" />';
-					data.player += '	</object>';
-					*/
-					data.player += '</p>';
+						// WARNING! 
+						//   This is a UOS specific thing.
+						//   And a dirty workaround!
+						var rtmp = data.url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+						if (rtmp) {
+							rtmp = rtmp[0].split( '&' );
+							data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+						}
+						data.player  = '<p style="text-align: center;">';
+						data.player += fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
+						data.player += '</p>';
 
 					// if recording is virtpresenter recording
 					} else if ( data.mimetype.match( /.*virtpresenter.*/ ) ) {
@@ -1087,8 +1084,10 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 						var slides = $.deparam.querystring( data.url );
 						alert( $.toJSON( slides ) );
 						if ( slides.seminar ) {
-							alert( 'http://video.lernfunk.de/lectures/' + slides.seminar + '/' + slides.lecture + '/data/search.xml' );
-							getWebpage( 'http://video.lernfunk.de/lectures/' + slides.seminar + '/' + slides.lecture + '/data/search.xml', function( data ) { 
+							alert( 'http://video.lernfunk.de/lectures/' + slides.seminar + '/' 
+								+ slides.lecture + '/data/search.xml' );
+							getWebpage( 'http://video.lernfunk.de/lectures/' + slides.seminar + '/' 
+								+ slides.lecture + '/data/search.xml', function( data ) { 
 									var ids = data.match(/<slide ID="\d+(?=")/g);
 									var s = [];
 									for (i in ids) {
@@ -1104,6 +1103,12 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 						*/
 						data.player = '<iframe src="' + data.url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
 							+ '<p style="text-align: right;"><a href="' + data.url + '">Standalone-Player</a></p>';
+
+					// if recording is audio recording
+					} else if ( data.mimetype.match( /.*audio.*/ ) ) {
+						data.player  = '<p style="text-align: center;">';
+						data.player += fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
+						data.player += '</p>';
 					}
 					loadTemplate( 'slideDetails.tpl', data, setContent );
 
