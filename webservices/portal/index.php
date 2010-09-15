@@ -20,11 +20,21 @@
 */
 
 
+	// check if debugmode is requested
+	if ( array_key_exists('debug', $_REQUEST) && ($_REQUEST['debug'] == 'true') ) {
+		define('__DEBUG__', true);
+	}
+
 	// include configuration and functionality
 	require_once(dirname(__FILE__).'/config.php');
 	require_once(dirname(__FILE__).'/lfservice.php');
 
-	header('Content-Type: application/json; charset=utf8');
+	// set contend-type according to mode
+	if (__DEBUG__) {
+		header('Content-Type: text/plain; charset=utf-8');
+	} else {
+		header('Content-Type: application/json; charset=utf-8');
+	}
 	
 	// check if there is any data request passed to this script
 	if (!array_key_exists('request', $_REQUEST) || !$_REQUEST['request'])
@@ -36,7 +46,7 @@
 
 	// try to decode the json to an assoc array
 	$request = json_decode( $_REQUEST['request'], true );
-	if (!$request)
+	if (!is_array($request))
 		die( json_encode( array(
 				'type' => 'error', 
 				'errtype' => 'request_error', 
