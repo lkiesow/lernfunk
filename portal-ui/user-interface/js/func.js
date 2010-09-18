@@ -1277,7 +1277,7 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 			onAJAXRequest();
 		}
 		$.ajax({
-			url: './template/' + template,
+			url: './template/' + cfg.tplName + '/' + template,
 			dataType: 'text',
 			data: {},
 			success: function( data ) {

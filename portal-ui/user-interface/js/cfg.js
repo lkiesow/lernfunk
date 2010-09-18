@@ -7,7 +7,9 @@ cfg = {
 	// how much objects should be displayed
 	'objectsPerPage' : 4,
 	// adress of the preview image shown when nothing is defined in database
-	'stdPreviewImg'  : 'img/std_preview.jpg'
+	'stdPreviewImg'  : 'img/std_preview.jpg',
+	// template to use
+	'tplName'        : 'white_base_scv-70'
 };
 
 webservices = [
