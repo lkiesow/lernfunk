@@ -40,7 +40,8 @@ div#titlebox {
 	background-color: #73bdaf;
 	color: #ffffff;
 	margin-left: 295px;
-	margin-right: 245px;
+	/* margin-right: 245px; */
+	margin-right: 40px;
 	height: 80px;
 	padding: 0px;
 }
@@ -202,7 +203,8 @@ div#content {
 
 div#contentbox {
 	margin-left: 310px;
-	margin-right: 270px;
+	/* margin-right: 270px; */
+	margin-right: 40px;
 }
 
 div#rightblock {
@@ -211,15 +213,6 @@ div#rightblock {
 	font-size: smaller;
 	text-align: center;
 	max-width: 245px;
-}
-
-div#tagcloud {
-	width: 225px;
-}
-
-div#datepicker {
-	font-size: smaller;
-	margin-bottom: 25px;
 }
 
 div#main {

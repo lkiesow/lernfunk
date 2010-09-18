@@ -70,6 +70,61 @@ function formatJSON( json ) {
 
 }
 
+/*
+ * Initialize calendar
+ **/
+function calendar_init() {
+
+	// calendar initialization
+	$("#datepicker").datepicker({
+			firstDay: 1,
+			maxDate: '+0',
+			monthNames: ['Januar', 'Februar', 'März', 
+				'April', 'Mai', 'Juni', 
+				'Juli', 'August', 'September', 
+				'Oktober', 'November', 'Dezember'],
+			monthNamesShort: ['Jan', 'Feb', 'Mar', 
+				'Apr', 'Mai', 'Jun', 
+				'Jul', 'Aug', 'Sep', 
+				'Okt', 'Nov', 'Dez'],
+			dayNames: ['Montag', 'Dienstag', 'Mittwoch', 
+				'Donnerstag', 'Freitag', 'Samstag'],
+			dayNamesMin: ['So', 'Mo', 'Di', 
+				'Mi', 'Do', 'Fr', 'Sa'],
+			dateFormat: 'yy-mm-dd',
+			onSelect: function(dateText, inst) { 
+					doSearch( { 'cmd' : 'getData', 'args' : { 'date' : dateText } } );
+				}
+		});
+
+}
+
+
+/*
+ * Initialize tag-cloud
+ **/
+function tagcloud_init() {
+
+	// make tag cloud
+	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 25 } },
+		function(data) {
+			if (handleError(data)) {
+				tags = new Array();
+				var max = null;
+				for ( tag in data.tags ) {
+					if (!max)
+						max = data.tags[tag];
+					tags.push('<a href="#cmd=search&filter=' 
+						+ tag + '" onclick="doSearch( { \'cmd\' : \'getData\', \'args\' : { \'filter\' : \'' 
+						+ tag + '\' } } ); return false;" style="font-size: ' 
+						+ Math.ceil(12 * data.tags[tag] / max) + 'pt">' + tag + '</a>');
+				}
+				tags.sort();
+				$('#tagcloud').html(tags.join(' '));
+			}
+		});
+
+}
 
 /*
  * Initialization (load data for interface, set calender, ...)
@@ -77,20 +132,6 @@ function formatJSON( json ) {
 function init() {
 	
 	$(window).bind( 'hashchange', onHashChange );
-
-	// calendar initialization
-	$("#datepicker").datepicker({
-			firstDay: 1,
-			maxDate: '+0',
-			monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-			monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-			dayNames: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-			dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-			dateFormat: 'yy-mm-dd',
-			onSelect: function(dateText, inst) { 
-					doSearch( { 'cmd' : 'getData', 'args' : { 'date' : dateText } } );
-				}
-		});
 	
 	// create department picker
 	requestWebservices( {"cmd" : "getDepartments"},
@@ -105,23 +146,6 @@ function init() {
 				}
 			}
 		} );
-
-	// make tag cloud
-	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 25 } },
-		function(data) {
-			if (handleError(data)) {
-				tags = new Array();
-				var max = null;
-				for ( tag in data.tags ) {
-					if (!max)
-						max = data.tags[tag];
-					tags.push('<a href="#cmd=search&filter=' + tag + '" onclick="doSearch( { \'cmd\' : \'getData\', \'args\' : { \'filter\' : \'' 
-						+ tag + '\' } } ); return false;" style="font-size: ' + Math.ceil(12 * data.tags[tag] / max) + 'pt">' + tag + '</a>');
-				}
-				tags.sort();
-				$('#tagcloud').html(tags.join(' '));
-			}
-		});
 
 	// get start view
 	requestWebservices( {
@@ -177,16 +201,16 @@ function loadStartpage( data ) {
 					};
 				if ( n.mimetype.match( /.*video.*/ ) ) {
 					replaceData.mediatype = 'Video';
-					replaceData.img = getImageFromRecObj( n, 'img/player_nopreview.png');
+					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
 					//replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				} else if ( n.mimetype.match( /.*audio.*/ ) ) {
 					replaceData.mediatype = 'Audio';
-					replaceData.img = 'img/audioplayer_nopreview.png';
+					replaceData.img = 'template/' + cfg.tplName + '/' + cfg.stdAudPreImg;
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
 					replaceData.mediatype = 'virtPresenter';
-					replaceData.img = getImageFromRecObj( n, 'img/player_nopreview.png');
+					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
 					//replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				}
@@ -194,7 +218,7 @@ function loadStartpage( data ) {
 		}
 		loadTemplate( 'home.tpl', 
 			{ 'new_recordings' : recordings, 'series_updates' : series },
-			setContent );
+			function( data ) { setContent( data ); calendar_init(); tagcloud_init(); } );
 	}
 }
 
@@ -250,7 +274,7 @@ function requestWebservices(request, onSuccess, onError) {
 		request.key = cfg.webservices[key].key;
 		$.ajax({
 			type: 'POST',
-			url: './php/webserviceAccess.php',
+			url: './func/webserviceAccess.php',
 			dataType: 'json',
 			data	: ({'url' : cfg.webservices[key].url, 'request' : $.toJSON(request) }),
 			success: onSuccess,
@@ -275,7 +299,7 @@ function getWebpage( url, onSuccess, onError ) {
 
 	$.ajax({
 		type: 'POST',
-		url: './php/getWebpage.php',
+		url: './func/getWebpage.php',
 		dataType: 'plain',
 		data	: ({ 'url' : url }),
 		success: onSuccess,
@@ -769,7 +793,7 @@ function addObjectBlock(mediatype, obj) {
 	// do this for all kinds of objects
 	var replace = shallowCopy( obj );
 	if (!obj.img)
-		obj.img = cfg.stdPreviewImg;
+		obj.img = 'template/' + cfg.tplName + '/' + cfg.stdPreviewImg;
 	replace.department = addDepartmentBlock(obj);
 
 	//**************************************************************************
