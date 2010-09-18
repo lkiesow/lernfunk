@@ -1,29 +1,13 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"> <head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
+<head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <meta name="description" content="Lernfunk.de: Vorlesungsaufzeichnungen und Podcasts" />
 <meta name="keywords" content="Lernfunk, Vorlesung, Vorlesungsaufzeichnung, Podcast, Dozent" />
 
-
-<!-- jQuery UI -->
-<link type="text/css" href="./css/imports/jquery/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
-<script type="text/javascript" src="./js/imports/jquery/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="./js/imports/jquery/jquery-ui-1.7.2.custom.min.js"></script>
-
-<script type="text/javascript" src="./js/imports/jquery-json/jquery.json-2.2.min.js"></script>
-<script type="text/javascript" src="./js/imports/jquery-hashchange/jquery.ba-hashchange.min.js"></script>
-<script type="text/javascript" src="./js/imports/jquery-bbq/jquery.ba-bbq.min.js"></script>
-
-<!-- fancybox -->
-<script type="text/javascript" src="./js/imports/jquery-fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
-<script type="text/javascript" src="./js/imports/jquery-fancybox/jquery.fancybox-1.3.1.js"></script>
-<link rel="stylesheet" type="text/css" href="./js/imports/jquery-fancybox/jquery.fancybox-1.3.1.css" media="screen" />
-
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<script type="text/javascript" src="./js/cfg.js"></script>
-<script type="text/javascript" src="./js/tpl.js"></script>
-<script type="text/javascript" src="./js/func.js"></script>
+<!-- autoinsert for includes (js-files, ...) -->
+(:includes:)
 
 <title>virtUOS::Lernfunk</title>
 </head>
@@ -31,12 +15,12 @@
 
 <div id="wrapper">
 
-  <div id="topbar"><img id="tophr" src="./img/topbar.png" alt="topmost horizontal ruler" /></div>
+  <div id="topbar"><img id="tophr" src="(:tplpath:)/img/topbar.png" alt="topmost horizontal ruler" /></div>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <div id="header">
 		<div id="logobox">
-			<a href="#"><img id="lflogo" src="./img/lflogo.png" alt="Lernfunk" /></a>
+			<a href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
 		</div>
 		<div id="titlebox">
 			<h1 id="pagetitle">
@@ -124,6 +108,7 @@
 		</div>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ right ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<!--
 		<div id="rightblock">
 			<div id="rightview_select">
 				<h2>Kalender</h2>
@@ -134,14 +119,17 @@
 			<div id="rightview_content">
 				<h2>Filter</h2>
 				<div id="rightbox_tabs">
+		-->
 					<!--
 					<div class="rightbox_tab" onclick=" showSubfilter( 'format',     'video' ); ">Format</div>
 					-->
+		<!--
 				</div>
 				<div id="rightview_filter">
 				</div>
 			</div>
 		</div>
+		-->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<div id="contentbox">
@@ -177,8 +165,8 @@
 			<div><a class="bottomlink" href="#cmd=static&amp;title=FAQ&amp;std=1&amp;p=faq">FAQ zu Vorlesungsaufzeichnungen</a></div>
 		</div>
 		<div id="bottomlogoblock">
-			<a href="http://www.uos.de/" title="Uni Osnabrück"><img src="./img/unilogo.png" alt="Uni Osnabrück" /></a>
-			<a href="http://www.fh-osnabrueck.de/" title="FH Osnabrück"><img src="./img/fhlogo.png" alt="FH Osnabrück" /></a>
+			<a href="http://www.uos.de/" title="Uni Osnabrück"><img src="(:tplpath:)/img/unilogo.png" alt="Uni Osnabrück" /></a>
+			<a href="http://www.fh-osnabrueck.de/" title="FH Osnabrück"><img src="(:tplpath:)/img/fhlogo.png" alt="FH Osnabrück" /></a>
 		</div>
 	</div>
 
