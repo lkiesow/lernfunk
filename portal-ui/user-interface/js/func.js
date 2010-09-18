@@ -246,13 +246,13 @@ function requestWebservices(request, onSuccess, onError) {
 	}
 
 	/* TODO: Combine the  results */
-	for ( key in webservices ) {
-		request.key = webservices[key].key;
+	for ( key in cfg.webservices ) {
+		request.key = cfg.webservices[key].key;
 		$.ajax({
 			type: 'POST',
 			url: './php/webserviceAccess.php',
 			dataType: 'json',
-			data	: ({'url' : webservices[key].url, 'request' : $.toJSON(request) }),
+			data	: ({'url' : cfg.webservices[key].url, 'request' : $.toJSON(request) }),
 			success: onSuccess,
 			error: onError
 		});
