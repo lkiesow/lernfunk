@@ -14,7 +14,7 @@
 				<h4>Abbonieren</h4>
 				<div class="infoblock">
 					<a href="(:url:)">
-						<img src="img/rss.png" style="margin-bottom: -4px; width: 16px; height: 16px;" alt="rss" />
+						<img src="template/white_base_scv-70/img/rss.png" style="margin-bottom: -4px; width: 16px; height: 16px;" alt="rss" />
 						RSS Feed/Podcast
 					</a>
 				</div>

@@ -853,11 +853,12 @@ function addLecturerBlock(obj) {
 				lecturerblock += ', \n';
 			else
 				writeSeperator = true;
-			lecturerblock += '<a href="javascript: getDetails(\'lecturer\', ' + lecturer_id + '); ">' + obj.lecturer[lecturer_id] + '</a>';
+			lecturerblock += fillTemplate( tpl.details.lecturerlink, 
+					{ 'lecturer' : obj.lecturer[lecturer_id], 'lecturer_id' : lecturer_id } );
 		}
 	}
 	if (lecturerblock)
-		return '<h4>Dozenten</h4><div class="infoblock">' + lecturerblock + '</div>';
+		return fillTemplate( tpl.details.lecturerblock, { 'lecturerlinks' : lecturerblock } );
 	return '';
 }
 
@@ -871,12 +872,11 @@ function addDepartmentBlock(obj) {
 				departmentblock += ', \n';
 			else
 				writeSeperator = true;
-			departmentblock += '<a href="javascript: doSearch( { \'cmd\' : \'getData\', \'args\' : { \'department\' : \'' 
-				+ obj.department[department_id] + '\' } } );">' + obj.department[department_id] + '</a>';
+			departmentblock += fillTemplate( tpl.details.departmentlink, { 'department' : obj.department[department_id] } );
 		}
 	}
 	if (departmentblock)
-		return '<h4>Fachbereiche</h4><div class="infoblock">' + departmentblock + '</div>';
+		return fillTemplate( tpl.details.departmentblock, { 'departmentlinks' : departmentblock } );
 	return '';
 }
 
@@ -890,11 +890,11 @@ function addAcademyBlock(obj) {
 				academyblock += ', \n';
 			else
 				writeSeperator = true;
-			academyblock += '<a href="javascript: ">' + obj.academy[ac_id] + '</a>';
+			academyblock += fillTemplate( tpl.details.academylink, { 'academy' : obj.academy[ac_id] } );
 		}
 	}
 	if (academyblock)
-		return '<h4>Akademie</h4><div class="infoblock">' + academyblock + '</div>';
+		return fillTemplate( tpl.details.academyblock, { 'academylinks' : academyblock } );
 	return '';
 }
 

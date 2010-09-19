@@ -18,7 +18,10 @@ function mkjstpl( $dir, $jsclass ) {
 				if (substr( $cat, -4, 4) == '.tpl') {
 					echo $jsclass.'.'.substr( $cat, 0, strlen($cat)-4 )." = \n";
 					/* TODO: print file-contents ... */
-					echo "'".str_replace( "\n", "\\n'\n+ '", str_replace( "\r", '', file_get_contents( $dir.'/'.$cat ) ) )."';\n";
+					$search  = array( "\r", "'", "\n" );
+					$replace = array( '', "\\'", "\\n'\n+ '" );
+					echo "'".str_replace( $search, $replace, file_get_contents( $dir.'/'.$cat ) )."';\n";
+					//echo "'".str_replace( "\n", "\\n'\n+ '", str_replace( "\r", '', file_get_contents( $dir.'/'.$cat ) ) )."';\n";
 				}
 			}
 		}
