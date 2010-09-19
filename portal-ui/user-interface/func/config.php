@@ -22,6 +22,7 @@ $cfg = array(
 	'stdAudPreImg'   => 'img/audioplayer_nopreview.png',
 
 	// template to use
+	//'tplName'        => 'nahel_argama',
 	'tplName'        => 'white_base_scv-70',
 
 	// webservice definition

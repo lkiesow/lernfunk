@@ -148,13 +148,15 @@ function init() {
 		} );
 
 	// get start view
-	requestWebservices( {
-			"cmd" : "getNews", 
-			"args" : { 
-				"count"      : Math.max( cfg.newscount, cfg.newreccount ),
-				"mimetypefilter" : cfg.newsrecfilter 
-			} 
-		}, loadStartpage );
+	if ( window.location.hash == '' ) {
+		requestWebservices( {
+				"cmd" : "getNews", 
+				"args" : { 
+					"count"      : Math.max( cfg.newscount, cfg.newreccount ),
+					"mimetypefilter" : cfg.newsrecfilter 
+				} 
+			}, loadStartpage );
+	}
 	
 	loadTemplate( 'loading.tpl' );
 	loadTemplate( 'error.tpl' );
@@ -1134,7 +1136,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 						data.player += fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
 						data.player += '</p>';
 					}
-					loadTemplate( 'slideDetails.tpl', data, setContent );
+					loadTemplate( 'recordingDetails.tpl', data, setContent );
 
 					// Only for set of slides:
 					if ( data.mimetype == 'slides' ) {
