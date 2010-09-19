@@ -4,10 +4,10 @@
 
 			<div style="display: table; width: 100%;">
 				<div style="display: table-row;">
-					<div style="display: table-cell; background-color: #ccddcc; padding: 5px; font-weight: bold;">
+					<div style="display: table-cell; background-color: #111; padding: 5px; font-weight: bold;">
 						Neue Aufzeichnungen
 					</div>
-					<div style="display: table-cell; background-color: #ccddcc; padding: 5px; font-weight: bold;">
+					<div style="display: table-cell; background-color: #111; padding: 5px; font-weight: bold;">
 						Zuletzt Aktualisiert
 					</div>
 				</div>
