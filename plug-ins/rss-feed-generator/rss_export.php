@@ -104,6 +104,7 @@ class RSSExporter {
 	       	$subs['items'] .= $this->generateItem($object);
         	//var_dump($subs);
 	}
+			$subs['itunes_block'] = ($this->series->itunes_status == 0) ? 'yes': 'no';
 
         return $this->process($this->rss_template, $subs);
     }
