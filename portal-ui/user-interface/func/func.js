@@ -1225,11 +1225,15 @@ function makeMediaobjectTable( data, mediatype ) {
 	for ( cou_id in rel_rec ) {
 		var link = '';
 		for ( i in rel_rec[cou_id] ) {
-			link += fillTemplate( tpl.seriesdetails.rec_link, 
-				{ 'mediatype' : mediatype, 'format' : rel_rec[cou_id][i].format, 'obj_id' : rel_rec[cou_id][i].id } );
+			var recording = shallowCopy( rel_rec[cou_id][i] );
+			recording.mediatype = mediatype;
+			link += fillTemplate( tpl.seriesdetails.rec_link, recording );
+//				{ 'mediatype' : mediatype, 'format' : rel_rec[cou_id][i].format, 'obj_id' : rel_rec[cou_id][i].id } );
 		}
-		objects += fillTemplate( tpl.seriesdetails.recording, 
-			{ 'title' : rel_rec[cou_id][0].title, 'desc' : rel_rec[cou_id][0].desc, 'link' : link } );
+		var recording = shallowCopy( rel_rec[cou_id][0] );
+		recording.link = link;
+		objects += fillTemplate( tpl.seriesdetails.recording, recording );
+//			{ 'title' : rel_rec[cou_id][0].title, 'desc' : rel_rec[cou_id][0].desc, 'link' : link } );
 	}
 	return '<table>' + objects + '</table>';
 }
@@ -1265,6 +1269,11 @@ function makeSeriesTable( data ) {
 function fillTemplate( template, replaceData ) {
 
 	var data = template;
+	var all = '';
+	for ( key in replaceData ) {
+		all += '(:' + key + ':) ';
+	}
+	replaceData.__all__ = all;
 	for ( key in replaceData ) {
 		re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 		data = data.replace( re, replaceData[ key ] );
@@ -1308,6 +1317,11 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 			data: {},
 			success: function( data ) {
 				templates[ template ] = data;
+				var all = '';
+				for ( key in replaceData ) {
+					all += '(:' + key + ':) ';
+				}
+				replaceData.__all__ = all;
 				for ( key in replaceData ) {
 					re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 					data = data.replace( re, replaceData[ key ] );
