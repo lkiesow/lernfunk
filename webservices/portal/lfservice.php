@@ -1070,6 +1070,11 @@ class LFService {
 									'title'    => $r3->title,
 									'desc'     => $r3->description,
 									'date'     => $r3->date,
+									'url'      => $r3->url,
+									'img'      => $r3->image_url,
+									'thumb'    => $r3->thumbnail_url,
+									'preview'  => $r3->preview_url,
+									'duration' => $r3->duration,
 									'cou_id'   => $r3->cou_id,
 									'mimetype' => $r3->mimetype,
 									'format'   => $r3->formatname
