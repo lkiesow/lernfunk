@@ -6,20 +6,24 @@
 </div>
 <div>
 	<div class="objcontainer">
-		<table>
-			<tr>
-				<td>
+		<div class="table">
+			<div class="tr">
+				<div class="td">
+					<div id="mediaobjectplayer">
+						<img src="(:thumb:)" />
+					</div>
+				</div>
+				<div class="td">
 					<h4>Beschreibung</h4>
 					<div class="infoblock">(:desc:)</div>
-				</td>
-				<td>
-					<img src="(:thumb:)" />
-				</td>
-			</tr>
-		</table>
+				</div>
+			</div>
+		</div>
+		
 		<p> &nbsp; </p>
+
 		<h4>Vorlesungsaufzeichnungen</h4>
-			<div class="infoblock">
+			<div class="infoblock" style="max-height: 350px; overflow-y: auto; border-left: 2px solid #bbbbbb;">
 				(:recordings:)
 			</div>
 	</div>

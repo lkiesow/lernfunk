@@ -1,4 +1,4 @@
-<?
+<?php
    if (!array_key_exists('request' , $_REQUEST) || !array_key_exists('url' , $_REQUEST))
       exit();
 

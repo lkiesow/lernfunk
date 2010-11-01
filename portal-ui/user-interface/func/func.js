@@ -1184,8 +1184,14 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.lecturer   = addLecturerBlock( data );
 					data.academy    = addAcademyBlock( data );
 					data.department = addDepartmentBlock( data );
-					data.recordings = makeMediaobjectTable( data.recordings, 'recordings' );
-					loadTemplate( 'seriesDetails.tpl', data, setContent );
+					var firstRecording = { 'result' : {} };
+					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
+
+					loadTemplate( 'seriesDetails.tpl', data, function( data ) { 
+							setContent( data ); 
+							loadPlayer( '#mediaobjectplayer', firstRecording.result.title, 
+								firstRecording.result.mimetype, firstRecording.result.url );
+						} );
 				} else {
 					alert( 'mediatype: ' + mediatype );
 					alert( formatJSON( $.toJSON( data ) ) );
@@ -1202,6 +1208,38 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 }
 
 
+function loadPlayer( target, title, mimetype, url ) {
+
+	var player = fillTemplate( tpl.seriesdetails.recordingtitle, { 'title' : title } );
+	if ( mimetype.match( /.*video.*/ ) ) {
+	
+		// WARNING! 
+		//   This is a UOS specific thing.
+		//   And a dirty workaround!
+		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+		if (rtmp) {
+			rtmp = rtmp[0].split( '&' );
+			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+		}
+		player += '<p style="text-align: center;">';
+		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
+		player += '</p>';
+
+	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
+		player += '<iframe src="' + url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
+			+ '<p style="text-align: right;"><a href="' + url + '">Standalone-Player</a></p>';
+
+	} else if ( mimetype.match( /.*audio.*/ ) ) {
+		player += '<p style="text-align: center;">';
+		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
+		player += '</p>';
+	}
+
+	$( target ).html( player );
+
+}
+
+
 function setBackPager() {
 	pStyleBuffer.push( $('div.pager').css( 'display' ) ); 
 	pagerBuffer.push( $('div.pager').html() );
@@ -1211,8 +1249,9 @@ function setBackPager() {
 }
 
 
-function makeMediaobjectTable( data, mediatype ) {
+function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 	
+	var firstRecording = null;
 	var objects = '';
 	var rel_rec = {};
 	for ( i in data ) {
@@ -1222,11 +1261,19 @@ function makeMediaobjectTable( data, mediatype ) {
 		rel_rec[ o.cou_id ].push( o );
 	}
 	// rel_rec.sort( function(a, b) { return lexCompare(b.date, a.date); } );
+	var first = true;
 	for ( cou_id in rel_rec ) {
 		var link = '';
 		for ( i in rel_rec[cou_id] ) {
 			var recording = shallowCopy( rel_rec[cou_id][i] );
 			recording.mediatype = mediatype;
+			if ( first ) {
+				if (!firstRecording) {
+					firstRecording = shallowCopy( rel_rec[cou_id][i] );
+				} else if ( recording.mimetype.match(/.*video.*/) ) {
+					firstRecording = shallowCopy( rel_rec[cou_id][i] );
+				}
+			}
 			link += fillTemplate( tpl.seriesdetails.rec_link, recording );
 //				{ 'mediatype' : mediatype, 'format' : rel_rec[cou_id][i].format, 'obj_id' : rel_rec[cou_id][i].id } );
 		}
@@ -1234,8 +1281,11 @@ function makeMediaobjectTable( data, mediatype ) {
 		recording.link = link;
 		objects += fillTemplate( tpl.seriesdetails.recording, recording );
 //			{ 'title' : rel_rec[cou_id][0].title, 'desc' : rel_rec[cou_id][0].desc, 'link' : link } );
+		first = false;
 	}
-	return '<table>' + objects + '</table>';
+	if ( typeof(firstRecordingObj) == 'object' )
+					firstRecordingObj.result = firstRecording;
+	return objects;
 }
 
 
@@ -1321,7 +1371,9 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 				for ( key in replaceData ) {
 					all += '(:' + key + ':) ';
 				}
-				replaceData.__all__ = all;
+				try {
+					replaceData.__all__ = all;
+				} catch(err) {}
 				for ( key in replaceData ) {
 					re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 					data = data.replace( re, replaceData[ key ] );

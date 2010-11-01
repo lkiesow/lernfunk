@@ -11,7 +11,7 @@
 		<p> &nbsp; </p>
 		<h4>Vorlesungsaufzeichnungen</h4>
 			<div class="infoblock">
-				(:recordings:)
+				<table>(:recordings:)</table>
 			</div>
 	</div>
 </div>
