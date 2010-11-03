@@ -1318,6 +1318,8 @@ function makeSeriesTable( data ) {
 
 function fillTemplate( template, replaceData ) {
 
+//	alert( '(:(format):(Flash HD):(123):(qwe):)'.replace( '(:(format):(Flash HD):(123):(qwe):)', '___' ) );
+
 	var data = template;
 	var all = '';
 	for ( key in replaceData ) {
@@ -1325,9 +1327,27 @@ function fillTemplate( template, replaceData ) {
 	}
 	replaceData.__all__ = all;
 	for ( key in replaceData ) {
-		re = new RegExp( '\\(:' + key + ':\\)', 'g' );
+		var re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 		data = data.replace( re, replaceData[ key ] );
 	}
+	var re = new RegExp( '\\(:.+:.*:.*:.*:\\)', 'g' );
+	var ma = data.match( re );
+	for ( i in ma ) {
+		var keywords = ma[i].split( '):(' );
+		keywords[0] = keywords[0].split( '(:(' )[1];
+		keywords[3] = keywords[3].split( '):)' )[0];
+		if ( typeof( replaceData[ keywords[0] ] ) == 'string') {
+			var re = '(:(' + keywords[0] + '):(' 
+				+ keywords[1] + '):(' + keywords[2] + '):(' 
+				+ keywords[3] + '):)';
+			if (replaceData[ keywords[0] ] == keywords[1]) {
+				data = data.replace( re, keywords[2] );
+			} else {
+				data = data.replace( re, keywords[3] );
+			}
+		}
+	}
+
 	return data;
 
 }
