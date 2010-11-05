@@ -1054,7 +1054,14 @@ class LFService {
 					} // end sql2
 
 					// get recordings
-					$sql3 = 'select m.object_id, m.date, m.title, m.description, m.cou_id, f.mimetype, f.name as formatname '
+					$sql3 = 'select m.object_id, m.date, m.title, m.description, '
+						.'m.url, m.image_url, m.thumbnail_url, m.preview.url, '
+						.'m.duration, m.cou_id, f.mimetype, f.name as formatname '
+						.'from mediaobject m '
+						.'natural join format f '
+						.'where (series_id = '.$identifier.') '
+						.'order by date asc;';
+					$sql3 = 'select * '
 						.'from mediaobject m '
 						.'natural join format f '
 						.'where (series_id = '.$identifier.') '
@@ -1077,7 +1084,7 @@ class LFService {
 									'duration' => $r3->duration,
 									'cou_id'   => $r3->cou_id,
 									'mimetype' => $r3->mimetype,
-									'format'   => $r3->formatname
+									'format'   => $r3->name
 								);
 						}
 

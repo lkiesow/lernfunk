@@ -210,16 +210,22 @@ class LFAdmin {
             $subs['access_options'] = self::make_options('access', 'access_id', array('status'), $r->access_id, true);
             $subs['clas_options'] = self::make_options('elan_classification', 'clas_id', array('classification'), $r->clas_id, true);
             $subs['cat_options'] = self::make_options('category', 'cat_id', array('category'), $r->cat_id, true);
-            $subs['defaultplaylist_options'] = '';//self::make_options('playlist', 'playlist_id', array('pl_description'), $r->default_playlist_id, true);
+            $subs['defaultplaylist_options'] = '';
+
+            //self::make_options('playlist', 'playlist_id', array('pl_description'), $r->default_playlist_id, true);
 
             // make default playlist options
             $sql2 = 'SELECT playlist_id, pl_description FROM playlist WHERE reciever_id = '.$id.';';
             if ($rs2 = Lernfunk::query($sql2)) {
-                foreach ($rs2 as $pl)
-                    if ($pl->playlist_id == $r->default_playlist_id)
-                        $subs['defaultplaylist_options'] .= '<option value="'.$pl->playlist_id.'" selected="true">'.$pl->pl_description.'</option>';
-                    else
-                        $subs['defaultplaylist_options'] .= '<option value="'.$pl->playlist_id.'">'.$pl->pl_description.'</option>';
+                foreach ($rs2 as $pl) {
+                    if ($pl->playlist_id == $r->default_playlist_id) {
+                        $subs['defaultplaylist_options'] .= '<option value="'.$pl->playlist_id.'" '
+                            .'selected="true">'.$pl->pl_description.'</option>';
+                    } else {
+                        $subs['defaultplaylist_options'] .= '<option value="'
+                            .$pl->playlist_id.'">'.$pl->pl_description.'</option>';
+                    }
+                }
             }
 
             // find lecturers
@@ -767,6 +773,7 @@ class LFAdmin {
 
             $obj = $rs[0];
             $subs = $rs[0]->toArray();
+				$subs['preview_url'] = htmlspecialchars($subs['preview_url']);
 
             // list mediaobjects with same cou_id
             $related_objects = '';
