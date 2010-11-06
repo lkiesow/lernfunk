@@ -81,9 +81,9 @@ class LFService {
 		if ($mediatypes['recordings']) {
 
 			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
-				  .'m.thumbnail_url, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
+				  .'m.thumbnail_url, m.cou_id, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
 				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
-				  .'where (m.access_id = 1)'; // access_id 1 is public
+				  .'where (m.access_id = 1) and (s.access_id = 1)'; // access_id 1 is public
 			if ($filter) {
 				$sql .= ' and ( (m.title like "%'.$filter.'%") or (m.description like "%'.$filter.'%") '
 					   .'or (s.name like "%'.$filter.'%") )';
@@ -143,6 +143,7 @@ class LFService {
 						$data['mimetype']  = $r->mimetype;
 						$data['series']    = $r->seriesname;
 						$data['series_id'] = $r->series_id;
+						$data['cou_id']    = $r->cou_id;
 						$result['recordings'][$r->object_id] = $data;
 						$count++;
 					}
@@ -452,9 +453,10 @@ class LFService {
 
 			$sql = 'SELECT s.series_id, s.name, s.description_sh, '
 				.'s.description, s.thumbnail_url, s.term_id, t.term_lg '
-				.'FROM series s natural join terms t ';
+				.'FROM series s natural join terms t '
+				.'where s.access_id = 1 ';
 			if ($filter) {
-				$sql .= ' where s.name like "%'.$filter.'%"';
+				$sql .= ' and s.name like "%'.$filter.'%"';
 			}
 			$sql .= ';';
 
@@ -795,7 +797,7 @@ class LFService {
 						.'from lecturer_series ls '
 						.'natural join series s '
 						.'left outer join terms t on s.term_id = t.term_id '
-						.'where lecturer_id = '.$r->lecturer_id.' '
+						.'where (lecturer_id = '.$r->lecturer_id.') and (s.access_id = 1) '
 						.'order by s.term_id asc;';
 
 					if ( $rs2 = Lernfunk::query($sql2) ) {
