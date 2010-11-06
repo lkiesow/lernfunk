@@ -3,7 +3,5 @@
 	<div class="objcontainer">
 		(:academy:)
 		(:department:)
-		<h4>eMail</h4>
-		<div class="infoblock">(:email:)</div>
 	</div>
 </div>

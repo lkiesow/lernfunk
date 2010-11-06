@@ -23,7 +23,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--
 		<script type="text/javascript">
 			loadPlayer( '#mediaobjectplayer', '(:firstrecording_title:)', 
