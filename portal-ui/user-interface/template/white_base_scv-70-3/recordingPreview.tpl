@@ -1,6 +1,6 @@
 <h3>
 	<div style="float: right; font-size: smaller; font-weight: normal; padding-top: 2px;">(:date:)</div>
-	<div style="margin-right: 150px;"><a href="(:series_rec_link:)">Aufzeichnung: (:title:)</a></div>
+	<div style="margin-right: 150px;"><a href="javascript: getDetails('recordings', (:id:)); ">Aufzeichnung: (:title:)</a></div>
 </h3>
 <div>
 	<div class="tbl objcontainer">

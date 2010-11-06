@@ -463,8 +463,8 @@ td {
 	padding: 3px;
 }
 
-.onover_graybg:hover {
-	background-color: #dddddd;
+tr:hover {
+	background-color: #eeeeee;
 }
 
 tr.link {

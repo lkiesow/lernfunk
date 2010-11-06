@@ -20,6 +20,7 @@ $cfg = array(
 	'stdPreviewImg'  => 'img/std_preview.jpg',
 	'stdVidPreImg'   => 'img/player_nopreview.png',
 	'stdAudPreImg'   => 'img/audioplayer_nopreview.png',
+	'stdRecPreImg'   => 'img/recording_nopreview.png',
 
 	// template to use
 	//'tplName'        => 'nahel_argama',

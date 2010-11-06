@@ -19,6 +19,7 @@ currentState = {}
 pagerBuffer   = [];
 contentBuffer = [];
 pStyleBuffer  = [];
+seriesRecBuf  = [];
 
 menu_intervall = null;
 
@@ -803,6 +804,9 @@ function addObjectBlock(mediatype, obj) {
 	//**************************************************************************
 	if (mediatype == 'recordings') {
 		replace.lecturer   = addLecturerBlock(obj);
+		replace.series_rec_link = window.location.hash 
+			+ '&details=1&mediatype=series&identifier=' + replace.series_id 
+			+ '&couid=' + replace.cou_id + '&id=' + replace.id;
 		loadTemplate( 'recordingPreview.tpl', replace, appendContent, null, appendContentSpace );
 
 	//**************************************************************************
@@ -845,25 +849,37 @@ function shallowCopy( obj ) {
 
 
 function addLecturerBlock(obj) {
+	var tll = tpl.details.lecturerlink;
+	var tlb = tpl.details.lecturerblock;
+	if ( arguments.length == 3 ) {
+		tll = arguments[1];
+		tlb = arguments[2];
+	}
 	var lecturerblock = '';
 	if (obj.lecturer) {
 		var writeSeperator = false;
-		for ( lecturer_id in obj.lecturer ) {
+		for ( lid in obj.lecturer ) {
 			if (writeSeperator)
 				lecturerblock += ', \n';
 			else
 				writeSeperator = true;
-			lecturerblock += fillTemplate( tpl.details.lecturerlink, 
-					{ 'lecturer' : obj.lecturer[lecturer_id], 'lecturer_id' : lecturer_id } );
+			lecturerblock += fillTemplate( tll, 
+					{ 'lecturer' : obj.lecturer[lid], 'lecturer_id' : lid } );
 		}
 	}
 	if (lecturerblock)
-		return fillTemplate( tpl.details.lecturerblock, { 'lecturerlinks' : lecturerblock } );
+		return fillTemplate( tlb, { 'lecturerlinks' : lecturerblock } );
 	return '';
 }
 
 
 function addDepartmentBlock(obj) {
+	var tl = tpl.details.departmentlink;
+	var tb = tpl.details.departmentblock;
+	if ( arguments.length == 3 ) {
+		tl = arguments[1];
+		tb = arguments[2];
+	}
 	var departmentblock = '';
 	if (obj.department) {
 		var writeSeperator = false;
@@ -872,16 +888,22 @@ function addDepartmentBlock(obj) {
 				departmentblock += ', \n';
 			else
 				writeSeperator = true;
-			departmentblock += fillTemplate( tpl.details.departmentlink, { 'department' : obj.department[department_id] } );
+			departmentblock += fillTemplate( tl, { 'department' : obj.department[department_id] } );
 		}
 	}
 	if (departmentblock)
-		return fillTemplate( tpl.details.departmentblock, { 'departmentlinks' : departmentblock } );
+		return fillTemplate( tb, { 'departmentlinks' : departmentblock } );
 	return '';
 }
 
 
 function addAcademyBlock(obj) {
+	var tl = tpl.details.academylink;
+	var tb = tpl.details.academyblock;
+	if ( arguments.length == 3 ) {
+		tl = arguments[1];
+		tb = arguments[2];
+	}
 	var academyblock = '';
 	if (obj.academy) {
 		var writeSeperator = false;
@@ -890,11 +912,11 @@ function addAcademyBlock(obj) {
 				academyblock += ', \n';
 			else
 				writeSeperator = true;
-			academyblock += fillTemplate( tpl.details.academylink, { 'academy' : obj.academy[ac_id] } );
+			academyblock += fillTemplate( tl, { 'academy' : obj.academy[ac_id] } );
 		}
 	}
 	if (academyblock)
-		return fillTemplate( tpl.details.academyblock, { 'academylinks' : academyblock } );
+		return fillTemplate( tb, { 'academylinks' : academyblock } );
 	return '';
 }
 
@@ -1181,17 +1203,30 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 				} else if ( mediatype == 'series' ) {
 					setBackPager();
 					data = data.details;
-					data.lecturer   = addLecturerBlock( data );
-					data.academy    = addAcademyBlock( data );
-					data.department = addDepartmentBlock( data );
+					data.lecturer   = addLecturerBlock( data, 
+							tpl.seriesdetails.info.lecturerlink, 
+							tpl.seriesdetails.info.lecturerblock );
+					data.academy    = addAcademyBlock( data,
+							tpl.seriesdetails.info.academylink, 
+							tpl.seriesdetails.info.academyblock );
+					data.department = addDepartmentBlock( data,
+							tpl.seriesdetails.info.departmentlink, 
+							tpl.seriesdetails.info.departmentblock );
 					var firstRecording = { 'result' : {} };
 					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
+					data.firstrecording_title    = firstRecording.result.title;
+					data.firstrecording_mimetype = firstRecording.result.mimetype;
+					data.firstrecording_url      = firstRecording.result.url;
 
-					loadTemplate( 'seriesDetails.tpl', data, function( data ) { 
-							setContent( data ); 
-							loadPlayer( '#mediaobjectplayer', firstRecording.result.title, 
-								firstRecording.result.mimetype, firstRecording.result.url );
-						} );
+					loadTemplate( 'seriesDetails.tpl', data, function( data ) {
+								$('#content').html( data ).ready( function() {
+									var p = $.deparam.fragment();
+									// alert( $.toJSON( p ) );
+									// alert( $.toJSON( seriesRecBuf[p.couid] ) );
+									if ( p.couid )
+										loadRec( '#mediaobjectplayer', p.couid );
+								} );
+							} );
 				} else {
 					alert( 'mediatype: ' + mediatype );
 					alert( formatJSON( $.toJSON( data ) ) );
@@ -1207,10 +1242,66 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 
 }
 
+function loadRec( target, couid ) {
+	var p = $.deparam.fragment();
+	var search_best = true;
+	var format_links = '';
+	var first = null;
+	for ( i in seriesRecBuf[couid] ) {
+		if (search_best) {
+			if ( p.id && p.id == seriesRecBuf[couid][i].id ) {
+				first = seriesRecBuf[couid][i];
+				search_best = false;
+			} else if ( !first ) {
+				first = seriesRecBuf[couid][i];
+			} else if ( seriesRecBuf[couid][i].mimetype.match(/.*video.*/) ) {
+				first = seriesRecBuf[couid][i];
+			}
+		}
+		format_links += fillTemplate( tpl.seriesdetails.rec_link, seriesRecBuf[couid][i] );
+	}
+	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, 
+				{ 'title' : first.title, 'format_links' : format_links, 'playerid':'playerplaceholder' } ) ).ready( function() { 
+					loadVideo( '#playerplaceholder', couid, first.id ); 
+				} );
+}
 
-function loadPlayer( target, title, mimetype, url ) {
 
-	var player = fillTemplate( tpl.seriesdetails.recordingtitle, { 'title' : title } );
+function loadRecording( target, recording ) {
+	var format_links = '';
+	var first = null;
+	for ( i in recording.data ) {
+		if ( !first ) {
+			first = recording.data[i];
+		} else if ( recording.data[i].mimetype.match(/.*video.*/) ) {
+			first = recording.data[i];
+		}
+		format_links += fillTemplate( tpl.seriesdetails.rec_link, recording.data[i] );
+	}
+	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, 
+				{ 'title' : recording.title, 'format_links' : format_links, 'playerid':'playerplaceholder' } ) ).ready( function() { 
+					loadPlayer( '#playerplaceholder', first.mimetype, first.url, first.preview ); 
+				} );
+}
+
+
+function loadVideo( target, couid, id ) {
+
+	var mimetype = '';
+	var url      = '';
+	var preview  = '';
+	for (i in seriesRecBuf[couid]) {
+		if (seriesRecBuf[couid][i].id == id) {
+			mimetype = seriesRecBuf[couid][i].mimetype;
+			url      = seriesRecBuf[couid][i].url;
+			preview  = seriesRecBuf[couid][i].preview;
+		}
+	}
+
+	if (!url)
+		return;
+
+	var player   = '';
 	if ( mimetype.match( /.*video.*/ ) ) {
 	
 		// WARNING! 
@@ -1226,8 +1317,96 @@ function loadPlayer( target, title, mimetype, url ) {
 		player += '</p>';
 
 	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
-		player += '<iframe src="' + url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
-			+ '<p style="text-align: right;"><a href="' + url + '">Standalone-Player</a></p>';
+		if (preview) {
+			// WARNING! 
+			//   This is a UOS specific thing.
+			//   And a dirty workaround!
+			var rtmp = preview.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+			if (rtmp) {
+				rtmp = rtmp[0].split( '&' );
+				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+			}
+			player += '<p style="text-align: center;">';
+			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
+			player += '</p>';
+			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
+		} else {
+			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
+		}
+
+	} else if ( mimetype.match( /.*matterhorn.*/ ) ) {
+		if (preview) {
+			// WARNING! 
+			//   This is a UOS specific thing.
+			//   And a dirty workaround!
+			//   Matterhorn => Embed-Code in Preview-URL
+			player += '<p style="text-align: center;">';
+			player += preview;
+			player += '</p>';
+			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
+		} else {
+			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
+		}
+
+	} else if ( mimetype.match( /.*audio.*/ ) ) {
+		player += '<p style="text-align: center;">';
+		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
+		player += '</p>';
+	}
+
+	$( target ).html( player );
+
+}
+
+
+function loadPlayer( target, mimetype, url, preview ) {
+
+	var player = '';
+	if ( mimetype.match( /.*video.*/ ) ) {
+	
+		// WARNING! 
+		//   This is a UOS specific thing.
+		//   And a dirty workaround!
+		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+		if (rtmp) {
+			rtmp = rtmp[0].split( '&' );
+			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+		}
+		player += '<p style="text-align: center;">';
+		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
+		player += '</p>';
+
+	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
+		if (preview) {
+			// WARNING! 
+			//   This is a UOS specific thing.
+			//   And a dirty workaround!
+			var rtmp = preview.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+			if (rtmp) {
+				rtmp = rtmp[0].split( '&' );
+				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+			}
+			player += '<p style="text-align: center;">';
+			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
+			player += '</p>';
+			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
+		} else {
+			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
+		}
+
+	} else if ( mimetype.match( /.*matterhorn.*/ ) ) {
+		if (preview) {
+			// WARNING! 
+			//   This is a UOS specific thing.
+			//   And a dirty workaround!
+			//   Matterhorn => Embed-Code in Preview-URL
+			player += '<p style="text-align: center;">';
+			player += preview;
+			player += '</p>';
+			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
+		} else {
+			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
+		}
 
 	} else if ( mimetype.match( /.*audio.*/ ) ) {
 		player += '<p style="text-align: center;">';
@@ -1261,9 +1440,15 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 		rel_rec[ o.cou_id ].push( o );
 	}
 	// rel_rec.sort( function(a, b) { return lexCompare(b.date, a.date); } );
+
+	// buffer recordings for this page
+	seriesRecBuf = rel_rec;
+
 	var first = true;
 	for ( cou_id in rel_rec ) {
 		var link = '';
+		var rec_data = [];
+		var title = null;
 		for ( i in rel_rec[cou_id] ) {
 			var recording = shallowCopy( rel_rec[cou_id][i] );
 			recording.mediatype = mediatype;
@@ -1274,13 +1459,20 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 					firstRecording = shallowCopy( rel_rec[cou_id][i] );
 				}
 			}
+			rec_data.push( { 'mimetype':recording.mimetype, 'url':recording.url, 
+					'format':recording.format, 'preview':recording.preview } );
+			title = recording.title;
 			link += fillTemplate( tpl.seriesdetails.rec_link, recording );
-//				{ 'mediatype' : mediatype, 'format' : rel_rec[cou_id][i].format, 'obj_id' : rel_rec[cou_id][i].id } );
 		}
 		var recording = shallowCopy( rel_rec[cou_id][0] );
 		recording.link = link;
+		recording.rec_data = $.toJSON( { 'title' : title, 'data' : rec_data } ).replace(/"/g, "'");
+		recording.desc75 = (recording.desc.length <= 75) ? recording.desc : recording.desc.substr(0, 72) + '...';
+		// check image
+		if (!recording.img) {
+			recording.img = 'template/' + cfg.tplName + '/' + cfg.stdRecPreImg;
+		}
 		objects += fillTemplate( tpl.seriesdetails.recording, recording );
-//			{ 'title' : rel_rec[cou_id][0].title, 'desc' : rel_rec[cou_id][0].desc, 'link' : link } );
 		first = false;
 	}
 	if ( typeof(firstRecordingObj) == 'object' )
