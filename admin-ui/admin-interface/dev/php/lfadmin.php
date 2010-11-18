@@ -784,7 +784,7 @@ class LFAdmin {
                         $related_objects .= '<option value="'.$r->object_id.'"';
                         if ($r->object_id == $obj_id)
                             $related_objects .= ' selected="true"';
-                        $related_objects .= '>'.$r->title.' ('.self::get_format($r->format_id, 'name').')</option>'."\n";
+                        $related_objects .= '>'.self::get_format($r->format_id, 'name').' ('.$r->title.')</option>'."\n";
                     }
                 }
             } else {
