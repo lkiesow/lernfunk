@@ -679,6 +679,8 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 		return;
 	}
 
+	$('#titlebox').attr( 'class', 'resultfilter_' + mediatype );
+
 	if ( !hashIsSet ) {
 		var params = { 'resultfilter' : mediatype };
 		if (subFilter) 
