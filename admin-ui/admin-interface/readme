@@ -1,14 +1,33 @@
-This ist the lernfunkTagDaemon It is part of the lernfunk-project, an
-open source content mangement system for educational audio-visual content.
-
-This is the admin interface for adding, updating and deleting content
-(mediaobjects, feeds, series, ...)
-
-You can find more information about the lernfunk project at:
- - http://code.google.com/p/lernfunk/
- - http://www.lernfunk.de/
-
-If you are interested in virtUOS check out our website
-http://www.virtuos.uni-osnabrueck.de
-
-This software is free software under GPL 3.
+################################################################################
+# Lernfunk-Admin-UI                                                            #
+################################################################################
+# The Admin-UI is part of the lernfunk-project, an open source content         #
+# mangement system for educational audio-visual content.                       #
+#                                                                              #
+# This is the admin interface for adding, updating and deleting content        #
+# (mediaobjects, feeds, series, ...)                                           #
+#                                                                              #
+# You can find more information about the lernfunk project at:                 #
+#  - http://code.google.com/p/lernfunk/                                        #
+#  - http://www.lernfunk.de/                                                   #
+#                                                                              #
+# If you are interested in virtUOS check out our website                       #
+#   http://www.virtuos.uni-osnabrueck.de                                       #
+#                                                                              #
+# This software is free software under GPL 3.                                  #
+#                                                                              #
+################################################################################
+# How to build/deploy the admin-ui                                             #
+################################################################################
+# 1. Run  ./make_release_build.sh  A folder "release" is created, containing   #
+#    the ready to work admin-ui.                                               #
+# 2. Change directory to "release/php"                                         #
+# 3. Edit "config.php" (Most important is the correct path to the Lernfunk-    #
+#    baselib                                                                   #
+# 4. Copy the contens of release to a webserver                                #
+#                                                                              #
+################################################################################
+# Warning                                                                      #
+################################################################################
+# There is no login mechanism! You should use your webserver to protect it.    #
+################################################################################

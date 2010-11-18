@@ -17,6 +17,9 @@
             <input type="button" 
                 onclick="mediaobjecteditor.load($('related_object_select').value);" 
                 style="width:80px" value="edit" />
+            <input type="button" 
+                onclick="$('object_id').value = ''; mediaobjecteditor.save();" 
+                style="width:80px" value="dublicate" />
             <!--
             <button type="button" 
                 onclick="mediaobjecteditor.add(array('cou_id' => (:cou_id:)));" 
