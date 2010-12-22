@@ -26,9 +26,9 @@ define('ACCESS_KEY', '___');
 // set database access
 $mysql = array(
       'server' => 'localhost',
-      'user' => 'lkiesow',
-      'passwd' => 'IazUwpE4eo',
-      'db' => 'larskiesow_de'
+      'user' => '',
+      'passwd' => '',
+      'db' => 'lernfunk'
    );
 
 // Set debug state
