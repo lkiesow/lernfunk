@@ -25,7 +25,7 @@ define('ACCESS_KEY', '___');
 
 // set database access
 $mysql = array(
-      'server' => 'localhost',
+      'server' => 'mysql5.serv.uni-osnabrueck.de',
       'user' => '',
       'passwd' => '',
       'db' => 'lernfunk'
@@ -33,7 +33,7 @@ $mysql = array(
 
 // Set debug state
 if (!defined('__DEBUG__'))
-	define('__DEBUG__', false);
+	define('__DEBUG__', true);
 
 // Define valid access ids(which mediaobjects should be send)
 // define('ACCESS_CONDITIONi'); // so far ignored
