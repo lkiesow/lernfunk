@@ -21,14 +21,14 @@
 
 
 // Define  access key
-define('ACCESS_KEY', '___');
+define('ACCESS_KEY', 'uzl3ek12ex7th1aFR1ja');
 
 // set database access
 $mysql = array(
-      'server' => 'mysql5.serv.uni-osnabrueck.de',
-      'user' => '',
+      'server' => '',
+      'user'   => '',
       'passwd' => '',
-      'db' => 'lernfunk'
+      'db'     => 'lernfunk'
    );
 
 // Set debug state
@@ -45,8 +45,8 @@ error_reporting(E_ALL);
 ini_set("display_errors", TRUE);
 
 // set the encoding of the output
-mb_internal_encoding('UTF-8');
-mb_http_output('UTF8');
+//mb_internal_encoding('UTF-8');
+//mb_http_output('UTF8');
 
 // include lernfunk library
 //require_once(dirname(__FILE__).'/../lflib/lernfunk.php');

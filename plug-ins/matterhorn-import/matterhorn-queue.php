@@ -142,6 +142,7 @@ class LFMatterhornInportQueue {
 		$title = $mediapackage['title'];
 		$id    = $mediapackage['id'];
 
+		// get images
 		$image = '';
 		$thumb = '';
 		foreach( self::ensureArray( $mediapackage['attachments']['attachment'] ) as $att ) {
@@ -151,58 +152,50 @@ class LFMatterhornInportQueue {
 				$thumb = $att['url'];
 		}
 
-		echo "start:    ".$start
-			."\ntitle:    ".$title
-			."\nid:       ".$id
-			."\nimage:    ".$image
-			."\nthumb:    ".$thumb
-			."\n\n";
-
+		// get tracks
+		$query = '';
 		foreach( self::ensureArray( $mediapackage['media']['track'] ) as $track ) {
 		
 			$type     = $track['type'];
 			$mimetype = $track['mimetype'];
 			$url      = $track['url'];
 			$duration = $track['duration'];
-			//print_r( $track );
-			/*
-			echo   "type:     ".$type
-			    ."\nmimetype: ".$mimetype
-				 ."\n\t-->\t".$formats[$mimetype]
-				 ."\nurl:      ".$url
-				 ."\nduration: ".$duration
-				 ."\n\n";
-			 */
-			$query = "INSERT INTO `mediaobject` "
-				."( `title`, `format_id` , `url`, `cou_id`, `thumbnail_url`, "
-				."`image_url`, `duration`, `access_id` ) VALUES ( "
+			if ($query)
+				$query .= ",\n";
+			$query .= "( "
 				."'".$title."', "
 				.(array_key_exists( $mimetype, $formats ) ? $formats[$mimetype] : 'NULL').", "
 				."'".mysql_escape_string($url)."', "
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
-				."'".$duration."', '3');";
-			echo $query."\n\n";
+				."'".$duration."', '3')";
 		
 		}
-
-		//$mediapackage['media'] = null;
-		//print_r( $mediapackage );
-
-		//$post_id  = intval($args['post_id']);
-		//$filename = mysql_escape_string($args['filename']);
-		//$comment  = mysql_escape_string($args['comment']);
-		//$query    = 'INSERT INTO files (post_id, filename, comment) VALUES ('.$post_id.', "'.$filename.'", "'.$comment.'")'
-		//	.' ON DUPLICATE KEY UPDATE comment = "'.$comment.'"';
+		if ($query) {
+			$query = "INSERT INTO `mediaobject` "
+				."( `title`, `format_id` , `url`, `cou_id`, `thumbnail_url`, "
+				."`image_url`, `duration`, `access_id` ) VALUES \n"
+				.$query.';';
+		}
 
 		if (__DEBUG__)
 			print_r($query);
-//		if (self::query($query)) {
-//			if (!$post_id)
-//				$post_id = mysql_insert_id();
-//			return json_encode( array('type' => 'message', 'msgtype' => 'success', 'msg' => 'Data successfully set.', 'id' => $post_id) );
-//		}
+
+		if (self::query($query)) {
+			return json_encode( array(
+					'type'    => 'message', 
+					'msgtype' => 'success', 
+					'msg'     => 'Data successfully set.'
+				) );
+		} else {
+			return json_encode( array(
+			 		'type'          => 'error', 
+					'errtype'       => 'sql_error', 
+					'errmsg'        => mysql_error(), 
+					'sql_statement' => $query
+				) );
+		}
 
 		
 	}
