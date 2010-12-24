@@ -114,8 +114,9 @@ class LFMatterhornInportQueue {
 			while ($r = mysql_fetch_object($rs)) {
 				$formats[ $r->mimetype ] = $r->format_id;
 			}
-			print_r( $formats );
+			return $formats;
 		}
+		return array();
 
 	}
 
@@ -126,7 +127,7 @@ class LFMatterhornInportQueue {
 
 	public static function adddata( $request ) {
 		
-		self::getFormat();
+		$formats = self::getFormat();
 
 		$mediapackage = array_key_exists( 'mediapackage', $request ) ? $request['mediapackage'] : null;
 
@@ -141,7 +142,21 @@ class LFMatterhornInportQueue {
 		$title = $mediapackage['title'];
 		$id    = $mediapackage['id'];
 
-		echo "start:    ".$start."\ntitle:    ".$title."\nid:       ".$id."\n\n";
+		$image = '';
+		$thumb = '';
+		foreach( self::ensureArray( $mediapackage['attachments']['attachment'] ) as $att ) {
+			if ($att['type'] == 'presenter/player preview') 
+				$image = $att['url'];
+			if ($att['type'] == 'presenter/search preview') 
+				$thumb = $att['url'];
+		}
+
+		echo "start:    ".$start
+			."\ntitle:    ".$title
+			."\nid:       ".$id
+			."\nimage:    ".$image
+			."\nthumb:    ".$thumb
+			."\n\n";
 
 		foreach( self::ensureArray( $mediapackage['media']['track'] ) as $track ) {
 		
@@ -150,11 +165,25 @@ class LFMatterhornInportQueue {
 			$url      = $track['url'];
 			$duration = $track['duration'];
 			//print_r( $track );
+			/*
 			echo   "type:     ".$type
 			    ."\nmimetype: ".$mimetype
+				 ."\n\t-->\t".$formats[$mimetype]
 				 ."\nurl:      ".$url
 				 ."\nduration: ".$duration
 				 ."\n\n";
+			 */
+			$query = "INSERT INTO `mediaobject` "
+				."( `title`, `format_id` , `url`, `cou_id`, `thumbnail_url`, "
+				."`image_url`, `duration`, `access_id` ) VALUES ( "
+				."'".$title."', "
+				.(array_key_exists( $mimetype, $formats ) ? $formats[$mimetype] : 'NULL').", "
+				."'".mysql_escape_string($url)."', "
+				."'".mysql_escape_string($id)."', "
+				."'".mysql_escape_string($thumb)."', "
+				."'".mysql_escape_string($image)."', "
+				."'".$duration."', '3');";
+			echo $query."\n\n";
 		
 		}
 
