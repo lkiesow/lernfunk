@@ -1,4 +1,4 @@
-curl -s 'http://vm083.rz.uos.de/plug-ins/matterhorn-import/' --data 'request={"cmd":"adddata","key":"uzl3ek12ex7th1aFR1ja",
+curl -s 'http://vm083.rz.uos.de/plug-ins/matterhorn-import/' --data 'request={"cmd":"adddata","key":"auzl3ek12ex7th1aFR1ja",
   "mediapackage":{
     "start":"2010-12-20T12:25:15Z",
     "id":"4b6c48d0-2e4d-40bf-aca3-326cd6ee225e",
