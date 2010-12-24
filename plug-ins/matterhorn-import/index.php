@@ -27,7 +27,7 @@
 
 	// include configuration and functionality
 	require_once(dirname(__FILE__).'/config.php');
-	require_once(dirname(__FILE__).'/matterhorn-queue.php');
+	require_once(dirname(__FILE__).'/matterhorn.php');
 
 	// set contend-type according to mode
 	if (__DEBUG__) {
