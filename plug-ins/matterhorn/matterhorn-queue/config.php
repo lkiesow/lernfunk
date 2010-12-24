@@ -33,7 +33,7 @@ $mysql = array(
 
 // Set debug state
 if (!defined('__DEBUG__'))
-	define('__DEBUG__', true);
+	define('__DEBUG__', false);
 
 // Define valid access ids(which mediaobjects should be send)
 // define('ACCESS_CONDITIONi'); // so far ignored

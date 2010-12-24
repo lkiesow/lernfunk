@@ -45,6 +45,9 @@
 				'request_data' => $_REQUEST) ) );
 
 	// try to decode the json to an assoc array
+//		print_r( preg_replace( "/\n\s*/s", '', $_REQUEST['request']) );
+//		print_r( json_decode( preg_replace( "/\n\s*/s", '', $_REQUEST['request']), true) );
+//		echo "\n\n\n";
 	$request = json_decode( $_REQUEST['request'], true );
 	if (!is_array($request))
 		die( json_encode( array(
@@ -79,7 +82,7 @@
 				'errmsg' => 'Invalid request command \''.$request['cmd'].'\'.', 'request_data' => $_REQUEST) ) );
 
 	// call the service function assosiated with the given command
-	echo LFMatterhornInportQueue::$request['cmd'](array_key_exists('args', $request) ? $request['args'] : null);
+	echo LFMatterhornInportQueue::$request['cmd']( $request );
 
 	if (__DEBUG__) {
 		echo "\n\n";
