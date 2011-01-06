@@ -74,8 +74,29 @@ if ( array_key_exists($path[0], $formats)) {
 	}
 
 	$sql = 'select itunes_status from feeds where series_id='.$series->series_id;
+	$itunes_status = 1;
 	if (!$itunes_status = Lernfunk::query($sql)) {
-		die('ERROR: Cannot get itunes_status (series_id = '.$id."\n");
+
+		/* uncomment this if you want to have an email for each error
+		$from_name  = 'lernfunk-rss-feed-generator';
+		$from_email = 'no-reply@lernfunk.de';
+		$recipient  = 'admin@larskiesow.de';
+		$mail_body  = 'Error while creating feed.'."\n"
+			.'Cannot get "itunes_status" for series with series_id '.$id."\n"
+			.'Maybe there is no entry in table feeds for this podcast';
+		$subject    = "Subject for reviever"; 
+		$header     = 'From: '.$from_name.' <'.$from_email.">\r\n";
+
+		ini_set( 'sendmail_from', $from_email );
+		mail( $recipient, $subject, $mail_body, $header );
+		*/
+
+		$log  = file_get_contents( 'error.log' );
+		if (!$log)
+			$log = '';
+		$log .= $series->series_id."\n";
+		file_put_contents( 'error.log', $log );
+
 	}
 	$series->itunes_status = $itunes_status[0]->itunes_status;
 
