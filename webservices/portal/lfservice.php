@@ -246,7 +246,8 @@ class LFService {
 		if ($mediatypes['lecturer'] && !$date) {
 			
 			$sql = 'SELECT l.lecturer_id, TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) fullname, '
-				  .'l.email, d.dep_id, d.dep_name, a.academy_id, a.ac_name '
+				  .'l.email, d.dep_id, d.dep_name, a.academy_id, a.ac_name, '
+				  .'l.ac_title, l.firstname, l.name '
 				  .'FROM lecturer l '
 				  .'left outer join department d on l.dep_id = d.dep_id '
 				  .'left outer join academy a on d.academy_id = a.academy_id';
@@ -273,6 +274,9 @@ class LFService {
 					$data['email']	  = $r->email;
 					$data['department'] = array($r->dep_id => $r->dep_name);
 					$data['academy']	= array($r->academy_id => $r->ac_name);
+					$data['ac_title'] = $r->ac_title;
+					$data['name'] = $r->name;
+					$data['firstname'] = $r->firstname;
 					$result['lecturer'][$r->lecturer_id] = $data;
 					$count++;
 				}
