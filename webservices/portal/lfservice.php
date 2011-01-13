@@ -1004,10 +1004,11 @@ class LFService {
 			
 			$sql = 'SELECT s.series_id, s.name, s.description, s.description_sh, '
 				  .'s.thumbnail_url, s.add_url, s.add_url_text, '
-				  .'s.keywords, t.term_sh, t.term_lg, c.category '
+				  .'s.keywords, t.term_sh, t.term_lg, c.category, f.feed_url '
 				  .'FROM series s '
 				  .'left outer join terms t on s.term_id = t.term_id '
 				  .'left outer join category c on s.cat_id = c.cat_id '
+				  .'left outer join feeds f on s.series_id = f.series_id '
 				  .'where s.series_id = '.$identifier.' and s.access_id = 1 '
 				  .'limit 0,1;';
 				  
@@ -1030,6 +1031,7 @@ class LFService {
 					$data['cat']          = $r->category;
 					$data['term']         = $r->term_lg;
 					$data['term_sh']      = $r->term_sh;
+					$data['feed_url']     = $r->feed_url;
 					
 					// get lecturer, department and academy
 					$sql2 = 'SELECT ls.lecturer_id, l.ac_title, l.firstname, l.name, '
