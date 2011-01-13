@@ -1,9 +1,11 @@
-<h3><a href="javascript: getDetails('podcast', (:id:)); ">Podcast: (:title:)</a></h3>
+<h3><a href="#resultfilter=podcast&cmd=search&details=1&mediatype=series&identifier=(:series_id:)">Podcast: (:title:)</a></h3>
+<!-- <h3><a href="javascript: getDetails('podcast', (:id:)); ">Podcast: (:title:)</a></h3> -->
+<!-- javascript: getDetails('series', 157); -->
 <div>
 	<div class="tbl objcontainer">
 		<div class="tr">
 			<div class="td" style="max-width: 250px; min-width: 150px;">
-				(:lecturer:)
+				(:lecturer:) (:series_id:)
 				(:department:)
 			</div>
 			<div class="td" style="width: 100%;">

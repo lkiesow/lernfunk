@@ -741,19 +741,43 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 		addTab('series', 'Veranstaltung', "sortResults(function(a, b) { return lexCompare(a.series, b.series); })");					
 	} else if (mediatype == 'series') {
 		$('#pagetitle').text('Suchergebnisse in der Kategorie Vorlesungen');
-		addTab('alph', 'Alphabetisch', "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-		//addTab('series', 'Fachbereich', "alert('Wie nach FB sortieren? Mehrere FBs möglich...');");					
-		addTab('chrono_up', 'Semester (⬆)', "sortResults(function(a, b) { return lexCompare(parseInt(a.term_id), parseInt(b.term_id)); })");
-		addTab('chrono_down', 'Semester (⬇)', "sortResults(function(a, b) { return lexCompare(parseInt(b.term_id), parseInt(a.term_id)); })");
+		addTab('alph', 'Alphabetisch', 
+			"sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
+		addTab('chrono_up', 'Semester (⬆)', 
+			"sortResults(function(a, b) { return lexCompare(parseInt(a.term_id), parseInt(b.term_id)); })");
+		addTab('chrono_down', 'Semester (⬇)', 
+			"sortResults(function(a, b) { return lexCompare(parseInt(b.term_id), parseInt(a.term_id)); })");
+
 	} else if (mediatype == 'lecturer') {
 		$('#pagetitle').text('Suchergebnisse in der Kategorie Personen');
-		addTab('alph', 'Alphabetisch',  "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-		addTab('academy', 'Akademie',   "sortResults(function(a, b) { return lexCompare(firstProp(a.academy), firstProp(b.academy)); })");
-		addTab('series', 'Fachbereich', "sortResults(function(a, b) { return lexCompare(firstProp(a.department), firstProp(b.department)); })");					
+		addTab('alph_up', 'Alphabetisch (⬆)', 
+			"sortResults(function(a, b) { return lexCompare(a.name, b.name); })");
+		addTab('alph_down', 'Alphabetisch (⬇)', 
+			"sortResults(function(a, b) { return lexCompare(b.name, a.name); })");
+//			"sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
+//		addTab('alph_', 'Alphabetisch (Nachname)', 
+//			"sortResults(function(a, b) { return lexCompare(a.name, b.name); })");
+//			"sortResults(function(a, b) { if (typeof(xxx) == 'undefined') { xxx = 1; alert($.toJSON(a)); } return lexCompare(a.title, b.title); })");
+		addTab('academy', 'Akademie',
+			"sortResults(function(a, b) { return lexCompare(firstProp(a.academy), firstProp(b.academy)); })");
+		addTab('series', 'Fachbereich', 
+			"sortResults(function(a, b) { return lexCompare(firstProp(a.department), firstProp(b.department)); })");	
+
+	} else if (mediatype == 'podcast') {
+		$('#pagetitle').text('Suchergebnisse in der Kategorie Podcasts');
 	}
 
 	// initialize fancybox, pager, ...
 	onContentLoaded();
+
+	if ( mediatype == 'series' ) {
+		activateTab('chrono_down'); 
+		sortResults(function(a, b) { return lexCompare(parseInt(b.term_id), parseInt(a.term_id)); })
+	}
+	if ( mediatype == 'lecturer' ) {
+		activateTab('alph_up'); 
+		sortResults(function(a, b) { return lexCompare(a.name, b.name); })
+	}
 
 	// set pager
 	setPager(1);
@@ -1426,7 +1450,8 @@ function setBackPager() {
 	pagerBuffer.push( $('div.pager').html() );
 	contentBuffer.push( $('#content').html() );
 	$('div.pager').css('display', 'block');
-	$('div.pager').html( '<div class="pagelink" id="pagelink_back" onclick="window.back();">zur&uuml;ck</div>' );
+	$('div.pager').html( '<div class="pagelink" id="pagelink_back" onclick="history.back();">zur&uuml;ck</div>' );
+	//$('div.pager').html( '<div class="pagelink" id="pagelink_back" onclick="window.back();">zur&uuml;ck</div>' );
 }
 
 
@@ -1513,18 +1538,24 @@ function makeSeriesTable( data ) {
 function fillTemplate( template, replaceData ) {
 
 //	alert( '(:(format):(Flash HD):(123):(qwe):)'.replace( '(:(format):(Flash HD):(123):(qwe):)', '___' ) );
+	if ( typeof(replaceData) == 'undefined' )
+		return template;
 
 	var data = template;
 	var all = '';
 	for ( key in replaceData ) {
 		all += '(:' + key + ':) ';
 	}
+	
+	if (!replaceData)
+		replaceData = {};
 	replaceData.__all__ = all;
+
 	for ( key in replaceData ) {
 		var re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 		data = data.replace( re, replaceData[ key ] );
 	}
-	var re = new RegExp( '\\(:.+:.*:.*:.*:\\)', 'g' );
+	var re = new RegExp( '\\(:.+?:.*?:.*?:.*?:\\)', 'g' );
 	var ma = data.match( re );
 	for ( i in ma ) {
 		var keywords = ma[i].split( '):(' );
@@ -1565,10 +1596,14 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 	}
 	if ( templates[ template ] ) {
 		var data = templates[ template ];
+		if ( typeof(replaceData) != 'undefined' )
+			data = fillTemplate( data, replaceData );
+		/*
 		for ( key in replaceData ) {
 			re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 			data = data.replace( re, replaceData[ key ] );
 		}
+		*/
 		if (onSuccess)
 			onSuccess( data );
 	} else {
@@ -1581,6 +1616,10 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 			data: {},
 			success: function( data ) {
 				templates[ template ] = data;
+				if ( typeof(replaceData) != 'undefined' ) {
+					data = fillTemplate( data, replaceData );
+				}
+				/*
 				var all = '';
 				for ( key in replaceData ) {
 					all += '(:' + key + ':) ';
@@ -1592,6 +1631,7 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 					re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 					data = data.replace( re, replaceData[ key ] );
 				}
+				*/
 				if (onSuccess)
 					onSuccess( data );
 			},
