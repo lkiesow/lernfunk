@@ -19,6 +19,7 @@
 	along with Lernfunk.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
+require_once(dirname(__FILE__).'/lzw.php');
 
 	// check if debugmode is requested
 	if ( array_key_exists('debug', $_REQUEST) && ($_REQUEST['debug'] == 'true') ) {
@@ -79,7 +80,12 @@
 				'errmsg' => 'Invalid request command \''.$request['cmd'].'\'.', 'request_data' => $_REQUEST) ) );
 
 	// call the service function assosiated with the given command
-	echo LFService::$request['cmd'](array_key_exists('args', $request) ? $request['args'] : null);
+	$result = LFService::$request['cmd'](array_key_exists('args', $request) ? $request['args'] : null);
+	if ( COMPRESSION || ( array_key_exists('compression', $request) && ( $request['compression'] == 'on' ) ) ) {
+		echo "var qwert = '" . lzw_encode( $result ) . "'";
+	} else {
+		echo $result;
+	}
 
 	if (__DEBUG__) {
 		echo "\n\n";

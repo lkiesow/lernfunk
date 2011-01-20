@@ -23,6 +23,12 @@
 // Define  access key
 define('ACCESS_KEY', '___');
 
+// set time format
+define('DATETIME_FMT', '%d.%m.%Y');
+
+// enable/disable lzw-compression
+define('COMPRESSION', false);
+
 // Set debug state
 if (!defined('__DEBUG__'))
 	define('__DEBUG__', false);

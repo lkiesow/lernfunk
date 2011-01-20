@@ -80,7 +80,7 @@ class LFService {
 		// ## Get recording results ###########################################
 		if ($mediatypes['recordings']) {
 
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.thumbnail_url, m.cou_id, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
 				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
 				  .'where (m.access_id = 1) and (s.access_id = 1)'; // access_id 1 is public
@@ -122,28 +122,44 @@ class LFService {
 				
 						foreach ($rs2 as $r2) {
 							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
+							if ($r2->fullname)
+								$lecturer[$r2->lecturer_id] = $r2->fullname;
+							if ($r2->dep_name)
+								$department[$r2->dep_id]	= $r2->dep_name;
+							if ($r2->ac_name)
+								$academy[$r2->academy_id]   = $r2->ac_name;
 						}
 
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
+						if ( count( $lecturer ) )
+							$data['l']   = $lecturer;
+						if ( count( $department ) )
+							$data['d'] = $department;
+						if ( count( $academy ) )
+							$data['a']	= $academy;
 						
 					} // end sql2
 					
 					if ($insert_this_dataset) {
-						$data['title']     = $r->title;
-						$data['desc']      = $r->description;
-						$data['date']      = $r->date;
-						$data['img']       = $r->thumbnail_url;
-						$data['duration']  = $r->duration;
-						$data['format']    = $r->formatname;
-						$data['mimetype']  = $r->mimetype;
-						$data['series']    = $r->seriesname;
-						$data['series_id'] = $r->series_id;
-						$data['cou_id']    = $r->cou_id;
+						if ($r->title)
+							$data['t']         = $r->title;
+						if ($r->description)
+							$data['de']        = $r->description;
+						if ($r->date)
+							$data['da']        = $r->date;
+						if ($r->thumbnail_url)
+							$data['i']         = $r->thumbnail_url;
+						if ($r->duration)
+							$data['du']        = $r->duration;
+						if ($r->formatname)
+							$data['f']         = $r->formatname;
+						if ($r->mimetype)
+							$data['m']         = $r->mimetype;
+						if ($r->seriesname)
+							$data['s']         = $r->seriesname;
+						if ($r->series_id)
+							$data['si']        = $r->series_id;
+						if ($r->cou_id)
+							$data['ci']        = $r->cou_id;
 						$result['recordings'][$r->object_id] = $data;
 						$count++;
 					}
@@ -163,7 +179,7 @@ class LFService {
 		// ## Get video result ################################################
 		if ($mediatypes['video']) {
 
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.thumbnail_url, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
 				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
 				  .'where (f.mimetype like "%video%") and (m.access_id = 1)'; // access_id 1 is public
@@ -370,7 +386,7 @@ class LFService {
 		// ## Get slides result ###############################################
 		if ($mediatypes['slides']) {
 
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.thumbnail_url, m.duration, f.name as formatname, '
 				  .'f.mimetype, s.name as seriesname '
 				  .'FROM mediaobject m NATURAL JOIN format f '
@@ -561,7 +577,7 @@ class LFService {
 		// ## MEDIATYPE = RECORDINGS ##########################################
 		if ($mediatype == 'recordings') {
 			
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.memory_size, m.author, m.thumbnail_url, m.preview_url, m.image_url, '
 				  .'m.duration, m.location, m.add_url, m.add_url_text, f.mimetype, '
 				  .'f.name formatname, f.requirements, l.language_long, l.language_short, '
@@ -667,7 +683,7 @@ class LFService {
 		// ## MEDIATYPE = VIDEO ###############################################
 		if ($mediatype == 'video') {
 			
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.memory_size, m.author, m.thumbnail_url, m.preview_url, m.image_url, '
 				  .'m.duration, m.location, m.add_url, m.add_url_text, f.mimetype, '
 				  .'f.name formatname, f.requirements, l.language_long, l.language_short, '
@@ -896,7 +912,7 @@ class LFService {
 		// ## MEDIATYPE = SLIDES ##############################################
 		} elseif ($mediatype == 'slides') {
 			
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, m.date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.memory_size, m.author, m.thumbnail_url, m.preview_url, m.image_url, '
 				  .'m.duration, m.location, m.add_url, m.add_url_text, f.mimetype, '
 				  .'f.name formatname, f.requirements, l.language_long, l.language_short, '
@@ -1062,7 +1078,7 @@ class LFService {
 					} // end sql2
 
 					// get recordings
-					$sql3 = 'select m.object_id, m.date, m.title, m.description, '
+					$sql3 = 'select m.object_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.title, m.description, '
 						.'m.url, m.image_url, m.thumbnail_url, m.preview.url, '
 						.'m.duration, m.cou_id, f.mimetype, f.name as formatname '
 						.'from mediaobject m '
@@ -1229,7 +1245,7 @@ class LFService {
 		$result = array();
 
 		$sql = 'SELECT m.object_id, m.title, m.description, '
-			.'m.series_id, m.date, m.url, m.thumbnail_url, '
+			.'m.series_id, m.date as datenf, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, m.thumbnail_url, '
 			.'m.preview_url, m.image_url, f.mimetype, f.name as formatname, '
 			.'s.name as seriesname, s.description as seriesdesc, s.thumbnail_url as seriesthumb '
 			.'FROM mediaobject m '
@@ -1241,7 +1257,7 @@ class LFService {
 			.$mimetypefilter
 			.'and s.access_id = 1 '
 			.'group by series_id '
-			.'order by date desc '
+			.'order by datenf desc '
 			.'limit 0,'.$count.';';
 		if ( $rs = Lernfunk::query($sql) ) {
 
@@ -1265,6 +1281,31 @@ class LFService {
 				$data['seriesthumb'] = $r->seriesthumb;
 				$result[] = $data;
 			}
+
+			$sql2 = 'select (SELECT count(*) FROM mediaobject m '
+				.'left outer join series s on s.series_id = m.series_id '
+				.'where m.access_id = 1 and s.access_id = 1) as recording_count, '
+				.'(SELECT count(*) FROM lecturer) as lecturer_count, '
+				.'(SELECT count(*) FROM feeds) as feed_count, '
+				.'(SELECT count(*) FROM series where access_id = 1) as series_count';
+
+			if ( $r = Lernfunk::query($sql2) ) {
+				$r = $r[0];
+				$result['count'] = array(
+						'recording' => $r->recording_count,
+						'lecturer'  => $r->lecturer_count,
+						'feed'      => $r->feed_count,
+						'series'    => $r->series_count
+					);
+			} else { // end sql
+				if (mysql_error())
+					return json_encode( array(
+							'type' => 'error', 
+							'errtype' => 'sql_error', 
+							'errmsg' => mysql_error(), 
+							'sql_statement' => $sql ) 
+						);
+			} // end sql2
 
 			if (__DEBUG__)
 				print_r($result);
