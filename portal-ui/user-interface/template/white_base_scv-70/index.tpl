@@ -66,70 +66,25 @@
 				</form>
 			</div>
 			<div id="searchcatblock">
-				<div class="category" onclick="filterResults('series');">
+				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'series' } );">
 					<div class="object_count" id="count_series" ></div>
 					Veranstaltungen
 				</div>
-				<div class="category" onclick="filterResults('recordings');">
+				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'recordings' } );">
 					<div class="object_count" id="count_recordings" ></div>
 					Aufzeichnungen
 				</div>
-				<!-- Inhalte ( > v1.0 ) -->
-				<!-- old:
-				<div class="category" onclick="filterResults('video');">
-					<div class="object_count" id="count_video" ></div>
-					Videos
-				</div>
-				<div class="category" onclick="filterResults('slides');">
-					<div class="object_count" id="count_slides" ></div>
-					Folien
-				</div>
-				-->
-				<div class="category" onclick="filterResults('lecturer');">
+				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'lecturer' } );">
 					<div class="object_count" id="count_lecturer" ></div>
 					Personen
 				</div>
-				<div class="category" onclick="filterResults('podcast');">
+				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'podcast' } );">
 					<div class="object_count" id="count_podcast" ></div>
 					Podcast
 				</div>
 			</div>
-			<!-- ENTFERNEN ENTFERNEN ENTFERNEN ENTFERNEN ENTFERNEN ENTFERNEN -->
-			<!--
-			<div id="leftlinkblock" style="display: none;">
-				<div><a href="javascript: "  class="leftlink">Fachbereiche</a></div>
-				<div><a href="javascript: "  class="leftlink">Vorlesungen</a></div>
-				<div><a href="javascript: "  class="leftlink">Tagungen</a></div>
-				<div><a href="javascript: "  class="leftlink">Titel Index (A-Z)</a></div>
-				<div><a href="javascript: "  class="leftlink">Dozentenindex (A-Z)</a></div>
-			</div>
-			-->
-			<!-- ENTFERNEN ENTFERNEN ENTFERNEN ENTFERNEN ENTFERNEN ENTFERNEN -->
 		</div>
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ right ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!--
-		<div id="rightblock">
-			<div id="rightview_select">
-				<h2>Kalender</h2>
-				<div id="datepicker"></div>
-				<h2>Tag-Cloud</h2>
-				<div id="tagcloud"></div>
-			</div>
-			<div id="rightview_content">
-				<h2>Filter</h2>
-				<div id="rightbox_tabs">
-		-->
-					<!--
-					<div class="rightbox_tab" onclick=" showSubfilter( 'format',     'video' ); ">Format</div>
-					-->
-		<!--
-				</div>
-				<div id="rightview_filter">
-				</div>
-			</div>
-		</div>
-		-->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<div id="contentbox">
@@ -171,12 +126,6 @@
 	</div>
 
 </div>
-
-<!--
-<div id="submenu" style="display: none;"
-	onmouseout="menu_intervall = window.setInterval('hideSubmenu()', 100);"
-	onmouseover="window.clearInterval( menu_intervall );"> </div>
--->
 
 </body>
 </html>

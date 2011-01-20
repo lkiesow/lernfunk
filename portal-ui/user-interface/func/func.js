@@ -23,6 +23,21 @@ seriesRecBuf  = [];
 
 menu_intervall = null;
 
+request_id = 0;
+
+loading = {
+		'series'     : false,
+		'recordings' : false,
+		'lecturer'   : false,
+		'podcast'    : false
+	}
+
+onDataLoaded = {
+		'series'     : null,
+		'recordings' : null,
+		'lecturer'   : null,
+		'podcast'    : null
+	}
 
 /**
  * Takes JSON-data as string and returns it formatted
@@ -197,11 +212,10 @@ function loadStartpage( data ) {
 			// recordings
 			if (count <= cfg.newreccount) {
 				var player = '';
-				var replaceData = {
-						'date' : n.date, 
-						'title' : n.title, 
-						'url' : n.url
-					};
+				var replaceData = n;
+				delete( n.preview_url );
+				delete( n.image_url );
+				delete( n.seriesthumb );
 				if ( n.mimetype.match( /.*video.*/ ) ) {
 					replaceData.mediatype = 'Video';
 					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
@@ -222,6 +236,12 @@ function loadStartpage( data ) {
 		loadTemplate( 'home.tpl', 
 			{ 'new_recordings' : recordings, 'series_updates' : series },
 			function( data ) { setContent( data ); calendar_init(); tagcloud_init(); } );
+
+		// set counter
+		$('#count_recordings').html('(' + data.news.count.recording + ')');
+		$('#count_series').html('('     + data.news.count.series    + ')');
+		$('#count_lecturer').html('('   + data.news.count.lecturer  + ')');
+		$('#count_podcast').html('('    + data.news.count.feed      + ')');
 	}
 }
 
@@ -276,12 +296,12 @@ function requestWebservices(request, onSuccess, onError) {
 	for ( key in cfg.webservices ) {
 		request.key = cfg.webservices[key].key;
 		$.ajax({
-			type: 'POST',
-			url: './func/webserviceAccess.php',
-			dataType: 'json',
-			data	: ({'url' : cfg.webservices[key].url, 'request' : $.toJSON(request) }),
-			success: onSuccess,
-			error: onError
+			type     : 'POST',
+			url      : './func/webserviceAccess.php',
+			dataType : 'json',
+			data	   : ( { 'url' : cfg.webservices[key].url, 'request' : $.toJSON(request) } ),
+			success  : onSuccess,
+			error    : onError
 		});
 	}
 }
@@ -341,40 +361,6 @@ function handleError(data) {
 	loadTemplate( 'error.tpl', errData, setContent );
 	return false
 }
-
-
-/*
-function select_department( selection ) {
-	$('#department_search').val( selection.innerHTML );
-	$('#department_selection').css( 'display', 'none' );
-	$('#department_search').focus();
-}
-
-
-function trigger_department_selection() {
-	var dep_sel = $('#department_selection');
-	if (dep_sel.css( 'display') == 'none') {
-		dep_sel.css( 'display', 'block' );
-		dep_sel.css( 'top', $('#department_search').position().top + $('#department_search').outerHeight(true) );
-	} else {
-		dep_sel.css( 'display', 'none' );
-	}
-	$('#department_search').focus();
-}
-
-
-function trigger_dep_select_hide(val) {
-	if (dep_select_hide_interval)
-		window.clearInterval(dep_select_hide_interval);
-	if (val)
-		dep_select_hide_interval = window.setInterval(function() {
-					if ($('#department_selection').css( 'display') != 'none')
-						$('#department_selection').css( 'display', 'none' );
-					window.clearInterval(dep_select_hide_interval);
-				}, 400);
-}
-*/
-
 
 /**
  * Insert default string into input if it's empty
@@ -486,6 +472,7 @@ function onHashChange( e ) {
 			}
 			if ( params.date )
 				args.date = params.date;
+			//alert(formatJSON($.toJSON(args)));
 			doSearch( { 'cmd' : 'getData', 'args' : args }, params.page, true );
 			args.page = params.page;
 			args.cmd = 'search';
@@ -506,6 +493,163 @@ function onHashChange( e ) {
 	currentState = params;
 }
 
+/*
+ *	Imported from the jsolait library
+ *		http://jsolait.net
+ *	The jsolait library is licensed under the terms of the GNU LGPL
+ **/
+// LZW-compress a string
+function lzw_encode(s) {
+	var dict = {};
+	var data = (s + "").split("");
+	var out = [];
+	var currChar;
+	var phrase = data[0];
+	var code = 256;
+	for (var i=1; i<data.length; i++) {
+		currChar=data[i];
+		if (dict[phrase + currChar] != null) {
+			phrase += currChar;
+		}
+		else {
+			out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+			dict[phrase + currChar] = code;
+			code++;
+			phrase=currChar;
+		}
+	}
+	out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+	for (var i=0; i<out.length; i++) {
+		out[i] = String.fromCharCode(out[i]);
+	}
+	return out.join("");
+}
+
+// Decompress an LZW-encoded string
+function lzw_decode(s) {
+	var dict = {};
+	var data = (s + "").split("");
+	var currChar = data[0];
+	var oldPhrase = currChar;
+	var out = [currChar];
+	var code = 256;
+	var phrase;
+	for (var i=1; i<data.length; i++) {
+		var currCode = data[i].charCodeAt(0);
+		if (currCode < 256) {
+			phrase = data[i];
+		}
+		else {
+			phrase = dict[currCode] ? dict[currCode] : (oldPhrase + currChar);
+		}
+		out.push(phrase);
+		currChar = phrase.charAt(0);
+		dict[code] = oldPhrase + currChar;
+		code++;
+		oldPhrase = phrase;
+	}
+	return out.join("");
+}
+
+
+function handleSearchResult( request, data, part, show ) {
+	//alert( $.toJSON(data).length );
+	var sortedData;
+	if ( part && currData ) {
+		 sortedData = currData;
+	} else {
+		sortedData = {
+				'count' : { 'all' : 0 },
+				'data'  : []
+			};
+	}
+	if (!part) {
+		// Set link counter
+		$('div.object_count').html('(0)');
+	}
+	for ( var mediatype in data.data ) {
+		var typecount = 0;
+		if ( part && sortedData.count && sortedData.count[ mediatype ] ) {
+			 typecount = sortedData.count[ mediatype ];
+		}
+		if ( mediatype == 'recordings' ) {
+			// sort and prepare data
+			for (var id in data.data[mediatype]) {
+				var obj = {};
+				obj.department = data.data[mediatype][id].d  ? data.data[mediatype][id].d  : [];
+				obj.academy    = data.data[mediatype][id].a  ? data.data[mediatype][id].a  : {};
+				obj.lecturer   = data.data[mediatype][id].l  ? data.data[mediatype][id].l  : {};
+				obj.title      = data.data[mediatype][id].t  ? data.data[mediatype][id].t  : '';
+				obj.desc       = data.data[mediatype][id].de ? data.data[mediatype][id].de : '';
+				obj.date       = data.data[mediatype][id].da ? data.data[mediatype][id].da : '';
+				obj.img        = data.data[mediatype][id].i  ? data.data[mediatype][id].i  : '';
+				obj.duration   = data.data[mediatype][id].du ? data.data[mediatype][id].du : '';
+				obj.format     = data.data[mediatype][id].f  ? data.data[mediatype][id].f  : '';
+				obj.mimetype   = data.data[mediatype][id].m  ? data.data[mediatype][id].m  : '';
+				obj.series     = data.data[mediatype][id].s  ? data.data[mediatype][id].s  : '';
+				obj.series_id  = data.data[mediatype][id].si ? data.data[mediatype][id].si : '';
+				obj.cou_id     = data.data[mediatype][id].ci ? data.data[mediatype][id].ci : '';
+				obj.mediatype  = mediatype;
+				obj.id         = id;
+				sortedData.data.push( obj );
+				typecount++;
+			}
+
+		} else {
+			// sort and prepare data
+			for (var id in data.data[mediatype]) {
+				var obj = data.data[mediatype][id];
+				obj.mediatype = mediatype;
+				obj.id = id;
+				sortedData.data.push( obj );
+				typecount++;
+			}
+		}
+
+		sortedData.count[ mediatype ] = typecount;
+		// set counter
+		$('#count_' + mediatype).html('(' + typecount + ')');
+	}
+	var countall = 0;
+	for (var i in sortedData.count) {
+		if ( mediatype != 'all' ) {
+			countall += sortedData.count[i];
+		}
+	}
+	sortedData.count.all = countall;
+	lastSearch = sortedData;
+	currData   = sortedData;
+
+	if (show) {
+		// Set page title
+		$('#pagetitle').text('Suchergebnisse in allen Kategorien');
+		// clear content div
+		$('#content').html('');
+
+
+		// insert objects as content
+		count = 0;
+		for ( id in sortedData.data ) {
+			count++;
+			addObjectBlock(sortedData.data[id].mediatype, sortedData.data[id]);
+			if (count >= cfg.objectsPerPage)
+				break;
+		}
+
+		// initialize fancybox, pager, ...
+		onContentLoaded();
+
+		// set pager
+		setPager(1);
+
+		//if we want a specific page
+//		if ( page )
+//			goToPage( parseInt( page ) );
+
+		$(window).trigger( 'hashchange' );
+	}
+}
+
 
 function doSearch( request, page, hashIsSet) {
 	doCleanUp();
@@ -520,68 +664,64 @@ function doSearch( request, page, hashIsSet) {
 		function(data) { $('#content').html('loading...'); }, 
 		function(data) { $('#content').html('loading...'); } );
 
+	for (t in loading) {
+		loading[t] = true;
+	}
+
+	// if possible then first load only a part of the requested data
+	if ( $.bbq.getState( 'resultfilter' ) )
+		request.args.mediatype = [ $.bbq.getState( 'resultfilter' ) ];
+
 	requestWebservices( request,
 		function(data) {
 			if (handleError(data)) {
+				handleSearchResult( request, data, $.bbq.getState( 'resultfilter' ), true );
+			}
 
-				var sortedData = {
-						'count' : { 'all' : 0 },
-						'data'  : []
-					};
-				var countall = 0;
-				for ( mediatype in data.data ) {
-					var typecount = 0;
-					// sort and prepare data
-					for (id in data.data[mediatype]) {
-						var obj = data.data[mediatype][id];
-						obj.mediatype = mediatype;
-						obj.id = id;
-						sortedData.data.push( obj );
-						typecount++;
-						countall++;
-					}
-					sortedData.count[ mediatype ] = typecount;
+			if ( $.bbq.getState( 'resultfilter' ) ) {
+				loading[ $.bbq.getState( 'resultfilter' ) ] = false;
+//				alert( 'set loading[' + $.bbq.getState( 'resultfilter' ) + '] = false' ); 
+				if ( onDataLoaded[ $.bbq.getState( 'resultfilter' ) ] )
+					onDataLoaded[ $.bbq.getState( 'resultfilter' ) ]();
+			} else {
+				for (t in loading) {
+					loading[t] = false;
+//					alert( 'set loading[' + t + '] = false' ); 
+					if ( onDataLoaded[t] )
+						onDataLoaded[t]();
 				}
-				sortedData.count.all = countall;
-				lastSearch = sortedData;
-				currData   = sortedData;
-
-				// Set page title
-				$('#pagetitle').text('Suchergebnisse in allen Kategorien');
-				// clear content div
-				$('#content').html('');
-
-				// Set link counter
-				$('div.object_count').html('(0)');
-				for ( mediatype in sortedData.count ) {
-					if ( mediatype != 'all' )
-						$('#count_' + mediatype).html('(' + sortedData.count[ mediatype ] + ')');
-				}
-
-				// insert objects as content
-				count = 0;
-				for ( id in sortedData.data ) {
-					count++;
-					addObjectBlock(sortedData.data[id].mediatype, sortedData.data[id]);
-					if (count >= cfg.objectsPerPage)
-						break;
-				}
-
-				// initialize fancybox, pager, ...
-				onContentLoaded();
-
-				// set pager
-				setPager(1);
-
-				//if we want a specific page
-				if ( page )
-					goToPage( parseInt( page ) );
-
-				$(window).trigger( 'hashchange' );
 			}
 		}, function(err) {
-			alert($.toJSON(err));
+			// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 		});
+
+	if ( $.bbq.getState( 'resultfilter' ) ) {
+		request.args.mediatype = [];
+		if ( $.bbq.getState( 'resultfilter' ) !=  'recordings' )
+			request.args.mediatype.push( 'recordings' );
+		if ( $.bbq.getState( 'resultfilter' ) !=  'lecturer' )
+			request.args.mediatype.push( 'lecturer' );
+		if ( $.bbq.getState( 'resultfilter' ) !=  'podcast' )
+			request.args.mediatype.push( 'podcast' );
+		if ( $.bbq.getState( 'resultfilter' ) !=  'series' )
+			request.args.mediatype.push( 'series' );
+
+		requestWebservices( request,
+			function(data) {
+				if (handleError(data)) {
+					handleSearchResult( request, data, true, false );
+				}
+//				alert( $.toJSON(loading) );
+				for (t in request.args.mediatype) {
+					loading[request.args.mediatype[t]] = false;
+//					alert( 'set loading[' + request.args.mediatype[t] + '] = false' );
+					if ( onDataLoaded[request.args.mediatype[t]] )
+						onDataLoaded[request.args.mediatype[t]]();
+				}
+			}, function(err) {
+				// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+			});
+	}
 }
 
 
@@ -674,6 +814,12 @@ function triggerSearch() {
 
 function filterResults( mediatype, hashIsSet, subFilter ) {
 
+	if (loading[ mediatype ]) {
+//		alert( 'loading ' + mediatype );
+		onDataLoaded[ mediatype ] == 
+			eval( 'function() { filterResults( ' + mediatype + ', ' + hashIsSet + ', ' + subFilter + ' ); }' );
+		return;
+	}
 	if (!lastSearch) {
 		window.location.hash = '#resultfilter=' + mediatype + '&cmd=search';
 		return;
@@ -754,10 +900,6 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 			"sortResults(function(a, b) { return lexCompare(a.name, b.name); })");
 		addTab('alph_down', 'Alphabetisch (⬇)', 
 			"sortResults(function(a, b) { return lexCompare(b.name, a.name); })");
-//			"sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-//		addTab('alph_', 'Alphabetisch (Nachname)', 
-//			"sortResults(function(a, b) { return lexCompare(a.name, b.name); })");
-//			"sortResults(function(a, b) { if (typeof(xxx) == 'undefined') { xxx = 1; alert($.toJSON(a)); } return lexCompare(a.title, b.title); })");
 		addTab('academy', 'Akademie',
 			"sortResults(function(a, b) { return lexCompare(firstProp(a.academy), firstProp(b.academy)); })");
 		addTab('series', 'Fachbereich', 
@@ -765,6 +907,10 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 
 	} else if (mediatype == 'podcast') {
 		$('#pagetitle').text('Suchergebnisse in der Kategorie Podcasts');
+		addTab('alph_up', 'Alphabetisch (⬆)', 
+			"sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
+		addTab('alph_down', 'Alphabetisch (⬇)', 
+			"sortResults(function(a, b) { return lexCompare(b.title, a.title); })");
 	}
 
 	// initialize fancybox, pager, ...
@@ -777,6 +923,10 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 	if ( mediatype == 'lecturer' ) {
 		activateTab('alph_up'); 
 		sortResults(function(a, b) { return lexCompare(a.name, b.name); })
+	}
+	if ( mediatype == 'podcast' ) {
+		activateTab('alph_up'); 
+		sortResults(function(a, b) { return lexCompare(a.title, b.title); })
 	}
 
 	// set pager
@@ -1254,6 +1404,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 								} );
 							} );
 				} else {
+					// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 					alert( 'mediatype: ' + mediatype );
 					alert( formatJSON( $.toJSON( data ) ) );
 				}
@@ -1261,6 +1412,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 		},
 		function(err) {
 			// DEBUG
+			// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 			for ( key in err ) {
 				alert( key + ' -> ' + err[key] );
 			}
@@ -1555,7 +1707,7 @@ function fillTemplate( template, replaceData ) {
 		var re = new RegExp( '\\(:' + key + ':\\)', 'g' );
 		data = data.replace( re, replaceData[ key ] );
 	}
-	var re = new RegExp( '\\(:.+?:.*?:.*?:.*?:\\)', 'g' );
+	var re = new RegExp( '\\(:\\(.+?\\):\\(.*?\\):\\(.*?\\):\\(.*?\\):\\)', 'g' );
 	var ma = data.match( re );
 	for ( i in ma ) {
 		var keywords = ma[i].split( '):(' );
@@ -1691,7 +1843,7 @@ function doCleanUp() {
 	// hide tabs, ...
 	$('#titlebox_bottom').html('');
 	// hide number of found objects
-	$('div.object_count').html('');
+	//$('div.object_count').html('');
 	// hide subfilter
 	$('div.sub').css('display', 'none');
 

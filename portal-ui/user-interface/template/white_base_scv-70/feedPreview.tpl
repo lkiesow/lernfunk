@@ -1,11 +1,9 @@
 <h3><a href="#resultfilter=podcast&cmd=search&details=1&mediatype=series&identifier=(:series_id:)">Podcast: (:title:)</a></h3>
-<!-- <h3><a href="javascript: getDetails('podcast', (:id:)); ">Podcast: (:title:)</a></h3> -->
-<!-- javascript: getDetails('series', 157); -->
 <div>
 	<div class="tbl objcontainer">
 		<div class="tr">
 			<div class="td" style="max-width: 250px; min-width: 150px;">
-				(:lecturer:) (:series_id:)
+				(:lecturer:)
 				(:department:)
 			</div>
 			<div class="td" style="width: 100%;">
@@ -23,7 +21,7 @@
 			</div>
 			<div class="td" style="padding-right: 25px;">
 				<br />
-				<img class="thumb" src="(:img:)" alt="(:series:)" />
+				<img class="thumb" src="(:img:)" alt="(:title:)" />
 			</div>
 		</div>
 	</div>
