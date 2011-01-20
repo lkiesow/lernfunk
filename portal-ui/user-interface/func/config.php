@@ -39,7 +39,7 @@ $cfg = array(
 $includes = '
 	<!-- jQuery UI -->
 	<link type="text/css" href="template/'.$cfg['tplName'].'/css/jquery/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
-	<script type="text/javascript" src="./func/imports/jquery/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="./func/imports/jquery/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="./func/imports/jquery/jquery-ui-1.7.2.custom.min.js"></script>
 
 	<script type="text/javascript" src="./func/imports/jquery-json/jquery.json-2.2.min.js"></script>

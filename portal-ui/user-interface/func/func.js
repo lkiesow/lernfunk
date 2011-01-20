@@ -552,13 +552,9 @@ function lzw_decode(s) {
 }
 
 
-function handleSearchResult( request, data, part, show ) {
-	//alert( $.toJSON(data).length );
-	var sortedData;
-	if ( part && currData ) {
-		 sortedData = currData;
-	} else {
-		sortedData = {
+function handleSearchResult( data, part, reqMediatype ) {
+	if ( !(part && lastSearch) ) {
+		lastSearch = {
 				'count' : { 'all' : 0 },
 				'data'  : []
 			};
@@ -569,8 +565,8 @@ function handleSearchResult( request, data, part, show ) {
 	}
 	for ( var mediatype in data.data ) {
 		var typecount = 0;
-		if ( part && sortedData.count && sortedData.count[ mediatype ] ) {
-			 typecount = sortedData.count[ mediatype ];
+		if ( part && lastSearch.count && lastSearch.count[ mediatype ] ) {
+			 typecount = lastSearch.count[ mediatype ];
 		}
 		if ( mediatype == 'recordings' ) {
 			// sort and prepare data
@@ -591,7 +587,7 @@ function handleSearchResult( request, data, part, show ) {
 				obj.cou_id     = data.data[mediatype][id].ci ? data.data[mediatype][id].ci : '';
 				obj.mediatype  = mediatype;
 				obj.id         = id;
-				sortedData.data.push( obj );
+				lastSearch.data.push( obj );
 				typecount++;
 			}
 
@@ -601,26 +597,39 @@ function handleSearchResult( request, data, part, show ) {
 				var obj = data.data[mediatype][id];
 				obj.mediatype = mediatype;
 				obj.id = id;
-				sortedData.data.push( obj );
+				lastSearch.data.push( obj );
 				typecount++;
 			}
 		}
 
-		sortedData.count[ mediatype ] = typecount;
+		lastSearch.count[ mediatype ] = typecount;
 		// set counter
 		$('#count_' + mediatype).html('(' + typecount + ')');
 	}
 	var countall = 0;
-	for (var i in sortedData.count) {
-		if ( mediatype != 'all' ) {
-			countall += sortedData.count[i];
+	for (var i in lastSearch.count) {
+		if ( i != 'all' ) {
+			countall += lastSearch.count[i];
 		}
 	}
-	sortedData.count.all = countall;
-	lastSearch = sortedData;
-	currData   = sortedData;
+	lastSearch.count.all = countall;
+//	lastSearch = currData;
+	currData = lastSearch;
 
-	if (show) {
+
+	if ( reqMediatype ) {
+		loading[ reqMediatype ] = false;
+		if ( onDataLoaded[ reqMediatype ] )
+			onDataLoaded[ reqMediatype ]();
+	} else {
+		for (t in loading) {
+			loading[t] = false;
+			if ( onDataLoaded[t] )
+				onDataLoaded[t]();
+		}
+	}
+
+	if (!reqMediatype || (reqMediatype == $.bbq.getState( 'resultfilter' ) ) ) {
 		// Set page title
 		$('#pagetitle').text('Suchergebnisse in allen Kategorien');
 		// clear content div
@@ -629,9 +638,9 @@ function handleSearchResult( request, data, part, show ) {
 
 		// insert objects as content
 		count = 0;
-		for ( id in sortedData.data ) {
+		for ( id in lastSearch.data ) {
 			count++;
-			addObjectBlock(sortedData.data[id].mediatype, sortedData.data[id]);
+			addObjectBlock(lastSearch.data[id].mediatype, lastSearch.data[id]);
 			if (count >= cfg.objectsPerPage)
 				break;
 		}
@@ -648,6 +657,7 @@ function handleSearchResult( request, data, part, show ) {
 
 		$(window).trigger( 'hashchange' );
 	}
+
 }
 
 
@@ -668,60 +678,44 @@ function doSearch( request, page, hashIsSet) {
 		loading[t] = true;
 	}
 
-	// if possible then first load only a part of the requested data
-	if ( $.bbq.getState( 'resultfilter' ) )
-		request.args.mediatype = [ $.bbq.getState( 'resultfilter' ) ];
-
-	requestWebservices( request,
-		function(data) {
-			if (handleError(data)) {
-				handleSearchResult( request, data, $.bbq.getState( 'resultfilter' ), true );
-			}
-
-			if ( $.bbq.getState( 'resultfilter' ) ) {
-				loading[ $.bbq.getState( 'resultfilter' ) ] = false;
-//				alert( 'set loading[' + $.bbq.getState( 'resultfilter' ) + '] = false' ); 
-				if ( onDataLoaded[ $.bbq.getState( 'resultfilter' ) ] )
-					onDataLoaded[ $.bbq.getState( 'resultfilter' ) ]();
-			} else {
-				for (t in loading) {
-					loading[t] = false;
-//					alert( 'set loading[' + t + '] = false' ); 
-					if ( onDataLoaded[t] )
-						onDataLoaded[t]();
-				}
-			}
-		}, function(err) {
-			// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-		});
-
 	if ( $.bbq.getState( 'resultfilter' ) ) {
-		request.args.mediatype = [];
-		if ( $.bbq.getState( 'resultfilter' ) !=  'recordings' )
-			request.args.mediatype.push( 'recordings' );
-		if ( $.bbq.getState( 'resultfilter' ) !=  'lecturer' )
-			request.args.mediatype.push( 'lecturer' );
-		if ( $.bbq.getState( 'resultfilter' ) !=  'podcast' )
-			request.args.mediatype.push( 'podcast' );
-		if ( $.bbq.getState( 'resultfilter' ) !=  'series' )
-			request.args.mediatype.push( 'series' );
 
+		request.args.mediatype = ['recordings'];
 		requestWebservices( request,
 			function(data) {
-				if (handleError(data)) {
-					handleSearchResult( request, data, true, false );
-				}
-//				alert( $.toJSON(loading) );
-				for (t in request.args.mediatype) {
-					loading[request.args.mediatype[t]] = false;
-//					alert( 'set loading[' + request.args.mediatype[t] + '] = false' );
-					if ( onDataLoaded[request.args.mediatype[t]] )
-						onDataLoaded[request.args.mediatype[t]]();
-				}
-			}, function(err) {
-				// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-			});
+				if (handleError(data))
+					handleSearchResult( data, true, 'recordings' );
+			}, function(err) {  });
+
+		request.args.mediatype = ['lecturer'];
+		requestWebservices( request,
+			function(data) {
+				if (handleError(data))
+					handleSearchResult( data, true, 'lecturer' );
+			}, function(err) {  });
+
+		request.args.mediatype = ['podcast'];
+		requestWebservices( request,
+			function(data) {
+				if (handleError(data))
+					handleSearchResult( data, true, 'podcast' );
+			}, function(err) {  });
+
+		request.args.mediatype = ['series'];
+		requestWebservices( request,
+			function(data) {
+				if (handleError(data))
+					handleSearchResult( data, true, 'series' );
+			}, function(err) {  });
+
+	} else {
+		requestWebservices( request,
+			function(data) {
+				if (handleError(data))
+					handleSearchResult( data, false );
+			}, function(err) { /* TODO */ });
 	}
+
 }
 
 
@@ -803,18 +797,21 @@ function triggerSearch() {
 	var request = { 'cmd' : 'getData', 'args' : {} };
 	if ( ($('#search').val() != '') && ($('#search').val() != 'Suche') )
 		request.args.filter = $('#search').val();
-	/*
-	if ( ($('#department_search').val() != '') && (! $('#department_search').val().match(/Fachbereich|Alle Fachbereiche/) ) )
-		request.args.department = $('#department_search').val();
-	*/
 
-	doSearch(request);
+	if ( $('#search').val() ) {
+		$.bbq.pushState( { 'filter' : $('#search').val(), 'cmd' : 'search' }, 2 );
+	} else {
+		$.bbq.pushState( { 'cmd' : 'search' }, 2 );
+	}
 }
 
 
 function filterResults( mediatype, hashIsSet, subFilter ) {
 
+//	alert( formatJSON( $.toJSON( currData ) ) );
+
 	if (loading[ mediatype ]) {
+		alert( $.toJSON( loading ) );
 //		alert( 'loading ' + mediatype );
 		onDataLoaded[ mediatype ] == 
 			eval( 'function() { filterResults( ' + mediatype + ', ' + hashIsSet + ', ' + subFilter + ' ); }' );
