@@ -16,7 +16,7 @@
 	GNU General Public License for more details. 
 
 	You should have received a copy of the GNU General Public License 
-	along with Lernfunk.  If not, see <http://www.gnu.org/licenses/>. 
+	along with Lernfunk.  If not, see http://www.gnu.org/licenses/. 
 */
 
 
@@ -30,7 +30,8 @@ class LFService {
 			'getdepartments', 
 			'getdbdata', 
 			'gettags', 
-			'getnews'
+			'getnews',
+			'getrecdates'
 		);
 
 	/**
@@ -80,7 +81,8 @@ class LFService {
 		// ## Get recording results ###########################################
 		if ($mediatypes['recordings']) {
 
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, '
+				  .'date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.thumbnail_url, m.cou_id, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
 				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
 				  .'where (m.access_id = 1) and (s.access_id = 1)'; // access_id 1 is public
@@ -140,109 +142,17 @@ class LFService {
 					} // end sql2
 					
 					if ($insert_this_dataset) {
-						if ($r->title)
-							$data['t']         = $r->title;
-						if ($r->description)
-							$data['de']        = $r->description;
-						if ($r->date)
-							$data['da']        = $r->date;
-						if ($r->thumbnail_url)
-							$data['i']         = $r->thumbnail_url;
-						if ($r->duration)
-							$data['du']        = $r->duration;
-						if ($r->formatname)
-							$data['f']         = $r->formatname;
-						if ($r->mimetype)
-							$data['m']         = $r->mimetype;
-						if ($r->seriesname)
-							$data['s']         = $r->seriesname;
-						if ($r->series_id)
-							$data['si']        = $r->series_id;
-						if ($r->cou_id)
-							$data['ci']        = $r->cou_id;
+						if ($r->title)          $data['t']     = $r->title;
+						if ($r->description)    $data['de']    = $r->description;
+						if ($r->date)           $data['da']    = $r->date;
+						if ($r->thumbnail_url)  $data['i']     = $r->thumbnail_url;
+						if ($r->duration)       $data['du']    = $r->duration;
+						if ($r->formatname)     $data['f']     = $r->formatname;
+						if ($r->mimetype)       $data['m']     = $r->mimetype;
+						if ($r->seriesname)     $data['s']     = $r->seriesname;
+						if ($r->series_id)      $data['si']    = $r->series_id;
+						if ($r->cou_id)         $data['ci']    = $r->cou_id;
 						$result['recordings'][$r->object_id] = $data;
-						$count++;
-					}
-					
-				}
-			} else { // end sql
-				if (mysql_error())
-					return json_encode( array(
-							'type' => 'error', 
-							'errtype' => 'sql_error', 
-							'errmsg' => mysql_error(), 
-							'sql_statement' => $sql
-						) );
-			} // end !sql
-		}
-
-		// ## Get video result ################################################
-		if ($mediatypes['video']) {
-
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
-				  .'m.thumbnail_url, m.duration, f.name as formatname, f.mimetype, s.name as seriesname '
-				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
-				  .'where (f.mimetype like "%video%") and (m.access_id = 1)'; // access_id 1 is public
-			if ($filter) {
-				$sql .= ' and ( (m.title like "%'.$filter.'%") or (m.description like "%'.$filter.'%") '
-					   .'or (s.name like "%'.$filter.'%") )';
-			}
-			if ($date) {
-				$sql .= ' and ( DATE(m.date) = "'.$date.'" )';
-			}
-
-			if ( $rs = Lernfunk::query($sql) ) {
-
-				$result['video'] = array();
-				
-				foreach ($rs as $r) {
-
-					$data = array();
-					
-					$sql2 = 'SELECT ls.lecturer_id, l.ac_title, l.firstname, l.name, '
-						   .'TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) as fullname, '
-						   .'l.dep_id, d.academy_id, d.dep_name, d.dep_description, d.dep_number, a.ac_name '
-						   .'FROM lecturer_series ls natural join lecturer l '
-						   .'left outer join department d on l.dep_id = d.dep_id '
-						   .'left outer join academy a on d.academy_id = a.academy_id '
-						   .'where ls.series_id = '.$r->series_id; 
-					$insert_this_dataset = true;
-					if ($dep_filter) { 
-						$insert_this_dataset = false;
-						$sql2 .= ' and ( dep_name like "%'.$dep_filter.'%")';
-					}
-					$sql2 .= ';';
-
-					if ( $rs2 = Lernfunk::query($sql2) ) {
-
-						$lecturer   = array();
-						$department = array();
-						$academy	= array();
-				
-						foreach ($rs2 as $r2) {
-							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
-						}
-
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
-						
-					} // end sql2
-					
-					if ($insert_this_dataset) {
-						$data['title']     = $r->title;
-						$data['desc']      = $r->description;
-						$data['date']      = $r->date;
-						$data['img']       = $r->thumbnail_url;
-						$data['duration']  = $r->duration;
-						$data['format']    = $r->formatname;
-						$data['mimetype']  = $r->mimetype;
-						$data['series']    = $r->seriesname;
-						$data['series_id'] = $r->series_id;
-						$result['video'][$r->object_id] = $data;
 						$count++;
 					}
 					
@@ -261,7 +171,8 @@ class LFService {
 		// ## Get lecturer result #############################################
 		if ($mediatypes['lecturer'] && !$date) {
 			
-			$sql = 'SELECT l.lecturer_id, TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) fullname, '
+//			$sql = 'SELECT l.lecturer_id, TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) fullname, '
+			$sql = 'SELECT l.lecturer_id,  '
 				  .'l.email, d.dep_id, d.dep_name, a.academy_id, a.ac_name, '
 				  .'l.ac_title, l.firstname, l.name '
 				  .'FROM lecturer l '
@@ -286,13 +197,13 @@ class LFService {
 				foreach ($rs as $r) {
 					
 					$data = array();
-					$data['title']	  = $r->fullname;
-					$data['email']	  = $r->email;
-					$data['department'] = array($r->dep_id => $r->dep_name);
-					$data['academy']	= array($r->academy_id => $r->ac_name);
-					$data['ac_title'] = $r->ac_title;
-					$data['name'] = $r->name;
-					$data['firstname'] = $r->firstname;
+//					if ($r->fullname)    $data['t']      = $r->fullname;
+					if ($r->email)       $data['e']      = $r->email;
+					if ($r->dep_id)      $data['d']      = array($r->dep_id => $r->dep_name);
+					if ($r->academy_id)  $data['a']      = array($r->academy_id => $r->ac_name);
+					if ($r->ac_title)    $data['at']     = $r->ac_title;
+					if ($r->name)        $data['n']      = $r->name;
+					if ($r->firstname)   $data['f']      = $r->firstname;
 					$result['lecturer'][$r->lecturer_id] = $data;
 					$count++;
 				}
@@ -349,25 +260,32 @@ class LFService {
 				
 						foreach ($rs2 as $r2) {
 							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
+							if ($r2->fullname)
+								$lecturer[$r2->lecturer_id] = $r2->fullname;
+							if ($r2->dep_name)
+								$department[$r2->dep_id]    = $r2->dep_name;
+							if ($r2->ac_name)
+								$academy[$r2->academy_id]   = $r2->ac_name;
 						}
 
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
+						if ( count( $lecturer ) )
+							$data['l'] = $lecturer;
+						if ( count( $department ) )
+							$data['d'] = $department;
+						if ( count( $academy ) )
+							$data['a'] = $academy;
 						
 					} // end sql2
 					
 					if ($insert_this_dataset) {
 					
-						$data['title']	 = $r->name;
-						$data['url']	   = $r->feed_url;
-						$data['series_id'] = $r->series_id;
-						$data['type']	  = $r->feedtype_desc;
-						$data['img']	   = $r->thumbnail_url;
-						$result['podcast'][$r->feed_id] = $data;
+						if ($r->name)           $data['t']   = $r->name;
+						if ($r->feed_url)       $data['u']   = $r->feed_url;
+						if ($r->series_id)      $data['s']   = $r->series_id;
+						if ($r->feedtype_desc)  $data['ft']  = $r->feedtype_desc;
+						if ($r->thumbnail_url)  $data['i']   = $r->thumbnail_url;
+
+						$result['podcast'][$r->feed_id]      = $data;
 						$count++;
 					
 					}
@@ -383,96 +301,13 @@ class LFService {
 			} // end !sql
 		}
 		
-		// ## Get slides result ###############################################
-		if ($mediatypes['slides']) {
-
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
-				  .'m.thumbnail_url, m.duration, f.name as formatname, '
-				  .'f.mimetype, s.name as seriesname '
-				  .'FROM mediaobject m NATURAL JOIN format f '
-				  .'left outer join series s on s.series_id = m.series_id '
-				  .'where (f.mimetype like "%virtpresenter%" or f.mimetype = "slides") '
-				  .'and (m.access_id = 1)'; // access_id 1 is public
-			if ($filter) {
-				$sql .= ' and ( (m.title like "%'.$filter.'%") or (m.description like "%'.$filter.'%") '
-					   .'or (s.name like "%'.$filter.'%") )';
-			}
-			if ($date) {
-				$sql .= ' and ( DATE(m.date) = "'.$date.'" )';
-			}
-
-			if ( $rs = Lernfunk::query($sql) ) {
-
-				$result['slides'] = array();
-				
-				foreach ($rs as $r) {
-
-					$data = array();
-					
-					$sql2 = 'SELECT ls.lecturer_id, l.ac_title, l.firstname, l.name, '
-						   .'TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) as fullname, '
-						   .'l.dep_id, d.academy_id, d.dep_name, d.dep_description, d.dep_number, a.ac_name '
-						   .'FROM lecturer_series ls natural join lecturer l '
-						   .'left outer join department d on l.dep_id = d.dep_id '
-						   .'left outer join academy a on d.academy_id = a.academy_id '
-						   .'where ls.series_id = '.$r->series_id; 
-					$insert_this_dataset = true;
-					if ($dep_filter) { 
-						$insert_this_dataset = false;
-						$sql2 .= ' and ( dep_name like "%'.$dep_filter.'%")';
-					}
-					$sql2 .= ';';
-
-					if ( $rs2 = Lernfunk::query($sql2) ) {
-
-						$lecturer   = array();
-						$department = array();
-						$academy	= array();
-				
-						foreach ($rs2 as $r2) {
-							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
-						}
-
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
-						
-					} // end sql2
-					
-					if ($insert_this_dataset) {
-						$data['title']	 = $r->title;
-						$data['desc']	  = $r->description;
-						$data['date']      = $r->date;
-						$data['img']	   = $r->thumbnail_url;
-						$data['duration']  = $r->duration;
-						$data['format']	= $r->formatname;
-						$data['mimetype']  = $r->mimetype;
-						$data['series']	= $r->seriesname;
-						$data['series_id'] = $r->series_id;
-						$result['slides'][$r->object_id] = $data;
-						$count++;
-					}
-					
-				}
-			} else { // end sql
-				if (mysql_error())
-					return json_encode( array(
-							'type' => 'error', 
-							'errtype' => 'sql_error', 
-							'errmsg' => mysql_error(), 
-							'sql_statement' => $sql
-						) );
-			} // end !sql
-		}
 
 		// ## Get series result ###############################################
 		if ($mediatypes['series'] && !$date) {
 
 			$sql = 'SELECT s.series_id, s.name, s.description_sh, '
-				.'s.description, s.thumbnail_url, s.term_id, t.term_lg '
+				.'s.description, s.thumbnail_url, s.term_id, t.term_lg, '
+				.'(SELECT count(*) FROM mediaobject m where m.series_id = s.series_id and m.access_id = 1) as count '
 				.'FROM series s natural join terms t '
 				.'where s.access_id = 1 ';
 			if ($filter) {
@@ -506,29 +341,37 @@ class LFService {
 
 						$lecturer   = array();
 						$department = array();
-						$academy	= array();
+						$academy    = array();
 				
 						foreach ($rs2 as $r2) {
 							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
+							if ($r2->fullname)
+								$lecturer[$r2->lecturer_id] = $r2->fullname;
+							if ($r2->dep_name)
+								$department[$r2->dep_id]    = $r2->dep_name;
+							if ($r2->ac_name)
+								$academy[$r2->academy_id]   = $r2->ac_name;
 						}
 
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
+						if ( count( $lecturer ) )
+							$data['l'] = $lecturer;
+						if ( count( $department ) )
+							$data['d'] = $department;
+						if ( count( $academy ) )
+							$data['a'] = $academy;
 						
 					} // end sql2
 					
 					if ($insert_this_dataset) {
-						$data['title']   = $r->name;
-						$data['term']    = $r->term_lg;
-						$data['term_id'] = $r->term_id;
-						$data['desc']    = $r->description;
-						$data['desc_sh'] = $r->description_sh;
-						$data['img']     = $r->thumbnail_url;
-						$result['series'][$r->series_id] = $data;
+						if ($r->name)            $data['t']      = $r->name;
+						if ($r->term_lg)         $data['te']     = $r->term_lg;
+						if ($r->term_id)         $data['ti']     = $r->term_id;
+						if ($r->description)     $data['de']     = $r->description;
+						if ($r->description_sh)  $data['ds']     = $r->description_sh;
+						if ($r->thumbnail_url)   $data['i']      = $r->thumbnail_url;
+						if ($r->count)           $data['c']      = $r->count;
+
+						$result['series'][$r->series_id]         = $data;
 						$count++;
 					}
 					
@@ -577,7 +420,8 @@ class LFService {
 		// ## MEDIATYPE = RECORDINGS ##########################################
 		if ($mediatype == 'recordings') {
 			
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
+			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, '
+				  .'date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
 				  .'m.memory_size, m.author, m.thumbnail_url, m.preview_url, m.image_url, '
 				  .'m.duration, m.location, m.add_url, m.add_url_text, f.mimetype, '
 				  .'f.name formatname, f.requirements, l.language_long, l.language_short, '
@@ -680,113 +524,8 @@ class LFService {
 			} // end !sql
 		}
 
-		// ## MEDIATYPE = VIDEO ###############################################
-		if ($mediatype == 'video') {
-			
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
-				  .'m.memory_size, m.author, m.thumbnail_url, m.preview_url, m.image_url, '
-				  .'m.duration, m.location, m.add_url, m.add_url_text, f.mimetype, '
-				  .'f.name formatname, f.requirements, l.language_long, l.language_short, '
-				  .'s.name seriesname, s.description seriesdesc, s.description_sh seriesdesc_sh, '
-				  .'s.thumbnail_url seriesthumb, s.add_url series_add_url, s.add_url_text series_add_url_text, '
-				  .'s.keywords, t.term_sh, t.term_lg, c.category '
-				  .'FROM mediaobject m '
-				  .'left outer join format f on m.format_id = f.format_id '
-				  .'left outer join language l on m.language_id = l.lang_id '
-				  .'left outer join series s on m.series_id = s.series_id '
-				  .'left outer join terms t on s.term_id = t.term_id '
-				  .'left outer join category c on s.cat_id = c.cat_id '
-				  .'where m.object_id = '.$identifier
-				  .' and f.mimetype like "%video%" and m.access_id = 1 '
-				  .'limit 0,1;';
-				  
-			if ( $rs = Lernfunk::query($sql) ) {
-
-				$result['details'] = array();
-				
-				foreach ($rs as $r) {
-
-					$data = array();
-					
-					$data['id']		   = $r->object_id;
-					$data['title']		= $r->title;
-					$data['desc']		 = $r->description;
-					$data['date']		 = $r->date;
-					$data['url']		  = $r->url;
-					$data['memsize']	  = $r->memory_size;
-					$data['author']	   = $r->author;
-					$data['thumb']		= $r->thumbnail_url;
-					$data['preview']	  = $r->preview_url;
-					$data['img']		  = $r->image_url;
-					$data['duration']	 = $r->duration;
-					$data['location']	 = $r->location;
-					$data['add_url']	  = $r->add_url;
-					$data['add_url_text'] = $r->add_url_text;
-					$data['mimetype']	 = $r->mimetype;
-					$data['format']	   = $r->formatname;
-					$data['requirements'] = $r->requirements;
-					$data['lang']		 = $r->language_long;
-					$data['lang_sh']	  = $r->language_short;
-					$data['term']		 = $r->term_lg;
-					$data['term_sh']	  = $r->term_sh;
-					$data['cat']		  = $r->category;
-					// make own subdir for series
-					$data['series']['id']		   = $r->series_id;
-					$data['series']['name']		 = $r->seriesname;
-					$data['series']['desc']		 = $r->seriesdesc;
-					$data['series']['desc_sh']	  = $r->seriesdesc_sh;
-					$data['series']['thumb']		= $r->seriesthumb;
-					$data['series']['add_url']	  = $r->series_add_url;
-					$data['series']['add_urk_text'] = $r->series_add_url_text;
-					$data['series']['keywords']	 = $r->keywords;
-					
-					$sql2 = 'SELECT ls.lecturer_id, l.ac_title, l.firstname, l.name, '
-						   .'TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) as fullname, '
-						   .'l.dep_id, d.academy_id, d.dep_name, d.dep_description, d.dep_number, a.ac_name '
-						   .'FROM lecturer_series ls natural join lecturer l '
-						   .'left outer join department d on l.dep_id = d.dep_id '
-						   .'left outer join academy a on d.academy_id = a.academy_id '
-						   .'where ls.series_id = '.$r->series_id.';'; 
-
-					if ( $rs2 = Lernfunk::query($sql2) ) {
-
-						$lecturer   = array();
-						$department = array();
-						$academy	= array();
-				
-						foreach ($rs2 as $r2) {
-							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
-						}
-
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
-						
-					} // end sql2
-				}
-				
-				$result['details'] = $data;
-				$result['type'] = 'result';
-				
-				if (__DEBUG__)
-					print_r($result);
-				return json_encode( $result );
-				
-			} else { // end sql
-				if (mysql_error())
-					return json_encode( array(
-							'type' => 'error', 
-							'errtype' => 'sql_error', 
-							'errmsg' => mysql_error(), 
-							'sql_statement' => $sql
-						) );
-			} // end !sql
-
 		// ## MEDIATYPE = LECTURER ############################################
-		} elseif ($mediatype == 'lecturer') {
+		if ($mediatype == 'lecturer') {
 
 			$sql = 'select l.lecturer_id, l.ac_title, l.firstname, l.name, l.email, '
 				  .'l.lec_url, d.dep_id, d.dep_name, a.academy_id, a.ac_name '
@@ -909,112 +648,6 @@ class LFService {
 						) );
 			} // end !sql
 
-		// ## MEDIATYPE = SLIDES ##############################################
-		} elseif ($mediatype == 'slides') {
-			
-			$sql = 'SELECT m.object_id, m.title, m.description, m.series_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.url, '
-				  .'m.memory_size, m.author, m.thumbnail_url, m.preview_url, m.image_url, '
-				  .'m.duration, m.location, m.add_url, m.add_url_text, f.mimetype, '
-				  .'f.name formatname, f.requirements, l.language_long, l.language_short, '
-				  .'s.name seriesname, s.description seriesdesc, s.description_sh seriesdesc_sh, '
-				  .'s.thumbnail_url seriesthumb, s.add_url series_add_url, s.add_url_text series_add_url_text, '
-				  .'s.keywords, t.term_sh, t.term_lg, c.category '
-				  .'FROM mediaobject m '
-				  .'left outer join format f on m.format_id = f.format_id '
-				  .'left outer join language l on m.language_id = l.lang_id '
-				  .'left outer join series s on m.series_id = s.series_id '
-				  .'left outer join terms t on s.term_id = t.term_id '
-				  .'left outer join category c on s.cat_id = c.cat_id '
-				  .'where m.object_id = '.$identifier
-				  .' and ( f.mimetype like "%virtpresenter%" or f.mimetype = "slides" ) '
-				  .'and m.access_id = 1 '
-				  .'limit 0,1;';
-				  
-			if ( $rs = Lernfunk::query($sql) ) {
-
-				$result['details'] = array();
-				
-				foreach ($rs as $r) {
-
-					$data = array();
-					
-					$data['id']		   = $r->object_id;
-					$data['title']		= $r->title;
-					$data['desc']		 = $r->description;
-					$data['date']		 = $r->date;
-					$data['url']		  = $r->url;
-					$data['memsize']	  = $r->memory_size;
-					$data['author']	   = $r->author;
-					$data['thumb']		= $r->thumbnail_url;
-					$data['preview']	  = $r->preview_url;
-					$data['img']		  = $r->image_url;
-					$data['duration']	 = $r->duration;
-					$data['location']	 = $r->location;
-					$data['add_url']	  = $r->add_url;
-					$data['add_url_text'] = $r->add_url_text;
-					$data['mimetype']	 = $r->mimetype;
-					$data['format']	   = $r->formatname;
-					$data['requirements'] = $r->requirements;
-					$data['lang']		 = $r->language_long;
-					$data['lang_sh']	  = $r->language_short;
-					$data['term']		 = $r->term_lg;
-					$data['term_sh']	  = $r->term_sh;
-					$data['cat']		  = $r->category;
-					// make own subdir for series
-					$data['series']['id']		   = $r->series_id;
-					$data['series']['name']		 = $r->seriesname;
-					$data['series']['desc']		 = $r->seriesdesc;
-					$data['series']['desc_sh']	  = $r->seriesdesc_sh;
-					$data['series']['thumb']		= $r->seriesthumb;
-					$data['series']['add_url']	  = $r->series_add_url;
-					$data['series']['add_urk_text'] = $r->series_add_url_text;
-					$data['series']['keywords']	 = $r->keywords;
-					
-					$sql2 = 'SELECT ls.lecturer_id, l.ac_title, l.firstname, l.name, '
-						   .'TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) as fullname, '
-						   .'l.dep_id, d.academy_id, d.dep_name, d.dep_description, d.dep_number, a.ac_name '
-						   .'FROM lecturer_series ls natural join lecturer l '
-						   .'left outer join department d on l.dep_id = d.dep_id '
-						   .'left outer join academy a on d.academy_id = a.academy_id '
-						   .'where ls.series_id = '.$r->series_id.';'; 
-
-					if ( $rs2 = Lernfunk::query($sql2) ) {
-
-						$lecturer   = array();
-						$department = array();
-						$academy	= array();
-				
-						foreach ($rs2 as $r2) {
-							$insert_this_dataset = true;
-							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
-						}
-
-						$data['lecturer']   = $lecturer;
-						$data['department'] = $department;
-						$data['academy']	= $academy;
-						
-					} // end sql2
-				}
-				
-				$result['details'] = $data;
-				$result['type'] = 'result';
-				
-				if (__DEBUG__)
-					print_r($result);
-				return json_encode( $result );
-
-			} else { // end sql
-				if (mysql_error())
-					return json_encode( array(
-							'type' => 'error', 
-							'errtype' => 'sql_error', 
-							'errmsg' => mysql_error(), 
-							'sql_statement' => $sql
-						) );
-			} // end !sql
-				
 		// ## MEDIATYPE = SERIES ##############################################
 		} elseif ($mediatype == 'series') {
 			
@@ -1212,7 +845,61 @@ class LFService {
 
 		} else { // end sql
 			if (mysql_error())
-				return json_encode( array('type' => 'error', 'errtype' => 'sql_error', 'errmsg' => mysql_error(), 'sql_statement' => $sql) );
+				return json_encode( array(
+						'type'          => 'error', 
+						'errtype'       => 'sql_error', 
+						'errmsg'        => mysql_error(), 
+						'sql_statement' => $sql
+					) );
+		} // end !sql
+		
+	}
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+	public static function getrecdates($args) {
+		
+		$year      = intval( $args['year']  );
+		$month     = intval( $args['month'] );
+		$nextmonth = intval( $args['month'] ) + 1;
+		if (strlen( $month ) < 2)
+			$month = '0'.$month;
+		if (strlen( $nextmonth ) < 2)
+			$nextmonth = '0'.$nextmonth;
+
+		$sql = 'select date_format( m.date, "%Y" ) as year, '
+			.'date_format( m.date, "%c" ) as month, '
+			.'date_format( m.date, "%e" ) as day '
+			.'from mediaobject m '
+			.'left outer join series s on s.series_id = m.series_id '
+			.'where m.access_id = 1 and s.access_id = 1 '
+			.'group by date_format( date, "%Y-%m-%d" )';
+
+		if ( $rs = Lernfunk::query($sql) ) {
+
+			$result = array();
+			
+			foreach ($rs as $r) {
+				if (!is_array( $result[$r->year] ))
+					$result[$r->year] = array();
+				if (!is_array( $result[$r->year][$r->month] ))
+					$result[$r->year][$r->month] = array();
+				$result[$r->year][$r->month][] = $r->day;
+			}
+
+			if (__DEBUG__)
+				print_r($result);
+			return json_encode( array('type' => 'result', 'recdates' => $result) );
+
+		} else { // end sql
+			if (mysql_error())
+				return json_encode( array(
+						'type'          => 'error', 
+						'errtype'       => 'sql_error', 
+						'errmsg'        => mysql_error(), 
+						'sql_statement' => $sql
+					) );
 		} // end !sql
 		
 	}
