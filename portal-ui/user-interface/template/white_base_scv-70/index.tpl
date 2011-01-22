@@ -66,19 +66,19 @@
 				</form>
 			</div>
 			<div id="searchcatblock">
-				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'series' } );">
+				<div class="category" onclick="setFilterHash( 'series' );">
 					<div class="object_count" id="count_series" ></div>
 					Veranstaltungen
 				</div>
-				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'recordings' } );">
+				<div class="category" onclick="setFilterHash( 'recordings' );">
 					<div class="object_count" id="count_recordings" ></div>
 					Aufzeichnungen
 				</div>
-				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'lecturer' } );">
+				<div class="category" onclick="setFilterHash( 'lecturer' );">
 					<div class="object_count" id="count_lecturer" ></div>
 					Personen
 				</div>
-				<div class="category" onclick="$.bbq.pushState( { 'cmd' : 'search', 'resultfilter' : 'podcast' } );">
+				<div class="category" onclick="setFilterHash( 'podcast' );">
 					<div class="object_count" id="count_podcast" ></div>
 					Podcast
 				</div>

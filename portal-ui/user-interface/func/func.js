@@ -32,13 +32,6 @@ loading = {
 		'podcast'    : false
 	}
 
-onDataLoaded = {
-		'series'     : null,
-		'recordings' : null,
-		'lecturer'   : null,
-		'podcast'    : null
-	}
-
 /**
  * Takes JSON-data as string and returns it formatted
  *   json   SON-data as string
@@ -91,27 +84,55 @@ function formatJSON( json ) {
  **/
 function calendar_init() {
 
-	// calendar initialization
-	$("#datepicker").datepicker({
-			firstDay: 1,
-			maxDate: '+0',
-			monthNames: ['Januar', 'Februar', 'März', 
-				'April', 'Mai', 'Juni', 
-				'Juli', 'August', 'September', 
-				'Oktober', 'November', 'Dezember'],
-			monthNamesShort: ['Jan', 'Feb', 'Mar', 
-				'Apr', 'Mai', 'Jun', 
-				'Jul', 'Aug', 'Sep', 
-				'Okt', 'Nov', 'Dez'],
-			dayNames: ['Montag', 'Dienstag', 'Mittwoch', 
-				'Donnerstag', 'Freitag', 'Samstag'],
-			dayNamesMin: ['So', 'Mo', 'Di', 
-				'Mi', 'Do', 'Fr', 'Sa'],
-			dateFormat: 'yy-mm-dd',
-			onSelect: function(dateText, inst) { 
-					doSearch( { 'cmd' : 'getData', 'args' : { 'date' : dateText } } );
+	// get recdates
+	if ( window.location.hash == '' ) {
+		requestWebservices( {
+				"cmd" : "getRecDates", 
+				"args" : { 
+					"year"  : '2011',
+					"month" : '01'
+				} 
+			}, function( data ) {
+				if (handleError( data )) {
+					recdates = data.recdates;
+
+					// calendar initialization
+					$("#datepicker").datepicker({
+							firstDay: 1,
+							maxDate: '+0',
+							monthNames: ['Januar', 'Februar', 'März', 
+								'April', 'Mai', 'Juni', 
+								'Juli', 'August', 'September', 
+								'Oktober', 'November', 'Dezember'],
+							monthNamesShort: ['Jan', 'Feb', 'Mar', 
+								'Apr', 'Mai', 'Jun', 
+								'Jul', 'Aug', 'Sep', 
+								'Okt', 'Nov', 'Dez'],
+							dayNames: ['Montag', 'Dienstag', 'Mittwoch', 
+								'Donnerstag', 'Freitag', 'Samstag'],
+							dayNamesMin: ['So', 'Mo', 'Di', 
+								'Mi', 'Do', 'Fr', 'Sa'],
+							dateFormat: 'yy-mm-dd',
+							onSelect: function(dateText, inst) { 
+									window.location.hash = '#cmd=search&date=' + dateText;
+								},
+							beforeShowDay: function( date ) {
+									var year = recdates[date.getFullYear()];
+									if ( year ) {
+										var month = year[date.getMonth()+1];
+										if ( month ) {
+											if ( $.inArray( date.getDate() + '', month ) >= 0 ) {
+												return { 0 : true, 1 : '' };
+											}
+										}
+									}
+									return { 0 : false, 1 : '' };
+								}
+						});
+
 				}
-		});
+			} );
+	}
 
 }
 
@@ -148,27 +169,13 @@ function tagcloud_init() {
 function init() {
 	
 	$(window).bind( 'hashchange', onHashChange );
-	
-	// create department picker
-	requestWebservices( {"cmd" : "getDepartments"},
-		function(data) {
-			if (handleError(data)) {
-				for ( academy in data.departments ) {
-					$('#department_selection').append('<div class="select_category">' + academy + '&nbsp;</div>');
-					for ( department in data.departments[academy] ) {
-						$('#department_selection').append('<div class="select" onclick=" select_department( this );">'
-							+ data.departments[academy][department].name + '</div>');
-					}
-				}
-			}
-		} );
 
 	// get start view
 	if ( window.location.hash == '' ) {
 		requestWebservices( {
 				"cmd" : "getNews", 
 				"args" : { 
-					"count"      : Math.max( cfg.newscount, cfg.newreccount ),
+					"count"          : Math.max( cfg.newscount, cfg.newreccount ),
 					"mimetypefilter" : cfg.newsrecfilter 
 				} 
 			}, loadStartpage );
@@ -219,7 +226,6 @@ function loadStartpage( data ) {
 				if ( n.mimetype.match( /.*video.*/ ) ) {
 					replaceData.mediatype = 'Video';
 					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-					//replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				} else if ( n.mimetype.match( /.*audio.*/ ) ) {
 					replaceData.mediatype = 'Audio';
@@ -228,7 +234,6 @@ function loadStartpage( data ) {
 				} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
 					replaceData.mediatype = 'virtPresenter';
 					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-					//replaceData.img = n.image_url ? n.image_url : 'img/player_nopreview.png';
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				}
 			}
@@ -315,6 +320,8 @@ function requestWebservices(request, onSuccess, onError) {
  * onError     function that is called if an error occured
  **/
 function getWebpage( url, onSuccess, onError ) {
+	// TODO
+	alert( 'we still need getWebpage' );
 
 	if (!onError) {
 		onError = function() {};
@@ -451,7 +458,6 @@ function onHashChange( e ) {
 			} else if ( isStrAttr( params.resultfilter ) 
 					&& ( !isStrAttr( currentState.resultfilter ) || params.resultfilter != currentState.resultfilter ) ) {
 				filterResults( params.resultfilter, true );
-				showSubmenu( params.resultfilter );
 			// go back from filtered result to unfiltered result
 			} else if ( !isStrAttr( params.resultfilter ) && isStrAttr( currentState.resultfilter ) ) {
 				filterResults( null, true );
@@ -472,7 +478,6 @@ function onHashChange( e ) {
 			}
 			if ( params.date )
 				args.date = params.date;
-			//alert(formatJSON($.toJSON(args)));
 			doSearch( { 'cmd' : 'getData', 'args' : args }, params.page, true );
 			args.page = params.page;
 			args.cmd = 'search';
@@ -488,68 +493,10 @@ function onHashChange( e ) {
 		loadPage( params.title, url );
 	}
 
-	//alert( $.toJSON( params ) );
 	// save current state
 	currentState = params;
 }
 
-/*
- *	Imported from the jsolait library
- *		http://jsolait.net
- *	The jsolait library is licensed under the terms of the GNU LGPL
- **/
-// LZW-compress a string
-function lzw_encode(s) {
-	var dict = {};
-	var data = (s + "").split("");
-	var out = [];
-	var currChar;
-	var phrase = data[0];
-	var code = 256;
-	for (var i=1; i<data.length; i++) {
-		currChar=data[i];
-		if (dict[phrase + currChar] != null) {
-			phrase += currChar;
-		}
-		else {
-			out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
-			dict[phrase + currChar] = code;
-			code++;
-			phrase=currChar;
-		}
-	}
-	out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
-	for (var i=0; i<out.length; i++) {
-		out[i] = String.fromCharCode(out[i]);
-	}
-	return out.join("");
-}
-
-// Decompress an LZW-encoded string
-function lzw_decode(s) {
-	var dict = {};
-	var data = (s + "").split("");
-	var currChar = data[0];
-	var oldPhrase = currChar;
-	var out = [currChar];
-	var code = 256;
-	var phrase;
-	for (var i=1; i<data.length; i++) {
-		var currCode = data[i].charCodeAt(0);
-		if (currCode < 256) {
-			phrase = data[i];
-		}
-		else {
-			phrase = dict[currCode] ? dict[currCode] : (oldPhrase + currChar);
-		}
-		out.push(phrase);
-		currChar = phrase.charAt(0);
-		dict[code] = oldPhrase + currChar;
-		code++;
-		oldPhrase = phrase;
-	}
-	return out.join("");
-}
 
 
 function handleSearchResult( data, part, reqMediatype ) {
@@ -572,21 +519,77 @@ function handleSearchResult( data, part, reqMediatype ) {
 			// sort and prepare data
 			for (var id in data.data[mediatype]) {
 				var obj = {};
-				obj.department = data.data[mediatype][id].d  ? data.data[mediatype][id].d  : [];
-				obj.academy    = data.data[mediatype][id].a  ? data.data[mediatype][id].a  : {};
-				obj.lecturer   = data.data[mediatype][id].l  ? data.data[mediatype][id].l  : {};
-				obj.title      = data.data[mediatype][id].t  ? data.data[mediatype][id].t  : '';
-				obj.desc       = data.data[mediatype][id].de ? data.data[mediatype][id].de : '';
-				obj.date       = data.data[mediatype][id].da ? data.data[mediatype][id].da : '';
-				obj.img        = data.data[mediatype][id].i  ? data.data[mediatype][id].i  : '';
-				obj.duration   = data.data[mediatype][id].du ? data.data[mediatype][id].du : '';
-				obj.format     = data.data[mediatype][id].f  ? data.data[mediatype][id].f  : '';
-				obj.mimetype   = data.data[mediatype][id].m  ? data.data[mediatype][id].m  : '';
-				obj.series     = data.data[mediatype][id].s  ? data.data[mediatype][id].s  : '';
-				obj.series_id  = data.data[mediatype][id].si ? data.data[mediatype][id].si : '';
-				obj.cou_id     = data.data[mediatype][id].ci ? data.data[mediatype][id].ci : '';
+				var r   = data.data[mediatype][id];
+				obj.department = r.d  ? r.d  : [];
+				obj.academy    = r.a  ? r.a  : {};
+				obj.lecturer   = r.l  ? r.l  : {};
+				obj.title      = r.t  ? r.t  : '';
+				obj.desc       = r.de ? r.de : '';
+				obj.date       = r.da ? r.da : '';
+				obj.img        = r.i  ? r.i  : '';
+				obj.duration   = r.du ? r.du : '';
+				obj.format     = r.f  ? r.f  : '';
+				obj.mimetype   = r.m  ? r.m  : '';
+				obj.series     = r.s  ? r.s  : '';
+				obj.series_id  = r.si ? r.si : '';
+				obj.cou_id     = r.ci ? r.ci : id;
 				obj.mediatype  = mediatype;
 				obj.id         = id;
+				lastSearch.data.push( obj );
+				typecount++;
+			}
+
+		} else if ( mediatype == 'lecturer' ) {
+			for (var id in data.data[mediatype]) {
+				var obj = {};
+				var r   = data.data[mediatype][id];
+				obj.department = r.d  ? r.d  : [];
+				obj.academy    = r.a  ? r.a  : {};
+				obj.email      = r.e  ? r.e  : '';
+				obj.ac_title   = r.at ? r.at : '';
+				obj.name       = r.n  ? r.n  : '';
+				obj.firstname  = r.f  ? r.f  : '';
+				obj.title      = obj.ac_title + ' ' + obj.firstname + ' ' + obj.name;
+				obj.mediatype  = mediatype;
+				obj.id         = id;
+				lastSearch.data.push( obj );
+				typecount++;
+			}
+
+		} else if ( mediatype == 'podcast' ) {
+			for (var id in data.data[mediatype]) {
+				var obj = {};
+				var r   = data.data[mediatype][id];
+				obj.department    = r.d  ? r.d  : [];
+				obj.academy       = r.a  ? r.a  : {};
+				obj.lecturer      = r.l  ? r.l  : {};
+				obj.title         = r.t  ? r.t  : '';
+				obj.url           = r.u  ? r.u  : '';
+				obj.series_id     = r.s  ? r.s  : '';
+				obj.feedtype_desc = r.ft ? r.ft : '';
+				obj.img           = r.i  ? r.i  : '';
+				obj.mediatype     = mediatype;
+				obj.id            = id;
+				lastSearch.data.push( obj );
+				typecount++;
+			}
+
+		} else if ( mediatype == 'series' ) {
+			for (var id in data.data[mediatype]) {
+				var obj = {};
+				var r   = data.data[mediatype][id];
+				obj.department    = r.d  ? r.d  : [];
+				obj.academy       = r.a  ? r.a  : {};
+				obj.lecturer      = r.l  ? r.l  : {};
+				obj.title         = r.t  ? r.t  : '';
+				obj.term          = r.te ? r.te : '';
+				obj.term_id       = r.ti ? r.ti : '';
+				obj.desc          = r.de ? r.de : '';
+				obj.desc_sh       = r.ds ? r.ds : '';
+				obj.img           = r.i  ? r.i  : '';
+				obj.mobjcount     = r.c  ? r.c  : '';
+				obj.mediatype     = mediatype;
+				obj.id            = id;
 				lastSearch.data.push( obj );
 				typecount++;
 			}
@@ -613,19 +616,14 @@ function handleSearchResult( data, part, reqMediatype ) {
 		}
 	}
 	lastSearch.count.all = countall;
-//	lastSearch = currData;
 	currData = lastSearch;
 
 
 	if ( reqMediatype ) {
 		loading[ reqMediatype ] = false;
-		if ( onDataLoaded[ reqMediatype ] )
-			onDataLoaded[ reqMediatype ]();
 	} else {
 		for (t in loading) {
 			loading[t] = false;
-			if ( onDataLoaded[t] )
-				onDataLoaded[t]();
 		}
 	}
 
@@ -656,6 +654,8 @@ function handleSearchResult( data, part, reqMediatype ) {
 //			goToPage( parseInt( page ) );
 
 		$(window).trigger( 'hashchange' );
+		filterResults( mediatype, true );
+
 	}
 
 }
@@ -805,16 +805,23 @@ function triggerSearch() {
 	}
 }
 
+function setFilterHash( m ) {
+	if ($.bbq.getState( 'search' ) && $.bbq.getState( 'resultfilter' ) && $.bbq.getState( 'filter' )) {
+		filterResults( m, true );
+	} else {
+		window.location.hash = '#cmd=search&resultfilter='  + m
+			+ ($.bbq.getState( 'filter' ) ? '&filter=' + $.bbq.getState( 'filter' ) : '');
+	}
+}
 
 function filterResults( mediatype, hashIsSet, subFilter ) {
 
-//	alert( formatJSON( $.toJSON( currData ) ) );
-
 	if (loading[ mediatype ]) {
-		alert( $.toJSON( loading ) );
-//		alert( 'loading ' + mediatype );
-		onDataLoaded[ mediatype ] == 
-			eval( 'function() { filterResults( ' + mediatype + ', ' + hashIsSet + ', ' + subFilter + ' ); }' );
+		doCleanUp();
+		loadTemplate( 'loading.tpl', null, 
+			setContent,
+			function(data) { $('#content').html('loading...'); }, 
+			function(data) { $('#content').html('loading...'); } );
 		return;
 	}
 	if (!lastSearch) {
@@ -825,19 +832,7 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 	$('#titlebox').attr( 'class', 'resultfilter_' + mediatype );
 
 	if ( !hashIsSet ) {
-		var params = { 'resultfilter' : mediatype };
-		if (subFilter) 
-			params.subfilter = $.toJSON(subFilter);
-		if ( $.bbq.getState( 'cmd' ) )
-			params.cmd = $.bbq.getState( 'cmd' );
-		if ( $.bbq.getState( 'filter' ) )
-			params.filter = $.bbq.getState( 'filter' );
-		if ( $.bbq.getState( 'date' ) )
-			params.date = $.bbq.getState( 'date' );
-		if ( $.bbq.getState( 'department' ) )
-			params.department = $.bbq.getState( 'department' );
-				
-		$.bbq.pushState( params , 2 );
+		alert( 'WARNING: Hash was not set in filterResults' );
 	}
 
 	$('#titlebox_bottom').html('');
@@ -1107,6 +1102,8 @@ function addTab(tab_id, name, func) {
 
 
 function showSubfilter( filter_by, mediatype ) {
+	// TODO
+	alert( 'we still need showSubfilter' );
 	$('div.rightbox_tab').removeClass('rightbox_tab_active');
 	$('#rightbox_tab_' + filter_by ).addClass('rightbox_tab_active');
 	var a = [];
@@ -1234,6 +1231,8 @@ function loadPage(title, page) {
 
 
 function toLastSavepoint() {
+	// TODO
+	alert( 'we still need toLastSavepoint' );
 	$('div.pager').html( pagerBuffer[ pagerBuffer.length - 1 ] );
 	$('#content').html( contentBuffer[ contentBuffer.length - 1 ] );
 	$('div.pager').css( 'display', pStyleBuffer ); 
@@ -1301,27 +1300,6 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 
 					// if recording is virtpresenter recording
 					} else if ( data.mimetype.match( /.*virtpresenter.*/ ) ) {
-						/*
-						var slides = $.deparam.querystring( data.url );
-						alert( $.toJSON( slides ) );
-						if ( slides.seminar ) {
-							alert( 'http://video.lernfunk.de/lectures/' + slides.seminar + '/' 
-								+ slides.lecture + '/data/search.xml' );
-							getWebpage( 'http://video.lernfunk.de/lectures/' + slides.seminar + '/' 
-								+ slides.lecture + '/data/search.xml', function( data ) { 
-									var ids = data.match(/<slide ID="\d+(?=")/g);
-									var s = [];
-									for (i in ids) {
-										ids[i] = ids[i].replace(/<slide ID="/, '');
-										s.push( 'http://video.lernfunk.de/lectures/' 
-												+ slides.seminar + '/' + slides.lecture 
-												+ '/assets/Slide' + ids[i] + '.swf' );
-									}
-									alert( ids );
-									alert( s );
-								} );
-						}
-						*/
 						data.player = '<iframe src="' + data.url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
 							+ '<p style="text-align: right;"><a href="' + data.url + '">Standalone-Player</a></p>';
 
@@ -1333,33 +1311,6 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					}
 					loadTemplate( 'recordingDetails.tpl', data, setContent );
 
-					// Only for set of slides:
-					if ( data.mimetype == 'slides' ) {
-						getWebpage( data.location + 'slides', function( data ) { 
-								var slides = data.split( '\n' );
-								if ( slides[ slides.length - 1 ] == '' )
-									slides.pop();
-								var base_url = unescape( this.data.split('=')[1]).replace(/slides$/, '');
-								var out = '<div style="display: table;"><div style="display: table-row;">';
-								for ( s in slides) {
-									out += '<div style="display: table-cell; padding-left: 10px; padding-right: 10px; border-right: 1px solid silver;">'
-										+ '<a href="' + base_url + slides[s] + '" class="slideshow" rel="slideshow">'
-										+ '<img src="' + base_url + slides[s] + '" style="max-height: 275px;" alt="" />'
-										+ '</a></div>';
-								}
-								out += '</div></div>';
-								$('#slideplayer').html( out );
-								$('a.slideshow').fancybox( { 
-										'transitionIn' : 'none', 
-										'transitionOut' : 'none', 
-										'centerOnScroll' : true,
-										'speedIn' : 0, 
-										'speedOut' : 0,
-										'changeSpeed' : 0,
-										'type' : 'image'
-									} );
-							} );
-					}
 				/**** PODCAST ****************************************************/
 				} else if ( mediatype == 'podcast' ) {
 					setBackPager();
@@ -1386,6 +1337,9 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 							tpl.seriesdetails.info.departmentlink, 
 							tpl.seriesdetails.info.departmentblock );
 					var firstRecording = { 'result' : {} };
+					for (var i in data.recordings) {
+						data.recordings[i].cou_id = data.recordings[i].id;
+					}
 					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
 					data.firstrecording_title    = firstRecording.result.title;
 					data.firstrecording_mimetype = firstRecording.result.mimetype;
@@ -1394,25 +1348,18 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					loadTemplate( 'seriesDetails.tpl', data, function( data ) {
 								$('#content').html( data ).ready( function() {
 									var p = $.deparam.fragment();
-									// alert( $.toJSON( p ) );
-									// alert( $.toJSON( seriesRecBuf[p.couid] ) );
-									if ( p.couid )
+									if ( p.couid ) {
 										loadRec( '#mediaobjectplayer', p.couid );
+									}
 								} );
 							} );
 				} else {
-					// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-					alert( 'mediatype: ' + mediatype );
-					alert( formatJSON( $.toJSON( data ) ) );
+					// TODO 
 				}
 			}
 		},
 		function(err) {
-			// DEBUG
-			// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-			for ( key in err ) {
-				alert( key + ' -> ' + err[key] );
-			}
+			// TODO
 		});
 
 }
@@ -1435,10 +1382,13 @@ function loadRec( target, couid ) {
 		}
 		format_links += fillTemplate( tpl.seriesdetails.rec_link, seriesRecBuf[couid][i] );
 	}
-	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, 
-				{ 'title' : first.title, 'format_links' : format_links, 'playerid':'playerplaceholder' } ) ).ready( function() { 
-					loadVideo( '#playerplaceholder', couid, first.id ); 
-				} );
+	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, { 
+			'title'        : first.title, 
+			'format_links' : format_links, 
+			'playerid'     : 'playerplaceholder' 
+		} ) ).ready( function() { 
+			loadVideo( '#playerplaceholder', couid, first.id ); 
+		} );
 }
 
 
@@ -1453,10 +1403,13 @@ function loadRecording( target, recording ) {
 		}
 		format_links += fillTemplate( tpl.seriesdetails.rec_link, recording.data[i] );
 	}
-	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, 
-				{ 'title' : recording.title, 'format_links' : format_links, 'playerid':'playerplaceholder' } ) ).ready( function() { 
-					loadPlayer( '#playerplaceholder', first.mimetype, first.url, first.preview ); 
-				} );
+	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, { 
+			'title'        : recording.title, 
+			'format_links' : format_links, 
+			'playerid'     : 'playerplaceholder' 
+		} ) ).ready( function() { 
+			loadPlayer( '#playerplaceholder', first.mimetype, first.url, first.preview ); 
+		} );
 }
 
 
@@ -1598,9 +1551,9 @@ function setBackPager() {
 	pStyleBuffer.push( $('div.pager').css( 'display' ) ); 
 	pagerBuffer.push( $('div.pager').html() );
 	contentBuffer.push( $('#content').html() );
-	$('div.pager').css('display', 'block');
+	//$('div.pager').css('display', 'block');
+	$('div.pager').css('display', 'none');
 	$('div.pager').html( '<div class="pagelink" id="pagelink_back" onclick="history.back();">zur&uuml;ck</div>' );
-	//$('div.pager').html( '<div class="pagelink" id="pagelink_back" onclick="window.back();">zur&uuml;ck</div>' );
 }
 
 
@@ -1643,7 +1596,9 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 		var recording = shallowCopy( rel_rec[cou_id][0] );
 		recording.link = link;
 		recording.rec_data = $.toJSON( { 'title' : title, 'data' : rec_data } ).replace(/"/g, "'");
-		recording.desc75 = (recording.desc.length <= 75) ? recording.desc : recording.desc.substr(0, 72) + '...';
+		recording.desc75 = (recording.desc.length <= 75) 
+			? recording.desc 
+			: recording.desc.substr(0, 72) + '...';
 		// check image
 		if (!recording.img) {
 			recording.img = 'template/' + cfg.tplName + '/' + cfg.stdRecPreImg;
@@ -1666,11 +1621,14 @@ function makeSeriesTable( data ) {
 		if ( ! term_series[ s.term_id ] ) {
 			term = {};
 			term.name = s.term;
-			term.series = [ '<tr onclick="getDetails(\'series\', ' + series_id + ');" class="link"><td>' + s.name + '</td><td>' + s.desc + '</td></tr>' ];
+			term.series = [ '<tr onclick="getDetails(\'series\', ' 
+				+ series_id + ');" class="link"><td>' + s.name 
+				+ '</td><td>' + s.desc + '</td></tr>' ];
 			term_series[ s.term_id ] = term;
 			term_ids.push( s.term_id );
 		} else {
-			term_series[ s.term_id ].series.push( '<tr onclick="getDetails(\'series\', ' + series_id + ');" class="link"><td>' 
+			term_series[ s.term_id ].series.push( '<tr onclick="getDetails(\'series\', ' 
+				+ series_id + ');" class="link"><td>' 
 				+ s.name + '</td><td>' + s.desc + '</td></tr>' );
 		}
 	}
@@ -1686,7 +1644,6 @@ function makeSeriesTable( data ) {
 
 function fillTemplate( template, replaceData ) {
 
-//	alert( '(:(format):(Flash HD):(123):(qwe):)'.replace( '(:(format):(Flash HD):(123):(qwe):)', '___' ) );
 	if ( typeof(replaceData) == 'undefined' )
 		return template;
 
@@ -1741,18 +1698,14 @@ function fillTemplate( template, replaceData ) {
  **/           
 function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest ) {
 	if (! onError) {
-		onError = function( err ) { alert( 'ERROR: Could not load template "' + template + '"' ); }
+		onError = function( err ) { 
+			// TODO
+		}
 	}
 	if ( templates[ template ] ) {
 		var data = templates[ template ];
 		if ( typeof(replaceData) != 'undefined' )
 			data = fillTemplate( data, replaceData );
-		/*
-		for ( key in replaceData ) {
-			re = new RegExp( '\\(:' + key + ':\\)', 'g' );
-			data = data.replace( re, replaceData[ key ] );
-		}
-		*/
 		if (onSuccess)
 			onSuccess( data );
 	} else {
@@ -1768,19 +1721,6 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 				if ( typeof(replaceData) != 'undefined' ) {
 					data = fillTemplate( data, replaceData );
 				}
-				/*
-				var all = '';
-				for ( key in replaceData ) {
-					all += '(:' + key + ':) ';
-				}
-				try {
-					replaceData.__all__ = all;
-				} catch(err) {}
-				for ( key in replaceData ) {
-					re = new RegExp( '\\(:' + key + ':\\)', 'g' );
-					data = data.replace( re, replaceData[ key ] );
-				}
-				*/
 				if (onSuccess)
 					onSuccess( data );
 			},
@@ -1791,6 +1731,8 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 
 
 function showSubmenu( menu_item ) {
+	// TODO
+	alert( 'we still need showSubmenu' );
 	var subfilter = '';
 	if ( menu_item == 'recordings' || menu_item == 'slides' ) {
 		subfilter += makeSubmenuTab( 'format',     menu_item, 'Format'      );
@@ -1821,6 +1763,8 @@ function showSubmenu( menu_item ) {
  * label       the label of the tab
  **/
 function makeSubmenuTab( filter_by, mediatype, label ) {
+	// TODO
+	alert( 'we still need makeSubmenuTab' );
 	return '<div class="rightbox_tab" id="rightbox_tab_' + filter_by + '" onclick=" showSubfilter( \'' 
 		+ filter_by + '\', \'' + mediatype + '\' ); ">' + label + '</div>';
 }

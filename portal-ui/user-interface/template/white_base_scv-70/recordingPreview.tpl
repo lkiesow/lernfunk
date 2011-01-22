@@ -12,6 +12,7 @@
 				<div class="infoblock">(:format:)</div>
 				(:lecturer:)
 				(:department:)
+				(:cou_id:)
 			</div>
 			<div class="td" style="width: 100%;">
 				(:desc:)
