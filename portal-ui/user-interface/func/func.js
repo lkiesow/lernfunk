@@ -1,5 +1,8 @@
 ﻿var dep_select_hide_interval = null;
 
+var before_counter = '';
+var after_counter  = '';
+
 //var loadingHTML = 'loading...';
 
 // all data we got from our last search
@@ -243,10 +246,10 @@ function loadStartpage( data ) {
 			function( data ) { setContent( data ); calendar_init(); tagcloud_init(); } );
 
 		// set counter
-		$('#count_recordings').html('(' + data.news.count.recording + ')');
-		$('#count_series').html('('     + data.news.count.series    + ')');
-		$('#count_lecturer').html('('   + data.news.count.lecturer  + ')');
-		$('#count_podcast').html('('    + data.news.count.feed      + ')');
+		$('#count_recordings').html( before_counter + data.news.count.recording + after_counter );
+		$('#count_series').html(     before_counter + data.news.count.series    + after_counter );
+		$('#count_lecturer').html(   before_counter + data.news.count.lecturer  + after_counter );
+		$('#count_podcast').html(    before_counter + data.news.count.feed      + after_counter );
 	}
 }
 
@@ -607,7 +610,7 @@ function handleSearchResult( data, part, reqMediatype ) {
 
 		lastSearch.count[ mediatype ] = typecount;
 		// set counter
-		$('#count_' + mediatype).html('(' + typecount + ')');
+		$('#count_' + mediatype).html( before_counter + typecount + after_counter );
 	}
 	var countall = 0;
 	for (var i in lastSearch.count) {
