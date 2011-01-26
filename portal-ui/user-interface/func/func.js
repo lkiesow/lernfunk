@@ -750,6 +750,21 @@ function goToPage( page, locaIsSet ) {
 		}
 		onContentLoaded();
 		window.scrollTo( 0, 0 );
+
+		var resultFilter = $.bbq.getState( 'resultfilter' );
+		if ( resultFilter == 'series' ) {
+			$('#pagetitle').text( 'Suchergebnisse in der Kategorie Veranstaltungen' );
+		} else if ( resultFilter == 'recordings' ) {
+			$('#pagetitle').text( 'Suchergebnisse in der Kategorie Aufzeichnungen' );
+		} else if ( resultFilter == 'lecturer' ) {
+			$('#pagetitle').text( 'Suchergebnisse in der Kategorie Dozenten' );
+		} else if ( resultFilter == 'podcast' ) {
+			$('#pagetitle').text( 'Suchergebnisse in der Kategorie Podcasts' );
+		} else {
+			$('#pagetitle').text( 'Suchergebnisse in allen Kategorien' );
+		}
+		if ( resultFilter )
+			$('#titlebox_bottom').show();
 	}
 }
 

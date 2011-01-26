@@ -1,3 +1,7 @@
+<script type="text/javascript">
+	$('#pagetitle').text( '(:name:)' );
+	$('#titlebox_bottom').hide();
+</script>
 <h3>Vorlesung: (:name:)
 <div style="float: right; font-size: smaller; font-weight: normal; padding-right: 20px;">(:term:)</div>
 </h3>
