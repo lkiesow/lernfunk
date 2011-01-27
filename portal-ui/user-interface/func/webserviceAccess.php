@@ -2,7 +2,7 @@
    if (!array_key_exists('request' , $_REQUEST) || !array_key_exists('url' , $_REQUEST))
       exit();
 
-   header('Content-Type: text/plain; charset=utf8');
+   header('Content-Type: text/plain; charset=utf-8');
    $src = get_src(stripslashes($_REQUEST['url']).'?request='.urlencode(stripslashes($_REQUEST['request'])));
    $pos = strpos($src, '{') ;
    if ($pos !== false) {

@@ -23,8 +23,8 @@ $cfg = array(
 	'stdRecPreImg'   => 'img/recording_nopreview.png',
 
 	// template to use
-//	'tplName'        => 'neu',
-	'tplName'        => 'white_base_scv-70',
+	'tplName'        => 'neu',
+//	'tplName'        => 'white_base_scv-70',
 
 	// webservice definition
 	'webservices'    => array(
