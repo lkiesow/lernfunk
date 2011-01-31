@@ -429,6 +429,12 @@ div.filter_select {
 
 div.series_update {
         padding: 15px;
+        border-bottom: 1px solid #999999;
+}
+
+div.series_update:hover {
+        background-color: #dddddd;
+        padding: 15px;
 }
 
 div.new_recording {
@@ -480,14 +486,14 @@ div.titlebox_tab {
         margin: 0px;
         margin-left: 5px;
         font-size: smaller;
-        background-color: #999999;
+        background: url(../img/titlebox.png);
         color: #ffffff;
         cursor: pointer;
 }
 
 div.titlebox_tab_active {
-        background-color: #ffffff !important;
-        color: #999999 !important;
+       background: url(../img/titlebox_active.png);
+        color: #111111 !important;
 }
 
 h4 {
@@ -523,7 +529,7 @@ img.thumb {
 }
 
 th {
-        background-color: #dddddd;
+        background-color: #cccccc;
         padding: 5px;
 }
 
@@ -533,8 +539,10 @@ td {
 
 .onover_graybg:hover {
         background-color: #dddddd;
+        cursor: pointer;
 }
 
-tr.link {
+tr.link:hover {
         cursor: pointer;
+        background-color: #dddddd;
 }
