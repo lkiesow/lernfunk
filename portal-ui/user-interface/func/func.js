@@ -452,7 +452,9 @@ function onHashChange( e ) {
 			} else if ( !params.page && currentState.page ) {
 				goToPage( 1, true );
 			// current page was a special page (details), this is regular
-			} else if ( isStrAttr( currentState.details ) && !isStrAttr( params.details ) ) {
+			} else if ( isStrAttr( currentState.details ) && !isStrAttr( params.details ) 
+				&& ( !isStrAttr( currentState.resultfilter ) || params.resultfilter == currentState.resultfilter ) ) {
+				alert( formatJSON( $.toJSON( params ) ) );
 				goToPage( (params.page ? parseInt( params.page ) : 1) , true );
 			// new page is a special page (details)
 			} else if ( isStrAttr( params.details ) && isStrAttr( params.mediatype ) && isStrAttr( params.identifier ) ) {
