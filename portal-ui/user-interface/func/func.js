@@ -449,7 +449,8 @@ function onHashChange( e ) {
 			if ( params.page && ( currentState.page != params.page ) ) {
 				goToPage( parseInt( params.page ), true );
 			// no page in hash -> go to first page
-			} else if ( !params.page && currentState.page ) {
+			} else if ( ( !params.page && currentState.page )
+				&& ( !isStrAttr( currentState.resultfilter ) || params.resultfilter == currentState.resultfilter ) ) {
 				goToPage( 1, true );
 			// current page was a special page (details), this is regular
 			} else if ( isStrAttr( currentState.details ) && !isStrAttr( params.details ) 
