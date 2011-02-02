@@ -39,7 +39,7 @@
                                                 <center><img src="(:thumb:)" /></center>
                                         </div>
                                 </div>
-                                <div class="td" style="min-width: 300px;">
+                                <div class="td" style="width: 40%; min-width: 300px;">
                                         <h4>Vorlesungsaufzeichnungen</h4>
                                         <div style="padding-left: 20px; max-height: 350px; overflow-y: auto; border-left: 2px solid #bbbbbb;">
                                                 (:recordings:)
