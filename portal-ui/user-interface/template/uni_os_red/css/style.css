@@ -305,11 +305,27 @@ input#search {
         border: 1px solid grey;
 }
 
+div.clearbutton {
+        position:absolute;
+        width: 20px;
+        height:20px;
+        background: url("../img/clearbutton.png") no-repeat;
+        margin-top:-21px;
+        margin-left:199px;
+}
+
 input#searchbutton {
         background: url("../img/lupe.png") no-repeat;
         width: 20px;
         height: 20px;
         border: none;
+        margin-left: 5px;
+        cursor: pointer;
+}
+
+input#searchbutton:active {
+        background: url("../img/lupe.png") no-repeat #eeeeee;
+        border: 1px solid black;
 }
 
 input#department_search {

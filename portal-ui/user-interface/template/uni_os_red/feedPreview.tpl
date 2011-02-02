@@ -6,15 +6,13 @@
 <div>
         <div class="tbl objcontainer">
                 <div class="tr">
-                        <div class="td" style="max-width: 250px; min-width: 150px;">
-                                (:lecturer:) (:series_id:)
-                                (:department:)
+                        <div >
+                                (:lecturer:)
+                                <span style="font-size: 11px; display:inline;">(:department:)</span>
                         </div>
                         <div class="td" style="width: 100%;">
                                 <h4>Veranstaltung</h4>
                                 <div class="infoblock"><a href="javascript: getDetails('series', (:series_id:));">(:title:)</a></div>
-                                <h4>Typ</h4>
-                                <div class="infoblock">(:type:)</div>
                                 <h4>Abbonieren</h4>
                                 <div class="infoblock">
                                         <a href="(:url:)">
@@ -32,3 +30,21 @@
                 </div>
         </div>
 </div>
+
+
+
+<!--<div class="tbl objcontainer">
+                <div class="tr">
+                        <div class="td">
+                                (:lecturer:)
+                                <p>(:desc_sh:)</p>
+                                <span style="font-size: 11px;">(:mobjcount:) <b>Medien</b> &#124; (:term:) &#124; (:department:)</span>
+                        </div>
+                        <div class="td" style="padding-right: 25px;">
+                                <br />
+                                <a href="javascript: getDetails('series', (:id:)); ">
+                                  <img class="thumb" src="(:img:)" alt="(:title:)" />
+                                </a>
+                        </div>
+                </div>
+        </div>     -->

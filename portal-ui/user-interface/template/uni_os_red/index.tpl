@@ -42,6 +42,7 @@
                                         <div id="searchline">
                                                 <input type="text" id="search" name="search" value="Suche"
                                                         onfocus="clear_inp(this, 'Suche');" onblur="leave_inp(this, 'Suche');" />
+                                                <div class="clearbutton"></div>
                                         <!--
                                         </div>
                                         <div>
