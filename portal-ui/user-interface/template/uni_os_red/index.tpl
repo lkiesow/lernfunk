@@ -9,6 +9,15 @@
 <!-- autoinsert for includes (js-files, ...) -->
 (:includes:)
 
+<script type="text/javascript">
+$(document).ready(function(){
+         $("#clear").click(function(){
+             $("#search").val("");
+         });
+});
+</script>
+
+
 <title>virtUOS::Lernfunk</title>
 </head>
 <body onload="init();">
@@ -42,7 +51,7 @@
                                         <div id="searchline">
                                                 <input type="text" id="search" name="search" value="Suche"
                                                         onfocus="clear_inp(this, 'Suche');" onblur="leave_inp(this, 'Suche');" />
-                                                <div class="clearbutton"></div>
+                                                <div id="clear" class="clearbutton"></div>
                                         <!--
                                         </div>
                                         <div>
