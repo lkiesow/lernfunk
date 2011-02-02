@@ -21,6 +21,9 @@
                         <a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
                         <p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
                 </div>
+
+                <div class="hakengr"></div>
+
                 <div id="titlebox">
                         <h1 class="previwe" id="pagetitle">
                                 Willkommen auf Lernfunk.de
@@ -50,7 +53,7 @@
                                                         onfocus="trigger_dep_select_hide(false)"
                                                         onblur=" trigger_dep_select_hide(true);" />
                                         -->
-                                                <input type="submit" value="suchen" id="search_submit" />
+                                                <input id="searchbutton" type="submit" value="" id="search_submit" />
                                         </div>
                                         <!--
 
@@ -64,25 +67,35 @@
                                         -->
                                 </form>
                         </div>
+
+
+
+
+
                         <div id="searchcatblock">
+                                <div class="haken1"></div>
                                 <div id="categorySelector-series"
                                         class="category categorySelector cat1"
                                         onclick="setFilterHash( 'series' );">
+
                                         <div class="object_count" id="count_series" ></div>
                                         Veranstaltungen
                                 </div>
+                                 <div class="haken2"></div>
                                 <div id="categorySelector-recordings"
                                         class="category categorySelector cat2"
                                         onclick="setFilterHash( 'recordings' );">
                                         <div class="object_count" id="count_recordings" ></div>
                                         Aufzeichnungen
                                 </div>
+                                <div class="haken3"></div>
                                 <div id="categorySelector-lecturer"
                                         class="category categorySelector cat3"
                                         onclick="setFilterHash( 'lecturer' );">
                                         <div class="object_count" id="count_lecturer" ></div>
                                         Personen
                                 </div>
+                                <div class="haken4"></div>
                                 <div id="categorySelector-podcast"
                                         class="category categorySelector cat4"
                                         onclick="setFilterHash( 'podcast' );">

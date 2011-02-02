@@ -76,10 +76,8 @@ div#logobox {
 #logobox p {
         color: #3E424A;
         font-size: 14px;
-}
-
-img#lflogo a:hover {
-        background-color: white;
+        width: 250px;
+        text-align: center;
 }
 
 div#titlebox {
@@ -90,6 +88,14 @@ div#titlebox {
         margin-right: 40px;
         height: 80px;
         padding: 0px;
+}
+
+.hakengr {
+        background: url("../img/hakengr.png") no-repeat;
+        float: right;
+        height: 95px;
+        width: 40px;
+        margin-top: -13px;
 }
 
 h1#pagetitle {
@@ -140,20 +146,14 @@ a {
         color: #8C5663;
 }
 
-a.nohover:hover {
-        background-color: transparent;
-}
-
 a:hover {
         background-color: #8C5663;
         color: white;
 }
 
-img a:hover {
-        background-color: white;
+a.nohover:hover {
+        background-color: transparent;
 }
-
-
 
 div.objcontainer {
         padding-left: 25px;
@@ -218,7 +218,6 @@ div#main {
 div#leftblock {
         width: 250px;
         float: left;
-        margin-left: 15px;
 }
 
 
@@ -287,7 +286,7 @@ div#main {
 }
 
 input {
-        border: 1px solid grey;
+
         height: 20px;
         padding: 0px;
         margin: 0px;
@@ -297,16 +296,20 @@ input {
 
 div#searchline {
         width: 100%;
+        padding-left: 15px;
 }
 
 input#search {
-        width: 192px;
+        width: 85%;
         margin-top: 10px;
+        border: 1px solid grey;
 }
 
-input#search_submit {
-        height: 22px;
-        margin-top: 5px;
+input#searchbutton {
+        background: url("../img/lupe.png") no-repeat;
+        width: 20px;
+        height: 20px;
+        border: none;
 }
 
 input#department_search {
@@ -393,6 +396,8 @@ a.leftlink {
 
 div#searchcatblock {
         margin-top: 15px;
+        width: 250px;
+        padding-left: 15px;
 }
 
 div#main {
@@ -405,7 +410,45 @@ div.category {
         margin-bottom: 2px;
         padding: 8px;
         cursor: pointer;
-        width: 234px;
+}
+
+div.haken1 {
+        background: url("../img/haken1.png") no-repeat;
+        width: 15px;
+        height: 46px;
+        float:left;
+        margin-left: -15px;
+        margin-top: -11px;
+}
+
+div.haken2 {
+        background: url("../img/haken2.png") no-repeat;
+        width: 15px;
+        height: 46px;
+        float:left;
+        position: absolute;
+        margin-left: -15px;
+        margin-top: -11px;
+}
+
+div.haken3 {
+        background: url("../img/haken3.png") no-repeat;
+        width: 15px;
+        height: 46px;
+        float:left;
+        position: absolute;
+        margin-left: -15px;
+        margin-top: -11px;
+}
+
+div.haken4 {
+        background: url("../img/haken4.png") no-repeat;
+        width: 15px;
+        height: 46px;
+        float:left;
+        position: absolute;
+        margin-left: -15px;
+        margin-top: -11px;
 }
 
 div.cat1:hover {
