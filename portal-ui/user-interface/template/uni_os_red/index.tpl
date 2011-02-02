@@ -19,6 +19,7 @@
   <div id="header">
                 <div id="logobox">
                         <a style="a:hover background:none;" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
+                        <p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
                 </div>
                 <div id="titlebox">
                         <h1 class="previwe" id="pagetitle">
@@ -35,7 +36,7 @@
                 <div id="leftblock">
                         <div id="searchblock">
                                 <form action="javascript: triggerSearch();">
-                                        <div>
+                                        <div id="searchline">
                                                 <input type="text" id="search" name="search" value="Suche"
                                                         onfocus="clear_inp(this, 'Suche');" onblur="leave_inp(this, 'Suche');" />
                                         <!--

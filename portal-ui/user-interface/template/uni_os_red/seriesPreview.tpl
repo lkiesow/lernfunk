@@ -10,7 +10,7 @@
                         <div class="td">
                                 (:lecturer:)
                                 <p>(:desc_sh:)</p>
-                                <span><span style="font-size: 11px;">(:mobjcount:) Medien &#124; (:term:)</span> &#124; (:department:)</span>
+                                <span style="font-size: 11px;">(:mobjcount:) <b>Medien</b> &#124; (:term:) &#124; (:department:)</span>
                         </div>
                         <div class="td" style="padding-right: 25px;">
                                 <br />

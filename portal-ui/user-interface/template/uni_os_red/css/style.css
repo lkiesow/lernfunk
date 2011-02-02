@@ -73,6 +73,11 @@ div#logobox {
         margin-top: 10px;
 }
 
+#logobox p {
+        color: #3E424A;
+        font-size: 14px;
+}
+
 img#lflogo a:hover {
         background-color: white;
 }
@@ -207,7 +212,7 @@ div#main {
 }
 
 div#leftblock {
-        width: 260px;
+        width: 250px;
         float: left;
         margin-left: 15px;
 }
@@ -228,7 +233,7 @@ div#toppager {
 }
 
 div.pagelink_active {
-        background-color: #EFBE92 !important;
+        background-color: #FFDFC5 !important;
 }
 
 div.pagelink {
@@ -283,12 +288,15 @@ input {
         padding: 0px;
         margin: 0px;
         padding-left: 5px;
-        padding-right: 5px;
         font-size: x-small;
 }
 
+div#searchline {
+        width: 100%;
+}
+
 input#search {
-        width: 175px;
+        width: 192px;
         margin-top: 10px;
 }
 
@@ -393,7 +401,7 @@ div.category {
         margin-bottom: 2px;
         padding: 8px;
         cursor: pointer;
-        width: 220px;
+        width: 234px;
 }
 
 div.cat1:hover {
@@ -563,8 +571,12 @@ td {
         padding: 3px;
 }
 
+.onover_graybg {
+        background-color: #eeeeee;
+}
+
 .onover_graybg:hover {
-        background-color: #dddddd;
+        background-color:#FFb56c ;
         cursor: pointer;
 }
 
@@ -576,7 +588,5 @@ tr.link:hover {
 div.dozenten {
         font-style: italic;
 }
-
-
 
 
