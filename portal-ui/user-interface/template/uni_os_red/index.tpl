@@ -18,7 +18,7 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <div id="header">
                 <div id="logobox">
-                        <a style="a:hover background:none;" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
+                        <a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
                         <p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
                 </div>
                 <div id="titlebox">
@@ -128,10 +128,10 @@
                         <div><a class="bottomlink" href="#cmd=static&amp;title=FAQ&amp;std=1&amp;p=faq">FAQ zu Vorlesungsaufzeichnungen</a></div>
                 </div>
                 <div id="bottomlogoblock">
-                        <a href="http://www.uos.de/" title="Uni Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/unilogo.png" alt="Uni Osnabrück" /></a>
+                        <a class="nohover" href="http://www.uos.de/" title="Uni Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/unilogo.png" alt="Uni Osnabrück" /></a>
                         <br/>
                         <br/>
-                        <a href="http://www.fh-osnabrueck.de/" title="FH Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/fhlogo.png" alt="FH Osnabrück" /></a>
+                        <a class="nohover" href="http://www.fh-osnabrueck.de/" title="FH Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/fhlogo.png" alt="FH Osnabrück" /></a>
                 </div>
         </div>
 
