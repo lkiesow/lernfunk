@@ -31,6 +31,7 @@ $formats = array( 'audio' => '3',
 		'enhanced' => '11',
 		'video' => '12',
 		'screen' => '15',
+		'matterhorn' => '23',
 		'playlist' => '2222');
 
 $path = preg_split('/\//', $_REQUEST['path']);

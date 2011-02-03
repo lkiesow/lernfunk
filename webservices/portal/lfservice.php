@@ -222,10 +222,13 @@ class LFService {
 		// ## Get podcast result ##############################################
 		if ($mediatypes['podcast'] && !$date) {
 			
-			$sql = 'SELECT f.feed_id, f.feed_url, f.series_id, ft.feedtype_desc, s.name, s.thumbnail_url '
+			$sql = 'SELECT f.feed_id, f.feed_url, f.series_id, s.description, '
+				  .'s.description_sh, ft.feedtype_desc, s.name, s.thumbnail_url, '
+				  .'s.term_id, t.term_sh, t.term_lg '
 				  .'FROM feeds f '
 				  .'left outer join feedtype ft on f.feedtype_id = ft.feedtype_id '
-				  .'left outer join series s on s.series_id = f.series_id';
+				  .'left outer join series    s on s.series_id   = f.series_id '
+				  .'left outer join terms     t on t.term_id     = s.term_id';
 			if ($filter) {
 				$sql .= ' where s.name like "%'.$filter.'%"';
 			}
@@ -284,6 +287,11 @@ class LFService {
 						if ($r->series_id)      $data['s']   = $r->series_id;
 						if ($r->feedtype_desc)  $data['ft']  = $r->feedtype_desc;
 						if ($r->thumbnail_url)  $data['i']   = $r->thumbnail_url;
+						if ($r->description)    $data['de']   = $r->description;
+						if ($r->description_sh) $data['de']   = $r->description_sh;
+						if ($r->term_id)        $data['ti']   = $r->term_id;
+						if ($r->term_sh)        $data['ts']   = $r->term_sh;
+						if ($r->term_lg)        $data['tl']   = $r->term_lg;
 
 						$result['podcast'][$r->feed_id]      = $data;
 						$count++;
