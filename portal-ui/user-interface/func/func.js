@@ -1641,10 +1641,15 @@ function fillTemplate( template, replaceData ) {
 	}
 	var re = new RegExp( '\\(:\\(.+?\\):\\(.*?\\):\\(.*?\\):\\(.*?\\):\\)', 'g' );
 	var ma = data.match( re );
-	for ( i in ma ) {
-//		alert( typeof( ma[i] ) + ' -> ' ma[i] );
+//	if (ma)
+//		alert( '1:: ' + formatJSON( $.toJSON( ma ) ) );
+//	for ( i in ma ) {
+	for ( var i = 0; i < ma ? ma.length : 0; i++ ) {
+//		alert( ma[i] );
 		ma[i] = String( ma[i] );
 		var keywords = ma[i].split( '):(' );
+//		alert( keywords.length );
+//		alert( formatJSON( $.toJSON(keywords) ) );
 		keywords[0] = keywords[0].split( '(:(' )[1];
 		keywords[3] = keywords[3].split( '):)' )[0];
 		if ( typeof( replaceData[ keywords[0] ] ) == 'string') {
