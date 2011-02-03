@@ -573,6 +573,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 				obj.series_id     = r.s  ? r.s  : '';
 				obj.feedtype_desc = r.ft ? r.ft : '';
 				obj.img           = r.i  ? r.i  : '';
+				obj.desc          = r.de ? r.de : '';
+				obj.desc_sh       = r.ds ? r.ds : '';
+				obj.term_id       = r.ti ? r.ti : '';
+				obj.term_sh       = r.ts ? r.ts : '';
+				obj.term          = r.tl ? r.tl : '';
 				obj.mediatype     = mediatype;
 				obj.id            = id;
 				lastSearch.data.push( obj );
@@ -621,7 +626,9 @@ function handleSearchResult( data, part, reqMediatype ) {
 		}
 	}
 	lastSearch.count.all = countall;
-	currData = lastSearch;
+	if (!reqMediatype || (reqMediatype == $.bbq.getState( 'resultfilter' ) ) ) {
+		currData = lastSearch;
+	}
 
 
 	if ( reqMediatype ) {
@@ -721,14 +728,6 @@ function doSearch( request, page, hashIsSet) {
 			}, function(err) { /* TODO */ });
 	}
 
-}
-
-
-function onContentLoaded() {
-	if ( !$('#content').html() )
-			loadTemplate( 'error.tpl', 
-				{ 'title' : 'Es tut uns leid...', 'msg' : 'Es konnten keine Daten zu Ihrer Suchanfrage gefunden werden.' }, 
-				setContent );
 }
 
 
@@ -891,55 +890,10 @@ function filterResults( mediatype, hashIsSet, subFilter ) {
 	currData.count.all = count;
 	currData.count[mediatype] = count;
 
-	// set tabs for sorting
-	if (mediatype == 'recordings') {
-		$('#pagetitle').text('Suchergebnisse in der Kategorie Vorlesungsaufzeichnungen');
-		addTab('alph', 'Alphabetisch',    "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-		addTab('chrono', 'Chronologisch', "sortResults(function(a, b) { return lexCompare(b.date, a.date); })");
-		addTab('series', 'Veranstaltung', "sortResults(function(a, b) { return lexCompare(a.series, b.series); })");					
-	} else if (mediatype == 'series') {
-		$('#pagetitle').text('Suchergebnisse in der Kategorie Vorlesungen');
-		addTab('alph', 'Alphabetisch', 
-			"sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-		addTab('chrono_up', 'Semester (⬆)', 
-			"sortResults(function(a, b) { return lexCompare(parseInt(a.term_id), parseInt(b.term_id)); })");
-		addTab('chrono_down', 'Semester (⬇)', 
-			"sortResults(function(a, b) { return lexCompare(parseInt(b.term_id), parseInt(a.term_id)); })");
-
-	} else if (mediatype == 'lecturer') {
-		$('#pagetitle').text('Suchergebnisse in der Kategorie Personen');
-		addTab('alph_up', 'Alphabetisch (⬆)', 
-			"sortResults(function(a, b) { return lexCompare(a.name, b.name); })");
-		addTab('alph_down', 'Alphabetisch (⬇)', 
-			"sortResults(function(a, b) { return lexCompare(b.name, a.name); })");
-		addTab('academy', 'Akademie',
-			"sortResults(function(a, b) { return lexCompare(firstProp(a.academy), firstProp(b.academy)); })");
-		addTab('series', 'Fachbereich', 
-			"sortResults(function(a, b) { return lexCompare(firstProp(a.department), firstProp(b.department)); })");	
-
-	} else if (mediatype == 'podcast') {
-		$('#pagetitle').text('Suchergebnisse in der Kategorie Podcasts');
-		addTab('alph_up', 'Alphabetisch (⬆)', 
-			"sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
-		addTab('alph_down', 'Alphabetisch (⬇)', 
-			"sortResults(function(a, b) { return lexCompare(b.title, a.title); })");
-	}
+	onResultFilter( mediatype );
 
 	// initialize fancybox, pager, ...
 	onContentLoaded();
-
-	if ( mediatype == 'series' ) {
-		activateTab('chrono_down'); 
-		sortResults(function(a, b) { return lexCompare(parseInt(b.term_id), parseInt(a.term_id)); })
-	}
-	if ( mediatype == 'lecturer' ) {
-		activateTab('alph_up'); 
-		sortResults(function(a, b) { return lexCompare(a.name, b.name); })
-	}
-	if ( mediatype == 'podcast' ) {
-		activateTab('alph_up'); 
-		sortResults(function(a, b) { return lexCompare(a.title, b.title); })
-	}
 
 	// set pager
 	setPager(1);
@@ -1270,6 +1224,7 @@ function toLastSavepoint() {
  */
 function getDetails( mediatype, identifier, hashIsSet ) {
 
+
 	if ( !hashIsSet ) {
 		var dc = $.bbq.getState( 'details' );
 		if ( typeof(dc === 'undefined') )
@@ -1357,9 +1312,12 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 							tpl.seriesdetails.info.departmentlink, 
 							tpl.seriesdetails.info.departmentblock );
 					var firstRecording = { 'result' : {} };
+
 					for (var i in data.recordings) {
-						data.recordings[i].cou_id = data.recordings[i].id;
+						if (!data.recordings[i].cou_id)
+							data.recordings[i].cou_id = data.recordings[i].id;
 					}
+
 					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
 					data.firstrecording_title    = firstRecording.result.title;
 					data.firstrecording_mimetype = firstRecording.result.mimetype;
@@ -1684,6 +1642,8 @@ function fillTemplate( template, replaceData ) {
 	var re = new RegExp( '\\(:\\(.+?\\):\\(.*?\\):\\(.*?\\):\\(.*?\\):\\)', 'g' );
 	var ma = data.match( re );
 	for ( i in ma ) {
+//		alert( typeof( ma[i] ) + ' -> ' ma[i] );
+		ma[i] = String( ma[i] );
 		var keywords = ma[i].split( '):(' );
 		keywords[0] = keywords[0].split( '(:(' )[1];
 		keywords[3] = keywords[3].split( '):)' )[0];
