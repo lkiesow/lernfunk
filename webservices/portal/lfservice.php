@@ -719,6 +719,7 @@ class LFService {
 					} // end sql2
 
 					// get recordings
+/*
 					$sql3 = 'select m.object_id, date_format( m.date, "'.DATETIME_FMT.'") as date, m.title, m.description, '
 						.'m.url, m.image_url, m.thumbnail_url, m.preview.url, '
 						.'m.duration, m.cou_id, f.mimetype, f.name as formatname '
@@ -726,10 +727,12 @@ class LFService {
 						.'natural join format f '
 						.'where (series_id = '.$identifier.') '
 						.'order by date asc;';
+*/
 					$sql3 = 'select * '
 						.'from mediaobject m '
 						.'natural join format f '
 						.'where (series_id = '.$identifier.') '
+						.'and m.access_id = 1 '
 						.'order by date asc;';
 
 					if ( $rs3 = Lernfunk::query($sql3) ) {
