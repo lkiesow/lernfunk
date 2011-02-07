@@ -20,8 +20,10 @@
                  <br/>
                  <div>
                          <h4>Beschreibung</h4>
-                         <p id="desc_sh" class="infoblock">(:desc_sh:)... <a style="cursor:pointer;" onclick="$('#desc_sh').css('display','none'); $('#desc_long').css('display','block');">mehr.</a></p>
-                         <p id="desc_long" class="infoblock" style="display: none;">(:desc:) <a style="cursor:pointer;" onclick="$('#desc_sh').css('display','block'); $('#desc_long').css('display','none');">weniger</a></p>
+                         <p id="desc_sh" class="infoblock">(:desc_sh:)...
+                                 <br/> <a style="cursor:pointer;" onclick="$('#desc_sh').css('display','none'); $('#desc_long').css('display','block');">mehr.</a></p>
+                         <p id="desc_long" class="infoblock" style="display: none;">(:desc:)
+                                 <br/><a style="cursor:pointer;" onclick="$('#desc_sh').css('display','block'); $('#desc_long').css('display','none');">weniger.</a></p>
                  </div>
 
          <table style="width: 100%; padding-top: 0px;">

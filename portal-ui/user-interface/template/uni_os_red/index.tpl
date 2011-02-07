@@ -44,6 +44,7 @@ $(document).ready(function(){
 
         <div id="main">
 
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ left ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                 <div id="leftblock">
                         <div id="searchblock">
@@ -118,6 +119,7 @@ $(document).ready(function(){
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
                 <div id="contentbox">
                         <div id="toppager" class="pager"> </div>
 
