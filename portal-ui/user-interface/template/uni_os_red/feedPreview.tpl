@@ -6,21 +6,24 @@
 <div>
         <div class="tbl objcontainer">
                 <div class="tr">
-                        <div >
-                                (:lecturer:)
-                                <span style="font-size: 11px; display:inline;">(:department:)</span>
-                        </div>
                         <div class="td" style="width: 100%;">
-                                <h4>Veranstaltung</h4>
-                                <div class="infoblock"><a href="javascript: getDetails('series', (:series_id:));">(:title:)</a></div>
-                                <h4>Abbonieren</h4>
-                                <div class="infoblock">
-                                        <a href="(:url:)">
-                                                <img src="template/white_base_scv-70/img/rss.png" style="margin-bottom: -4px; width: 16px; height: 16px;" alt="rss" />
+                                (:lecturer:)
+                                <p>(:desc:)</p>
+
+                                <span style="font-size: 11px; display:inline;">
+
+                                         <a href="(:url:)">
+                                                <img src="template/uni_os_red/img/rss.png" style="margin-bottom: -4px; width: 16px; height: 16px;" alt="rss" />
                                                 RSS Feed/Podcast
-                                        </a>
-                                </div>
+                                         </a> &#124;
+
+                                         (:department:) &#124;
+
+                                         Veranstaltung: <a href="javascript: getDetails('series', (:series_id:));">(:title:)</a>
+                               </span>
+
                         </div>
+
                         <div class="td" style="padding-right: 25px;">
                                 <br />
                                 <a href="#resultfilter=podcast&cmd=search&details=1&mediatype=series&identifier=(:series_id:)">

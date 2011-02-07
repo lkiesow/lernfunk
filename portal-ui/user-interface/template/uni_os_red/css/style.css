@@ -137,17 +137,17 @@ h3 a {
 }
 
 a h3:hover {
-        background-color: #8C5663;
+        background-color: #992c47;
 }
 
 a {
         text-decoration: none;
         border: none;
-        color: #8C5663;
+        color: #992c47;
 }
 
 a:hover {
-        background-color: #8C5663;
+        background-color: #992c47;
         color: white;
 }
 
@@ -651,5 +651,4 @@ tr.link:hover {
 div.dozenten {
         font-style: italic;
 }
-
 

@@ -110,7 +110,7 @@ $(document).ready(function(){
                                         class="category categorySelector cat4"
                                         onclick="setFilterHash( 'podcast' );">
                                         <div class="object_count" id="count_podcast" ></div>
-                                        Podcast
+                                        Podcasts
                                 </div>
                         </div>
 
