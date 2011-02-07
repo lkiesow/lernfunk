@@ -1,1 +1,1 @@
-<div class="infoblock dozenten">(:lecturerlinks:)</div>
+<span class="infoblock dozenten">(:lecturerlinks:)</span>

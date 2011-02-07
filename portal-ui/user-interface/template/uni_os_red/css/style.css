@@ -138,6 +138,7 @@ h3 a {
 
 a h3:hover {
         background-color: #992c47;
+        cursor: pointer;
 }
 
 a {
@@ -648,7 +649,7 @@ tr.link:hover {
         background-color: #dddddd;
 }
 
-div.dozenten {
+.dozenten {
         font-style: italic;
 }
 

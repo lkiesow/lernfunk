@@ -1,5 +1,8 @@
 <a href="#resultfilter=podcast&cmd=search&details=1&mediatype=series&identifier=(:series_id:)">
-  <h3>(:title:)</h3>
+  <h3>
+        (:title:)
+        <span style="float: right; padding-right: 20px; font-weight: normal;"><img height="11" src="template/uni_os_red/img/pfeil.png"/>&nbsp;&nbsp;mehr</span>
+  </h3>
 </a>
 <!-- <h3><a href="javascript: getDetails('podcast', (:id:)); ">Podcast: (:title:)</a></h3> -->
 <!-- javascript: getDetails('series', 157); -->
@@ -16,10 +19,7 @@
                                                 <img src="template/uni_os_red/img/rss.png" style="margin-bottom: -4px; width: 16px; height: 16px;" alt="rss" />
                                                 RSS Feed/Podcast
                                          </a> &#124;
-
-                                         (:department:) &#124;
-
-                                         Veranstaltung: <a href="javascript: getDetails('series', (:series_id:));">(:title:)</a>
+                                         (:department:)
                                </span>
 
                         </div>

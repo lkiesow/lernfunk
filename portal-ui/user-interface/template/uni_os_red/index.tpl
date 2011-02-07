@@ -34,7 +34,7 @@ $(document).ready(function(){
                 <div class="hakengr"></div>
 
                 <div id="titlebox">
-                        <h1 class="previwe" id="pagetitle">
+                        <h1 class="preview" id="pagetitle">
                                 Willkommen auf Lernfunk.de
                         </h1>
                         <div id="titlebox_bottom">

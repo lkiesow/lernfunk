@@ -1,6 +1,7 @@
 <a href="javascript: getDetails('series', (:id:)); ">
   <h3>
-        <span style="margin-right: 150px;">(:title:)</span>
+        (:title:)
+        <span style="float: right; padding-right: 20px; font-weight: normal;"><img height="11" src="template/uni_os_red/img/pfeil.png"/>&nbsp;&nbsp;mehr</span>
   </h3>
 </a>
 
