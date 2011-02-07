@@ -1644,9 +1644,8 @@ function fillTemplate( template, replaceData ) {
 //	if (ma)
 //		alert( '1:: ' + formatJSON( $.toJSON( ma ) ) );
 //	for ( i in ma ) {
-	for ( var i = 0; i < ma ? ma.length : 0; i++ ) {
+	for ( var i = 0; i < (ma ? ma.length : 0); i++ ) {
 //		alert( ma[i] );
-		ma[i] = String( ma[i] );
 		var keywords = ma[i].split( '):(' );
 //		alert( keywords.length );
 //		alert( formatJSON( $.toJSON(keywords) ) );
