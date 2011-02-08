@@ -32,7 +32,7 @@
                         <div class="td" style="width: 100%; vertical-align: top;">
                                 <div class="objcontainer">
                                         <div id="mediaobjectplayer">
-                                                <center><img src="(:thumb:)" /></center>
+                                                <center><img src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
                                         </div>
                                 </div>
                         </div>
