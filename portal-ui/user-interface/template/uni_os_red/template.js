@@ -8,12 +8,12 @@ function onResultFilter( mediatype ) {
 
         // set tabs for sorting
         if (mediatype == 'recordings') {
-                $('#pagetitle').text('Suchergebnisse Vorlesungsaufzeichnungen');
+                $('#pagetitle').text('Suchergebnisse Aufzeichnungen');
                 addTab('alph', 'Alphabetisch',    "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
                 addTab('chrono', 'Chronologisch', "sortResults(function(a, b) { return lexCompare(b.date, a.date); })");
                 addTab('series', 'Veranstaltung', "sortResults(function(a, b) { return lexCompare(a.series, b.series); })");
         } else if (mediatype == 'series') {
-                $('#pagetitle').text('Suchergebnisse Vorlesungen');
+                $('#pagetitle').text('Suchergebnisse Veranstaltungen');
                 addTab('alph', 'Alphabetisch',
                         "sortResults(function(a, b) { return lexCompare(a.title, b.title); })");
                 addTab('chrono_up', 'Semester ⬆',

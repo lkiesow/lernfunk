@@ -31,7 +31,7 @@ $(document).ready(function(){
                         <p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
                 </div>
 
-                <div class="hakengr"></div>
+                <div id="hakengr" class="hakengr_default"></div>
 
                 <div id="titlebox">
                         <h1 class="preview" id="pagetitle">
@@ -88,7 +88,6 @@ $(document).ready(function(){
                                 <div id="categorySelector-series"
                                         class="category categorySelector cat1"
                                         onclick="setFilterHash( 'series' );">
-
                                         <div class="object_count" id="count_series" ></div>
                                         Veranstaltungen
                                 </div>

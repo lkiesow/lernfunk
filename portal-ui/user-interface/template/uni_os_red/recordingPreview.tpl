@@ -10,9 +10,7 @@
         <div class="tbl objcontainer">
                 <div class="tr">
                         <div class="td">
-                                <span>vom <b>(:date:)</b> aus&nbsp;
-                                         <a style="font-weight: bold;" href="javascript: getDetails('series', (:series_id:));">(:series:)</a>
-                                                 &nbsp;von&nbsp;(:lecturer:)
+                                <span>vom&nbsp;<b>(:date:)</b>&nbsp;aus&nbsp;<a style="font-weight: bold;" href="javascript: getDetails('series', (:series_id:));">(:series:)</a>&nbsp;von&nbsp;(:lecturer:)
                                 </span>
 
                                 <br/>
@@ -25,7 +23,7 @@
                         <div class="td" style="padding-right: 25px;">
                                 <br />
                                 <a href="(:series_rec_link:)">
-                                  <img class="thumb" src="(:img:)" alt="(:title:)" />
+                                <img class="thumb" src="(:img:)" alt="(:title:)" />
                                 </a>
                         </div>
                 </div>

@@ -1,19 +1,10 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
+* {
         margin: 0;
         padding: 0;
         border: 0;
         outline: 0;
         font-size: 100%;
         font-family: sans-serif;
-        vertical-align: baseline;
 }
 
 .resultfilter_series {
@@ -90,13 +81,33 @@ div#titlebox {
         padding: 0px;
 }
 
-.hakengr {
-        background: url("../img/hakengr.png") no-repeat;
+#hakengr {
         float: right;
         height: 95px;
         width: 40px;
-        margin-top: -13px;
+        margin-top: -15px;
 }
+
+.hakengr_default {
+        background: url("../img/hakengr.png") no-repeat;
+}
+
+.hakengr_series {
+        background: url("../img/hakengr1.png") no-repeat;
+}
+
+.hakengr_recordings {
+        background: url("../img/hakengr2.png") no-repeat;
+}
+
+.hakengr_lecturer {
+        background: url("../img/hakengr3.png") no-repeat;
+}
+
+.hakengr_podcast {
+        background: url("../img/hakengr4.png") no-repeat;
+}
+
 
 h1#pagetitle {
         padding: 15px;
@@ -652,4 +663,3 @@ tr.link:hover {
 .dozenten {
         font-style: italic;
 }
-
