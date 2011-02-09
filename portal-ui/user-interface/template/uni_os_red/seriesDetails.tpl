@@ -21,9 +21,9 @@
         <br/>
         <div>
                 <h4 class="headline">Beschreibung</h4>
-                <p id="desc_sh" class="infoblock">(:desc_sh:)...
+                <p id="desc_sh" class="infoblock" style="padding: 7px 0px;">(:desc_sh:)...
                 <a style="cursor:pointer;" onclick="$('#desc_sh').hide(); $('#desc_long').show()"> [mehr]</a></p>
-                <p id="desc_long" class="infoblock" style="display: none;">(:desc:)
+                <p id="desc_long" class="infoblock" style="display: none; padding: 7px 0px;">(:desc:)
                 <a style="cursor:pointer;" onclick="$('#desc_sh').show(); $('#desc_long').hide();"> [weniger]</a></p>
         </div>
 
