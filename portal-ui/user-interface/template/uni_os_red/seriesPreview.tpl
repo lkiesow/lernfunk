@@ -7,7 +7,7 @@
 
 <div>
         <div class="tbl objcontainer">
-                <div class="tr" style="background-color: #fcfcfc;">
+                <div class="tr" style="background-color: #F9F9F9;">
                         <div class="td">
                                 (:lecturer:)
                                 <p>(:desc_sh:)</p>

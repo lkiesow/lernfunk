@@ -8,7 +8,7 @@
 
 <div>
         <div class="tbl objcontainer">
-                <div class="tr" style="background-color: #fcfcfc;">
+                <div class="tr" style="background-color: #F9F9F9;">
                         <div class="td">
                                 <span>vom&nbsp;<b>(:date:)</b>&nbsp;aus&nbsp;<a style="font-weight: bold;" href="javascript: getDetails('series', (:series_id:));">(:series:)</a>&nbsp;von&nbsp;(:lecturer:)
                                 </span>

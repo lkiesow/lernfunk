@@ -639,6 +639,7 @@ img.thumb {
         max-height: 100px;
         max-width: 113px;
         float: right;
+        border: 1px solid #bbbbbb;
 }
 
 th {
