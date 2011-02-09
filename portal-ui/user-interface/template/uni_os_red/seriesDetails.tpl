@@ -20,7 +20,7 @@
         <br/>
         <br/>
         <div>
-                <h4>Beschreibung</h4>
+                <h4 class="headline">Beschreibung</h4>
                 <p id="desc_sh" class="infoblock">(:desc_sh:)...
                 <a style="cursor:pointer;" onclick="$('#desc_sh').hide(); $('#desc_long').show()"> [mehr]</a></p>
                 <p id="desc_long" class="infoblock" style="display: none;">(:desc:)
@@ -37,7 +37,7 @@
                                 </div>
                         </div>
                         <div style="width: 40%; min-width: 350px; vertical-align: top; border-left: 1px solid #3E424A;">
-                                <h4>Vorlesungsaufzeichnungen</h4>
+                                <h4 class="headline">Vorlesungsaufzeichnungen</h4>
                                 <div style="max-height: 350px; overflow-y: auto; margin-top: 5px;">
                                         (:recordings:)
                                 </div>
