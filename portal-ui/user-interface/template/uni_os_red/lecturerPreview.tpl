@@ -6,7 +6,7 @@
 </a>
 
 <div>
-        <div class="objcontainer">
+        <div class="objcontainer" style="background-color: #fcfcfc;">
                 (:academy:)
                 (:department:)
                 <br/>

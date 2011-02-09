@@ -1,5 +1,5 @@
 <!-- one row of the recordings-table (details-page) -->
-<table style="width: 97%; margin-left: 3px; padding-left: 0px;">
+<table style="width: 97%; padding-left: 0px;">
         <tr class="onover_graybg" style="width: 100%">
                 <td style="width: 100%" onclick=" loadRec( '#mediaobjectplayer', '(:cou_id:)' );">
                 <!-- loadRecording( '#mediaobjectplayer', (:rec_data:) );  -->

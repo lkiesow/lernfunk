@@ -11,11 +11,11 @@
                                                 Zuletzt Aktualisiert
                                         </div>
                                 </div>
-                                <div style="display: table-row">
+                                <div style="display: table-row; background-color: #fcfcfc;">
                                         <div style="display: table-cell; ; max-width: 440px;">
                                                 (:new_recordings:)
                                         </div>
-                                        <div style="display: table-cell; max-width: 200px;">
+                                        <div style="display: table-cell; max-width: 300px;">
                                                 (:series_updates:)
                                         </div>
                                 </div>

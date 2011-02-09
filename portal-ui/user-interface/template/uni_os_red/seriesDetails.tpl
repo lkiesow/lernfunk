@@ -36,9 +36,9 @@
                                         </div>
                                 </div>
                         </div>
-                        <div style="width: 40%; min-width: 300px; vertical-align: top;">
+                        <div style="width: 40%; min-width: 350px; vertical-align: top; border-left: 1px solid #3E424A;">
                                 <h4>Vorlesungsaufzeichnungen</h4>
-                                <div style="padding-left: 20px; max-height: 350px; overflow-y: auto; border-left: 2px solid #bbbbbb;">
+                                <div style="max-height: 350px; overflow-y: auto; margin-top: 5px;">
                                         (:recordings:)
                                 </div>
                         </div>

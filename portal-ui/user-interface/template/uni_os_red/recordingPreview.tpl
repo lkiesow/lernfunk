@@ -8,7 +8,7 @@
 
 <div>
         <div class="tbl objcontainer">
-                <div class="tr">
+                <div class="tr" style="background-color: #fcfcfc;">
                         <div class="td">
                                 <span>vom&nbsp;<b>(:date:)</b>&nbsp;aus&nbsp;<a style="font-weight: bold;" href="javascript: getDetails('series', (:series_id:));">(:series:)</a>&nbsp;von&nbsp;(:lecturer:)
                                 </span>
@@ -20,7 +20,7 @@
                              <p style="font-size: 11px;">(:format:) &#124; (:department:)</p>
 
                         </div>
-                        <div class="td" style="padding-right: 25px;">
+                        <div class="td">
                                 <br />
                                 <a href="(:series_rec_link:)">
                                 <img class="thumb" src="(:img:)" alt="(:title:)" />

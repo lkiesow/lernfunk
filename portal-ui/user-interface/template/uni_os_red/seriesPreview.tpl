@@ -7,13 +7,13 @@
 
 <div>
         <div class="tbl objcontainer">
-                <div class="tr">
+                <div class="tr" style="background-color: #fcfcfc;">
                         <div class="td">
                                 (:lecturer:)
                                 <p>(:desc_sh:)</p>
                                 <span style="font-size: 11px;">(:mobjcount:) <b>Medien</b> &#124; (:term:) &#124; (:department:)</span>
                         </div>
-                        <div class="td" style="padding-right: 25px;">
+                        <div class="td">
                                 <br />
                                 <a href="javascript: getDetails('series', (:id:)); ">
                                   <img class="thumb" src="(:img:)" alt="(:title:)" />

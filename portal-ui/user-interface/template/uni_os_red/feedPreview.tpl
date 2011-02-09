@@ -8,7 +8,7 @@
 <!-- javascript: getDetails('series', 157); -->
 <div>
         <div class="tbl objcontainer">
-                <div class="tr">
+                <div class="tr" style="background-color: #fcfcfc;">
                         <div class="td" style="width: 100%;">
                                 (:lecturer:)
                                 <p>(:desc:)</p>
