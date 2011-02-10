@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
-<meta name="description" content="Lernfunk.de: Vorlesungsaufzeichnungen und Podcasts" />
-<meta name="keywords" content="Lernfunk, Vorlesung, Vorlesungsaufzeichnung, Podcast, Dozent" />
+<meta name="description" content="Lernfunk.de: Medienportal der Universität Osnabrück" />
+<meta name="keywords" content="Vorlesungsaufzeichnung, Podcast, Videos, Medien, Universität, Hochschule, Osnabrück, iTunes U" />
 
 <!-- autoinsert for includes (js-files, ...) -->
 (:includes:)
