@@ -148,7 +148,7 @@ $(document).ready(function(){
                         <div><a class="bottomlink" href="#cmd=static&amp;title=Das Projekt&amp;std=1&amp;p=about">Über das Projekt</a></div>
                         <div><a class="bottomlink" href="#cmd=static&amp;title=Kontakt&amp;std=1&amp;p=kontakt">Kontakt</a></div>
                         <div><a class="bottomlink" href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">Impressum</a></div>
-                        <div><a class="bottomlink" href="#">lernfunk im Blog</a></div>
+                        <div><a class="bottomlink" href="http://www.blogs.uni-osnabrueck.de/lernfunk/">lernfunk im Blog</a></div>
                         <div><a class="bottomlink" href="#cmd=static&amp;title=FAQ&amp;std=1&amp;p=faq">FAQ zu Vorlesungsaufzeichnungen</a></div>
                 </div>
                 <div id="bottomlogoblock">
