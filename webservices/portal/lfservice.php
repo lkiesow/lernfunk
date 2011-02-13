@@ -728,7 +728,7 @@ class LFService {
 						.'where (series_id = '.$identifier.') '
 						.'order by date asc;';
 */
-					$sql3 = 'select * '
+					$sql3 = 'select *, date_format( m.date, "'.DATETIME_FMT.'") as fmtdate '
 						.'from mediaobject m '
 						.'natural join format f '
 						.'where (series_id = '.$identifier.') '
@@ -744,7 +744,7 @@ class LFService {
 									'id'       => $r3->object_id,
 									'title'    => $r3->title,
 									'desc'     => $r3->description,
-									'date'     => $r3->date,
+									'date'     => $r3->fmtdate,
 									'url'      => $r3->url,
 									'img'      => $r3->image_url,
 									'thumb'    => $r3->thumbnail_url,
@@ -981,6 +981,7 @@ class LFService {
 			}
 
 			$sql2 = 'select (SELECT count(*) FROM mediaobject m '
+				.'NATURAL JOIN format f '
 				.'left outer join series s on s.series_id = m.series_id '
 				.'where m.access_id = 1 and s.access_id = 1) as recording_count, '
 				.'(SELECT count(*) FROM lecturer) as lecturer_count, '
