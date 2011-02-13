@@ -29,11 +29,20 @@ function map_request( $req ) {
 		  .'where s.portal_url = "'.mysql_escape_string( $req['portal_url'] ).'";';
 
 	if ( $rs = Lernfunk::query($sql) ) {
-
 		$rs = $rs[0];
 		
+		$sql2 = 'select cou_id from mediaobject '
+			.'where series_id = "'.$rs->series_id.'" '
+			.'and object_id = "'.intval($req['stream_id']).'";';
+
+		$objln = '';
+		if ( $rs2 = Lernfunk::query($sql2) ) {
+			$rs2 = $rs2[0];
+			$objln = '&couid='.$rs2->cou_id.'&id='.intval($req['stream_id']);
+		}
+
 		return '/portal-ui/user-interface/#cmd=search&filter='.$rs->name
-			.'&details=1&mediatype=series&identifier='.$rs->series_id;
+			.'&details=1&mediatype=series&identifier='.$rs->series_id.$objln;
 
 	} else { // end sql
 		if (mysql_error())
