@@ -7,19 +7,19 @@
         font-family: sans-serif;
 }
 
-.resultfilter_series {
+body.resultfilter_series div#titlebox {
         background-color: #FF934A !important;
 }
 
-.resultfilter_recordings {
+body.resultfilter_recordings div#titlebox {
         background-color: #E36C58 !important;
 }
 
-.resultfilter_lecturer {
+body.resultfilter_lecturer div#titlebox {
         background-color: #C95A34 !important;
 }
 
-.resultfilter_podcast {
+body.resultfilter_podcast div#titlebox {
         background-color: #8C5663 !important;
 }
 
@@ -88,23 +88,23 @@ div#titlebox {
         margin-top: -15px;
 }
 
-.hakengr_default {
+div#hakengr {
         background: url("../img/hakengr.png") no-repeat;
 }
 
-.hakengr_series {
+body.resultfilter_series div#hakengr {
         background: url("../img/hakengr1.png") no-repeat;
 }
 
-.hakengr_recordings {
+body.resultfilter_recordings div#hakengr {
         background: url("../img/hakengr2.png") no-repeat;
 }
 
-.hakengr_lecturer {
+body.resultfilter_lecturer div#hakengr {
         background: url("../img/hakengr3.png") no-repeat;
 }
 
-.hakengr_podcast {
+body.resultfilter_podcast div#hakengr {
         background: url("../img/hakengr4.png") no-repeat;
 }
 
@@ -425,6 +425,7 @@ div#searchcatblock {
         margin-top: 15px;
         width: 250px;
         padding-left: 15px;
+        overflow: visible;
 }
 
 div#main {
@@ -434,26 +435,36 @@ div#main {
 div.category {
         font-family: Arial, sans-serif;
         color: white;
-        margin-bottom: 2px;
+        margin: 0px;
         padding: 8px;
         cursor: pointer;
+        display: inline-block;
+        vertical-align: bottom;
+        width: 218px;
+}
+
+img.navihaken {
+        width: 15px; 
+        height: 46px;
+        display: inline-block;
+        vertical-align: bottom;
+        padding: 0px;
+        margin: 0px;
 }
 
 div.haken1 {
         background: url("../img/haken1.png") no-repeat;
         width: 15px;
         height: 46px;
-        float:left;
-        margin-left: -15px;
-        margin-top: -11px;
+        position: absolute;
 }
 
 div.haken2 {
         background: url("../img/haken2.png") no-repeat;
         width: 15px;
         height: 46px;
-        float:left;
         position: absolute;
+        float:left;
         margin-left: -15px;
         margin-top: -11px;
 }
@@ -478,37 +489,41 @@ div.haken4 {
         margin-top: -11px;
 }
 
-div.cat1:hover {
+div.categorySelector {
+        margin-top: -8px;
+}
+
+div#categorySelector_series:hover {
         background-color: #FFb56c;
 }
 
-div.cat2:hover {
+div#categorySelector_recordings:hover {
         background-color: #f58e7a;
 }
 
-div.cat3:hover {
+div#categorySelector_lecturer:hover {
         background-color: #eb7c56;
 }
 
-div.cat4:hover {
+div#categorySelector_podcast:hover {
         background-color: #ae7885;
 }
 
 
 
-div.cat1 {
+div#categorySelector_series {
         background-color: #FF934A;
 }
 
-div.cat2 {
+div#categorySelector_recordings {
         background-color: #E36C58;
 }
 
-div.cat3 {
+div#categorySelector_lecturer {
         background-color: #C95A34;
 }
 
-div.cat4 {
+div#categorySelector_podcast {
         background-color: #8C5663;
 }
 

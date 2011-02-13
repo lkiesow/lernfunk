@@ -30,7 +30,7 @@ $cfg = array(
 	'webservices'    => array(
 		array(
 			'name' => 'Lernfunk',
-			'url'  => 'http://vm083.rz.uos.de/webservices/portal/',
+			'url'  => 'http://vm083.rz.uos.de/test/webservices/portal/',
 			'key'  => 'SWUZkIwX6BIV!'
 		)
 	)
