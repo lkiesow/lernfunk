@@ -424,7 +424,6 @@ a.leftlink {
 div#searchcatblock {
         margin-top: 15px;
         width: 250px;
-        padding-left: 15px;
         overflow: visible;
 }
 
@@ -444,7 +443,7 @@ div.category {
 }
 
 img.navihaken {
-        width: 15px; 
+        width: 15px;
         height: 46px;
         display: inline-block;
         vertical-align: bottom;
