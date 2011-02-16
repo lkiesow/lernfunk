@@ -667,7 +667,10 @@ function handleSearchResult( data, part, reqMediatype ) {
 //			goToPage( parseInt( page ) );
 
 		$(window).trigger( 'hashchange' );
-		filterResults( mediatype, true );
+
+		if ( reqMediatype ) {
+			filterResults( mediatype, true );
+		}
 
 	}
 
@@ -1314,6 +1317,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.department = addDepartmentBlock( data,
 							tpl.seriesdetails.info.departmentlink, 
 							tpl.seriesdetails.info.departmentblock );
+					data.feeds = $.toJSON( data.feeds );
 					var firstRecording = { 'result' : {} };
 
 					for (var i in data.recordings) {

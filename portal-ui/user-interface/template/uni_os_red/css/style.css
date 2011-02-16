@@ -682,3 +682,9 @@ tr.link:hover {
 .dozenten {
         font-style: italic;
 }
+
+img[alt=rss] {
+	margin-bottom: -4px;
+	width: 16px;
+	height: 16px;
+}
