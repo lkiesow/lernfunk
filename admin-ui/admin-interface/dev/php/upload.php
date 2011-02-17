@@ -15,11 +15,7 @@ if (!array_key_exists('id', $_REQUEST))
 	die('error');
 
 $id = $_REQUEST['id'];
-$uploadfile = $uploaddir . $id . '/'. basename($_FILES['file0']['name']);
-
-if (!is_dir( $uploaddir.$id ))
-	mkdir( $uploaddir.$id, 0777 );
-chmod( $uploaddir.$id, 0777 );
+$uploadfile = $uploaddir.$id.basename($_FILES['file0']['name']);
 
 if (move_uploaded_file($_FILES['file0']['tmp_name'], $uploadfile)) {
   echo "success";

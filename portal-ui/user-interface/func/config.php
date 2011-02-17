@@ -14,7 +14,7 @@ $cfg = array(
 	'newsrecfilter'  => array( '%video%' ),
 
 	// how much objects should be displayed
-	'objectsPerPage' => 4,
+	'objectsPerPage' => 10,
 
 	// adress of the preview image shown when nothing is defined in database
 	'stdPreviewImg'  => 'img/std_preview.jpg',
