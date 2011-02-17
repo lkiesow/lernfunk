@@ -15,7 +15,7 @@ if (!array_key_exists('id', $_REQUEST))
 	die('error');
 
 $id = $_REQUEST['id'];
-$uploadfile = $uploaddir.$id.basename($_FILES['file0']['name']);
+$uploadfile = $uploaddir.$id.pathinfo($_FILES['file0']['name'])['extension'];
 
 if (move_uploaded_file($_FILES['file0']['tmp_name'], $uploadfile)) {
   echo "success";

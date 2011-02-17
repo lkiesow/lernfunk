@@ -83,6 +83,7 @@
         <td>Preview URL:</td>
         <td>
             <input type="text" name="thumbnail_url" id="thumbnail_url" value="(:thumbnail_url:)" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
+					<button id="uploadbtn" type="button">upload file</button>
         </td>
     </tr>
 
@@ -167,3 +168,48 @@
         </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+	// prepare upload button
+	var button = $('#uploadbtn'), interval;
+	new AjaxUpload(button, {
+		action: '../service/upload.php', 
+		name: 'file0',
+		response: 'plain',
+		onSubmit : function(file, ext){
+
+			// send additional data (folder)
+			this.setData( { 'id' : 'series_' + $('#series_id').val() } );
+
+			// change button text, when user selects file			
+			button.text('uploading');
+							
+			// If you want to allow uploading only 1 file at time,
+			// you can disable upload button
+			this.disable();
+			
+			// Uploding -> Uploading. -> Uploading...
+			interval = window.setInterval(function(){
+				var text = button.text();
+				if (text.length < 13){
+					button.text(text + '.');					
+				} else {
+					button.text('uploading');				
+				}
+			}, 200);
+		},
+		onComplete: function(file, response) {
+			button.text('upload file');
+						
+			window.clearInterval(interval);
+						
+			// enable upload button
+			this.enable();
+			
+			// add file to the list
+			if (response == 'success') {
+				$('#thumbnail_url').val( file );
+			}
+		}
+	});
+</script>
