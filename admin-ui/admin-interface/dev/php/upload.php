@@ -1,28 +1,32 @@
 <?php
-
-require_once(dirname(__FILE__).'/config.php');
-
-
-/*
-if ( (!array_key_exists('user', $_REQUEST)) ||
-	(!array_key_exists('passwd', $_REQUEST)) ||
-	($_REQUEST['user'] != __ADMIN_USER__) ||
-	($_REQUEST['passwd'] != __ADMIN_PASSWD__) )
-	die('error');
- */
-
-if (!array_key_exists('id', $_REQUEST))
-	die('error');
-
-$id = $_REQUEST['id'];
-$uploadfile = $uploaddir.$id.pathinfo($_FILES['file0']['name'])['extension'];
-
-if (move_uploaded_file($_FILES['file0']['tmp_name'], $uploadfile)) {
-  echo "success";
-} else {
-  // WARNING! DO NOT USE "FALSE" STRING AS A RESPONSE!
-  // Otherwise onSubmit event will not be fired
-	//echo "\n".$_FILES['file0']['tmp_name']."\n";
-	//echo "\n".$uploadfile."\n";
-  echo "error";
-}
+	require_once(dirname(__FILE__).'/config.php');
+?>
+<html>
+<head>
+<?php
+	$id    = $_REQUEST['id'];
+	$field = $_REQUEST['field'];
+	if (array_key_exists( 'uploadedfile', $_FILES ) ) {
+		$info = pathinfo($_FILES['uploadedfile']['name']);
+		$uploadfile = $uploaddir.$id.'.'.$info['extension'];
+		if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $uploadfile)) {
+?>
+<script type="text/javascript">
+	window.parent.document.getElementById('uploadform').style.display = 'none';
+	window.parent.document.getElementById('<?php echo $field; ?>').value = 
+		'<?php echo $uploadurl.$id.'.'.$info['extension']; ?>';
+</script>
+<?php
+		}
+	}
+?>
+</head>
+<body>
+<form enctype="multipart/form-data" 
+	action="upload.php?field=<?php echo $field; ?>&id=<?php echo $id; ?>" 
+	method="POST">
+<input name="uploadedfile" type="file" /><br />
+<input type="submit" value="Upload" />
+</form>
+</body>
+</html>
