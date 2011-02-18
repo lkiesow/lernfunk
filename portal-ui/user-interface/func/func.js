@@ -1136,107 +1136,113 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 
 	requestWebservices( { "cmd" : "getDetails", "args" : { "mediatype" : mediatype, "identifier" : identifier } },
 		function(data) {
-			if (handleError(data)) {
+			if (!handleError(data)) {
+				return; // some error occured
+			}
 
-				/**** LECTURER ***************************************************/
-				if ( mediatype == 'lecturer' ) {
-					setBackPager();
-					data = data.details;
-					data.academy = addAcademyBlock( data );
-					data.department = addDepartmentBlock( data );
-					data.series = makeSeriesTable( data.series );
-					loadTemplate( 'lecturerDetails.tpl', data, setContent );
-			
-				/**** RECORDING **************************************************/
-				} else if ( mediatype == 'recordings' ) {
-					setBackPager();
-					data = data.details;
-					data.academy = addAcademyBlock( data );
-					data.department = addDepartmentBlock( data );
-					data.lecturer = addLecturerBlock( data );
-					data.player = '';
-					// if recordings is a set of slides
-					if ( data.mimetype.match( /.*video.*/ ) ) {
-					
-						// WARNING! 
-						//   This is a UOS specific thing.
-						//   And a dirty workaround!
-						var rtmp = data.url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-						if (rtmp) {
-							rtmp = rtmp[0].split( '&' );
-							data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-						}
-						data.player  = '<p style="text-align: center;">';
-						data.player += fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
-						data.player += '</p>';
-
-					// if recording is virtpresenter recording
-					} else if ( data.mimetype.match( /.*virtpresenter.*/ ) ) {
-						data.player = '<iframe src="' + data.url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
-							+ '<p style="text-align: right;"><a href="' + data.url + '">Standalone-Player</a></p>';
-
-					// if recording is audio recording
-					} else if ( data.mimetype.match( /.*audio.*/ ) ) {
-						data.player  = '<p style="text-align: center;">';
-						data.player += fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
-						data.player += '</p>';
+			/**** LECTURER ***************************************************/
+			if ( mediatype == 'lecturer' ) {
+				setBackPager();
+				data = data.details;
+				data.academy = addAcademyBlock( data );
+				data.department = addDepartmentBlock( data );
+				data.series = makeSeriesTable( data.series );
+				loadTemplate( 'lecturerDetails.tpl', data, setContent );
+		
+			/**** RECORDING **************************************************/
+			} else if ( mediatype == 'recordings' ) {
+				setBackPager();
+				data = data.details;
+				data.academy = addAcademyBlock( data );
+				data.department = addDepartmentBlock( data );
+				data.lecturer = addLecturerBlock( data );
+				data.player = '';
+				// if recordings is a set of slides
+				if ( data.mimetype.match( /.*video.*/ ) ) {
+				
+					// WARNING! 
+					//   This is a UOS specific thing.
+					//   And a dirty workaround!
+					var rtmp = data.url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+					if (rtmp) {
+						rtmp = rtmp[0].split( '&' );
+						data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 					}
-					loadTemplate( 'recordingDetails.tpl', data, setContent );
+					data.player  = '<p style="text-align: center;">';
+					data.player += fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
+					data.player += '</p>';
 
-				/**** PODCAST ****************************************************/
-				} else if ( mediatype == 'podcast' ) {
-					setBackPager();
-					var replace = {
-							'url'          : data.details.url,
-							'feedtype'     : data.details.feedtype,
-							'term'         : data.details.term,
-							'series_name'  : data.details.series.name,
-							'series_desc'  : data.details.series.desc,
-							'series_thumb' : data.details.series.thumb
-						}
-					loadTemplate( 'feedDetails.tpl', replace, setContent );
-				/**** SERIES *****************************************************/
-				} else if ( mediatype == 'series' ) {
-					setBackPager();
-					data = data.details;
-					data.lecturer   = addLecturerBlock( data, 
-							tpl.seriesdetails.info.lecturerlink, 
-							tpl.seriesdetails.info.lecturerblock );
-					data.academy    = addAcademyBlock( data,
-							tpl.seriesdetails.info.academylink, 
-							tpl.seriesdetails.info.academyblock );
-					data.department = addDepartmentBlock( data,
-							tpl.seriesdetails.info.departmentlink, 
-							tpl.seriesdetails.info.departmentblock );
-					data.feeds = data.feeds ? $.toJSON( data.feeds ) : '[]';
+				// if recording is virtpresenter recording
+				} else if ( data.mimetype.match( /.*virtpresenter.*/ ) ) {
+					data.player = '<iframe src="' + data.url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
+						+ '<p style="text-align: right;"><a href="' + data.url + '">Standalone-Player</a></p>';
 
-					if (data.recordings) {
-						var firstRecording = { 'result' : {} };
-
-						for (var i in data.recordings) {
-							if (!data.recordings[i].cou_id)
-								data.recordings[i].cou_id = data.recordings[i].id;
-						}
-
-						data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
-						data.firstrecording_title    = firstRecording.result.title;
-						data.firstrecording_mimetype = firstRecording.result.mimetype;
-						data.firstrecording_url      = firstRecording.result.url;
-					} else {
-						data.recordings = fillTemplate( tpl.seriesdetails.norecording, {} );
-					}
-
-					loadTemplate( 'seriesDetails.tpl', data, function( data ) {
-								$('#content').html( data ).ready( function() {
-									var p = $.deparam.fragment();
-									if ( p.couid ) {
-										loadRec( '#mediaobjectplayer', p.couid );
-									}
-								} );
-							} );
-				} else {
-					// TODO 
+				// if recording is audio recording
+				} else if ( data.mimetype.match( /.*audio.*/ ) ) {
+					data.player  = '<p style="text-align: center;">';
+					data.player += fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
+					data.player += '</p>';
 				}
+				loadTemplate( 'recordingDetails.tpl', data, setContent );
+
+			/**** PODCAST ****************************************************/
+			} else if ( mediatype == 'podcast' ) {
+				setBackPager();
+				var replace = {
+						'url'          : data.details.url,
+						'feedtype'     : data.details.feedtype,
+						'term'         : data.details.term,
+						'series_name'  : data.details.series.name,
+						'series_desc'  : data.details.series.desc,
+						'series_thumb' : data.details.series.thumb
+					}
+				loadTemplate( 'feedDetails.tpl', replace, setContent );
+			/**** SERIES *****************************************************/
+			} else if ( mediatype == 'series' ) {
+				setBackPager();
+				data = data.details;
+				data.lecturer   = addLecturerBlock( data, 
+						tpl.seriesdetails.info.lecturerlink, 
+						tpl.seriesdetails.info.lecturerblock );
+				data.academy    = addAcademyBlock( data,
+						tpl.seriesdetails.info.academylink, 
+						tpl.seriesdetails.info.academyblock );
+				data.department = addDepartmentBlock( data,
+						tpl.seriesdetails.info.departmentlink, 
+						tpl.seriesdetails.info.departmentblock );
+				data.feeds = data.feeds ? $.toJSON( data.feeds ) : '[]';
+
+				// shorten description
+				if (!data.desc_sh) {
+					data.desc_sh = data.desc.substr(0, 256) + '&hellip;';
+				}
+				// prepare recordings
+				if (data.recordings) {
+					var firstRecording = { 'result' : {} };
+
+					for (var i in data.recordings) {
+						if (!data.recordings[i].cou_id)
+							data.recordings[i].cou_id = data.recordings[i].id;
+					}
+
+					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
+					data.firstrecording_title    = firstRecording.result.title;
+					data.firstrecording_mimetype = firstRecording.result.mimetype;
+					data.firstrecording_url      = firstRecording.result.url;
+				} else {
+					data.recordings = fillTemplate( tpl.seriesdetails.norecording, {} );
+				}
+
+				loadTemplate( 'seriesDetails.tpl', data, function( data ) {
+							$('#content').html( data ).ready( function() {
+								var p = $.deparam.fragment();
+								if ( p.couid ) {
+									loadRec( '#mediaobjectplayer', p.couid );
+								}
+							} );
+						} );
+			} else {
+				// TODO 
 			}
 		},
 		function(err) {
