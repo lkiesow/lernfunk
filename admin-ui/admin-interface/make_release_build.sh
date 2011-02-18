@@ -1,5 +1,7 @@
 #/bin/bash!
 
+cd `dirname "$0"`
+
 echo 'cleaning up release folder...'
 rm -rf release
 mkdir release
@@ -30,6 +32,7 @@ mkdir release/php
 cp dev/php/lfadmin.php     release/php
 cp dev/php/config.php      release/php
 cp dev/php/recordtypes.php release/php
+cp dev/php/upload.php      release/php
 
 echo 'copy js files...'
 mkdir release/js

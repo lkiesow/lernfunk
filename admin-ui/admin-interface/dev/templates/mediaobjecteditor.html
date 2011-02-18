@@ -1,4 +1,4 @@
-<div id="imguploadform" style="width: 300px; height: 100px; position: fixed; top: 50%; margin-top: -50px; margin-left: auto; margin-right: auto; background-color: #fff; text-align: right; border: 1px solid black; display: none;">
+<div id="uploadform" style="width: 300px; height: 100px; position: fixed; top: 50%; margin-top: -50px; margin-left: auto; margin-right: auto; background-color: #fff; text-align: right; border: 1px solid black; display: none;">
 	<a onclick="document.getElementById('uploadform').style.display = 'none'">X</a>
 	<iframe style="width: 100%; height: 80px; border: none;" src="php/upload.php?field=image_url&id=series_(:series_id:)_mediaobject_(:object_id:)"></iframe>
 </div>
@@ -272,7 +272,7 @@
                 value="(:image_url:)" 
                 onkeypress="$('savebutton').disabled = false;" />
 				<button id="imguploadbtn" type="button" class="w100" 
-					onclick="document.getElementById('imguploadform').style.display = 'block';">upload file</button>
+					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
         </td>
     </tr>
 
