@@ -36,6 +36,8 @@ $cfg = array(
 	)
 );
 
+include_once( dirname(__FILE__).'/../template/'.$cfg['tplName'].'/tplconfig.php' );
+
 $includes = '
 	<!-- jQuery UI -->
 	<link type="text/css" href="template/'.$cfg['tplName'].'/css/jquery/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
