@@ -317,32 +317,6 @@ function requestWebservices(request, onSuccess, onError) {
 
 
 /**
- * Simply load/get a webpage
- *
- * url         webpage to get
- * onSuccess   function that is called if the request was successfull
- * onError     function that is called if an error occured
- **/
-function getWebpage( url, onSuccess, onError ) {
-	// TODO
-	alert( 'we still need getWebpage' );
-
-	if (!onError) {
-		onError = function() {};
-	}
-
-	$.ajax({
-		type: 'POST',
-		url: './func/getWebpage.php',
-		dataType: 'plain',
-		data	: ({ 'url' : url }),
-		success: onSuccess,
-		error: onError
-	});
-}
-
-
-/**
  * Check result from lernfunk-webservice and handle error-messages
  *
  * returns   if no error occured
@@ -982,6 +956,9 @@ function addObjectBlock(mediatype, obj) {
 	//**************************************************************************
 	} else if  (mediatype == 'series') {
 		replace.lecturer   = addLecturerBlock(obj);
+		if (!replace.mobjcount) {
+			replace.mobjcount = 0;
+		}
 		loadTemplate( 'seriesPreview.tpl', replace, appendContent, null, appendContentSpace );
 	}
 }
@@ -1081,75 +1058,6 @@ function addTab(tab_id, name, func) {
 }
 
 
-function showSubfilter( filter_by, mediatype ) {
-	// TODO
-	alert( 'we still need showSubfilter' );
-	$('div.rightbox_tab').removeClass('rightbox_tab_active');
-	$('#rightbox_tab_' + filter_by ).addClass('rightbox_tab_active');
-	var a = [];
-	var title = '';
-	if ( filter_by == 'format' ) {
-		var e = {};
-		var data = lastSearch.data;
-		for (i in data) {
-			if ( data[i].mediatype == mediatype ) {
-				if (!e[data[i].format]) {
-					e[data[i].format] = true;
-					a.push( data[i].format );
-				}
-			}
-		}
-	} else if ( filter_by == 'type' ) {
-		var e = {};
-		var data = lastSearch.data;
-		for (i in data) {
-			if ( data[i].mediatype == mediatype ) {
-				if (!e[data[i].type]) {
-					e[data[i].type] = true;
-					a.push( data[i].type );
-				}
-			}
-		}
-	} else if ( filter_by == 'department' && lastSearch ) {
-		var e = {};
-		var data = lastSearch.data;
-		for (i in data) {
-			if ( data[i].mediatype == mediatype ) {
-				for (j in data[i].department) {
-					if (data[i].department[j] && !e[j]) {
-						e[j] = data[i].department[j];
-						a.push( data[i].department[j] );
-					}
-				}
-			}
-		}
-	} else if ( filter_by == 'lecturer' && lastSearch ) {
-		var e = {};
-		var data = lastSearch.data;
-		for (i in data) {
-			if ( data[i].mediatype == mediatype ) {
-				for (j in data[i].lecturer) {
-					if (!e[j]) {
-						e[j] = data[i].lecturer[j];
-						a.push( data[i].lecturer[j] );
-					}
-				}
-			}
-		}
-	}
-	a.sort();
-
-	var selection = '';
-	for (i in a) {
-
-
-		selection += '<div class="filter_select" onclick="filterResults( \'' 
-			+ mediatype + '\', null, { \'' + filter_by + '\' : \'' + a[i] + '\' } );">' + a[i] + '</div> ';
-	}
-	$('#rightview_filter').html( selection );
-}
-
-
 function sortResults(sorter) {
 	if (!currData)
 		return;
@@ -1210,18 +1118,6 @@ function loadPage(title, page) {
 }
 
 
-function toLastSavepoint() {
-	// TODO
-	alert( 'we still need toLastSavepoint' );
-	$('div.pager').html( pagerBuffer[ pagerBuffer.length - 1 ] );
-	$('#content').html( contentBuffer[ contentBuffer.length - 1 ] );
-	$('div.pager').css( 'display', pStyleBuffer ); 
-	pagerBuffer.pop();
-	contentBuffer.pop();
-	pStyleBuffer.pop();
-}
-
-
 /**
  * Shows the detail page
  *   mediatype    the type of the dataset to show information about
@@ -1260,12 +1156,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.lecturer = addLecturerBlock( data );
 					data.player = '';
 					// if recordings is a set of slides
-					if ( data.mimetype == 'slides' ) {
-						data.player = '<div id="slideplayer_container" '
-							+ 'style="width: 600px; height: 304px; overflow-y: hidden; overflow-x: scroll;">'
-							+ '<div id="slideplayer" style="max-height: 300px;"></div></div>';
-					// if recording is a video
-					} else if ( data.mimetype.match( /.*video.*/ ) ) {
+					if ( data.mimetype.match( /.*video.*/ ) ) {
 					
 						// WARNING! 
 						//   This is a UOS specific thing.
@@ -1317,18 +1208,23 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.department = addDepartmentBlock( data,
 							tpl.seriesdetails.info.departmentlink, 
 							tpl.seriesdetails.info.departmentblock );
-					data.feeds = $.toJSON( data.feeds );
-					var firstRecording = { 'result' : {} };
+					data.feeds = data.feeds ? $.toJSON( data.feeds ) : '[]';
 
-					for (var i in data.recordings) {
-						if (!data.recordings[i].cou_id)
-							data.recordings[i].cou_id = data.recordings[i].id;
+					if (data.recordings) {
+						var firstRecording = { 'result' : {} };
+
+						for (var i in data.recordings) {
+							if (!data.recordings[i].cou_id)
+								data.recordings[i].cou_id = data.recordings[i].id;
+						}
+
+						data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
+						data.firstrecording_title    = firstRecording.result.title;
+						data.firstrecording_mimetype = firstRecording.result.mimetype;
+						data.firstrecording_url      = firstRecording.result.url;
+					} else {
+						data.recordings = fillTemplate( tpl.seriesdetails.norecording, {} );
 					}
-
-					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
-					data.firstrecording_title    = firstRecording.result.title;
-					data.firstrecording_mimetype = firstRecording.result.mimetype;
-					data.firstrecording_url      = firstRecording.result.url;
 
 					loadTemplate( 'seriesDetails.tpl', data, function( data ) {
 								$('#content').html( data ).ready( function() {
@@ -1648,14 +1544,8 @@ function fillTemplate( template, replaceData ) {
 	}
 	var re = new RegExp( '\\(:\\(.+?\\):\\(.*?\\):\\(.*?\\):\\(.*?\\):\\)', 'g' );
 	var ma = data.match( re );
-//	if (ma)
-//		alert( '1:: ' + formatJSON( $.toJSON( ma ) ) );
-//	for ( i in ma ) {
 	for ( var i = 0; i < (ma ? ma.length : 0); i++ ) {
-//		alert( ma[i] );
 		var keywords = ma[i].split( '):(' );
-//		alert( keywords.length );
-//		alert( formatJSON( $.toJSON(keywords) ) );
 		keywords[0] = keywords[0].split( '(:(' )[1];
 		keywords[3] = keywords[3].split( '):)' )[0];
 		if ( typeof( replaceData[ keywords[0] ] ) == 'string') {
@@ -1718,46 +1608,6 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 			error: onError
 		});
 	}
-}
-
-
-function showSubmenu( menu_item ) {
-	// TODO
-	alert( 'we still need showSubmenu' );
-	var subfilter = '';
-	if ( menu_item == 'recordings' || menu_item == 'slides' ) {
-		subfilter += makeSubmenuTab( 'format',     menu_item, 'Format'      );
-		subfilter += makeSubmenuTab( 'department', menu_item, 'Fachbereich' );
-		subfilter += makeSubmenuTab( 'lecturer',   menu_item, 'Dozent'      );
-	} else if ( menu_item == 'series' ) {
-		subfilter += makeSubmenuTab( 'department', menu_item, 'Fachbereich' );
-		subfilter += makeSubmenuTab( 'lecturer',   menu_item, 'Dozent'      );
-	} else if ( menu_item == 'lecturer' ) {
-		subfilter += makeSubmenuTab( 'department', menu_item, 'Fachbereich' );
-	} else if ( menu_item == 'podcast' ) {
-		subfilter += makeSubmenuTab( 'type',       menu_item, 'Type'    );
-		subfilter += makeSubmenuTab( 'department', menu_item, 'Fachbereich' );
-		subfilter += makeSubmenuTab( 'lecturer',   menu_item, 'Dozent'      );
-	}
-	$('#rightbox_tabs').html( subfilter );
-	showSubfilter( 'department', menu_item );
-	$('#rightview_content').css( 'display', 'block' );
-	$('#rightview_select' ).css( 'display', 'none'  );
-}
-
-
-/**
- * Create a string for a subfilter-tab
- *
- * filter_by   attribute to filter
- * mediatype   mediatype of the primary filter
- * label       the label of the tab
- **/
-function makeSubmenuTab( filter_by, mediatype, label ) {
-	// TODO
-	alert( 'we still need makeSubmenuTab' );
-	return '<div class="rightbox_tab" id="rightbox_tab_' + filter_by + '" onclick=" showSubfilter( \'' 
-		+ filter_by + '\', \'' + mediatype + '\' ); ">' + label + '</div>';
 }
 
 
