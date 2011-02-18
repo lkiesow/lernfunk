@@ -15,6 +15,7 @@
 	window.parent.document.getElementById('uploadform').style.display = 'none';
 	window.parent.document.getElementById('<?php echo $field; ?>').value = 
 		'<?php echo $uploadurl.$id.'.'.$info['extension']; ?>';
+	window.parent.document.getElementById('savebutton').disabled = false;
 </script>
 <?php
 		}

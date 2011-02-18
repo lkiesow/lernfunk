@@ -25,6 +25,10 @@ input:focus, textarea:focus {
     background: rgb(250,250,250); 
 }
 
+.w100 {
+    width: 100px;
+}
+
 .w200 {
     width: 200px;
 }
