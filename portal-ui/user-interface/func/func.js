@@ -433,11 +433,11 @@ function onHashChange( e ) {
 				&& ( !isStrAttr( currentState.resultfilter ) || params.resultfilter == currentState.resultfilter ) ) {
 				goToPage( 1, true );
 			// current page was a special page (details), this is regular
-			} else if ( isStrAttr( currentState.details ) && !isStrAttr( params.details ) 
+			} else if ( isStrAttr( currentState.identifier ) && !isStrAttr( params.identifier ) 
 				&& ( !isStrAttr( currentState.resultfilter ) || params.resultfilter == currentState.resultfilter ) ) {
 				goToPage( (params.page ? parseInt( params.page ) : 1) , true );
 			// new page is a special page (details)
-			} else if ( isStrAttr( params.details ) && isStrAttr( params.mediatype ) && isStrAttr( params.identifier ) ) {
+			} else if ( isStrAttr( params.mediatype ) && isStrAttr( params.identifier ) ) {
 				getDetails( params.mediatype, parseInt( params.identifier ), true );
 			// filtered result
 			} else if ( isStrAttr( params.resultfilter ) 
@@ -928,7 +928,7 @@ function addObjectBlock(mediatype, obj) {
 	if (mediatype == 'recordings') {
 		replace.lecturer   = addLecturerBlock(obj);
 		replace.series_rec_link = window.location.hash 
-			+ '&details=1&mediatype=series&identifier=' + replace.series_id 
+			+ '&mediatype=series&identifier=' + replace.series_id 
 			+ '&couid=' + replace.cou_id + '&id=' + replace.id;
 		loadTemplate( 'recordingPreview.tpl', replace, appendContent, null, appendContentSpace );
 
@@ -1129,10 +1129,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 
 
 	if ( !hashIsSet ) {
-		var dc = $.bbq.getState( 'details' );
-		if ( typeof(dc === 'undefined') )
-			dc = 1;
-		$.bbq.pushState( { 'details' : dc, 'mediatype' : mediatype, 'identifier' : identifier } );
+		$.bbq.pushState( { 'mediatype' : mediatype, 'identifier' : identifier } );
 	}
 
 	requestWebservices( { "cmd" : "getDetails", "args" : { "mediatype" : mediatype, "identifier" : identifier } },
