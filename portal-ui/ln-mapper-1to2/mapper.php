@@ -42,7 +42,7 @@ function map_request( $req ) {
 		}
 
 		return '/portal-ui/user-interface/#cmd=search&filter='.$rs->name
-			.'&details=1&mediatype=series&identifier='.$rs->series_id.$objln;
+			.'&mediatype=series&identifier='.$rs->series_id.$objln;
 
 	} else { // end sql
 		if (mysql_error())
