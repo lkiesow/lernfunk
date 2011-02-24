@@ -225,7 +225,6 @@ function loadStartpage( data ) {
 				var player = '';
 				var replaceData = n;
 				delete( n.preview_url );
-				delete( n.image_url );
 				delete( n.seriesthumb );
 				if ( n.mimetype.match( /.*video.*/ ) ) {
 					replaceData.mediatype = 'Video';
@@ -241,6 +240,9 @@ function loadStartpage( data ) {
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				} else if ( n.mimetype.match( /.*matterhorn.*/ ) ) {
 					replaceData.mediatype = 'Matterhorn';
+					// WARNING! 
+					//   This is a UOS specific thing.
+					//   And a dirty workaround!
 					n.url = n.url.replace(/watch.html/, 'embed.html');
 					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
@@ -282,7 +284,6 @@ function replaceBy( node, type, url ) {
 		url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 	}
 
-//	alert( [ node, type, url ] );
 	$(node).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
 
 }
@@ -794,12 +795,8 @@ function setPager(page) {
 }
 
 
-function triggerSearch() {
-	var request = { 'cmd' : 'getData', 'args' : {} };
-	if ( ($('#search').val() != '') && ($('#search').val() != 'Suche') )
-		request.args.filter = $('#search').val();
-
-	if ( $('#search').val() ) {
+function triggerSearch( std ) {
+	if ( ($('#search').val() != '') && ($('#search').val() != std) ) {
 		$.bbq.pushState( { 'filter' : $('#search').val(), 'cmd' : 'search' }, 2 );
 	} else {
 		$.bbq.pushState( { 'cmd' : 'search' }, 2 );
