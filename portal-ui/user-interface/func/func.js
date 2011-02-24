@@ -476,6 +476,10 @@ function onHashChange( e ) {
 			url = 'pages/' + url + '.inc.htm';
 		}
 		loadPage( params.title, url );
+
+	// load details only
+	} else if ( isStrAttr( params.mediatype ) && isStrAttr( params.identifier ) ) {
+		getDetails( params.mediatype, parseInt( params.identifier ), true );
 	}
 
 	// save current state
