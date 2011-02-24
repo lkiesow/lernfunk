@@ -41,8 +41,7 @@ function map_request( $req ) {
 			$objln = '&couid='.$rs2->cou_id.'&id='.intval($req['stream_id']);
 		}
 
-		return '/portal-ui/user-interface/#cmd=search&filter='.$rs->name
-			.'&mediatype=series&identifier='.$rs->series_id.$objln;
+		return '/portal-ui/user-interface/#mediatype=series&identifier='.$rs->series_id.$objln;
 
 	} else { // end sql
 		if (mysql_error())
