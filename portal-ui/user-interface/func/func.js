@@ -239,6 +239,11 @@ function loadStartpage( data ) {
 					replaceData.mediatype = 'virtPresenter';
 					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
 					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+				} else if ( n.mimetype.match( /.*matterhorn.*/ ) ) {
+					replaceData.mediatype = 'Matterhorn';
+					n.url = n.url.replace(/watch.html/, 'embed.html');
+					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
+					recordings += fillTemplate( tpl.home.new_recording, replaceData );
 				}
 			}
 		}
@@ -267,19 +272,18 @@ function getImageFromRecObj( o, stdimg ) {
 function replaceBy( node, type, url ) {
 
 	type = type.toLowerCase();
-	if ( type == 'virtpresenter' || type == 'video' || type == 'audio' ) {
 		
-		// WARNING! 
-		//   This is a UOS specific thing.
-		//   And a dirty workaround!
-		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-		if (rtmp) {
-			rtmp = rtmp[0].split( '&' );
-			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-		}
-
-		$(node).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
+	// WARNING! 
+	//   This is a UOS specific thing.
+	//   And a dirty workaround!
+	var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+	if (rtmp) {
+		rtmp = rtmp[0].split( '&' );
+		url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 	}
+
+//	alert( [ node, type, url ] );
+	$(node).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
 
 }
 
@@ -1229,6 +1233,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 					data.firstrecording_title    = firstRecording.result.title;
 					data.firstrecording_mimetype = firstRecording.result.mimetype;
 					data.firstrecording_url      = firstRecording.result.url;
+					data.firstrecording_cou_id   = firstRecording.result.cou_id;
 				} else {
 					data.recordings = fillTemplate( tpl.seriesdetails.norecording, {} );
 				}
@@ -1263,7 +1268,10 @@ function loadRec( target, couid ) {
 				search_best = false;
 			} else if ( !first ) {
 				first = seriesRecBuf[couid][i];
-			} else if ( seriesRecBuf[couid][i].mimetype.match(/.*video.*/) ) {
+			} else if ( seriesRecBuf[couid][i].mimetype.match(/.*matterhorn.*/) ) {
+				first = seriesRecBuf[couid][i];
+			} else if ( !first.mimetype.match(/.*matterhorn.*/) 
+					&& seriesRecBuf[couid][i].mimetype.match(/.*video.*/) ) {
 				first = seriesRecBuf[couid][i];
 			}
 		}
@@ -1455,7 +1463,6 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 			rel_rec[ o.cou_id ] = [];
 		rel_rec[ o.cou_id ].push( o );
 	}
-	// rel_rec.sort( function(a, b) { return lexCompare(b.date, a.date); } );
 
 	// buffer recordings for this page
 	seriesRecBuf = rel_rec;

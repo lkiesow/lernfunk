@@ -33,18 +33,14 @@
 		</div>
 	</div>
 
-<script type="text/javascript">
-	var feeds = (:feeds:);
-	for (var i=0; i<feeds.length; i++) {
-		$('p#pdct').append('<a href="' + feeds[i].url + '">'
-			+ '<img src="template/uni_os_red/img/rss.png" alt="rss" /> ' + feeds[i].type + '</a> ');
-	}
-</script>
-<!--
-<script type="text/javascript">
-	loadPlayer( '#mediaobjectplayer', '(:firstrecording_title:)',
-			'(:firstrecording_mimetype:)', '(:firstrecording_url:)' );
-</script>
--->
-
+	<script type="text/javascript">
+		// load feeds
+		var feeds = (:feeds:);
+		for (var i=0; i<feeds.length; i++) {
+			$('p#pdct').append('<a href="' + feeds[i].url + '">'
+					+ '<img src="template/uni_os_red/img/rss.png" alt="rss" /> ' + feeds[i].type + '</a> ');
+		}
+		// load first recording
+		loadRec( '#mediaobjectplayer', '(:firstrecording_cou_id:)' );
+	</script>
 </div>

@@ -11,7 +11,7 @@ $cfg = array(
 	'newreccount'    => 2,
 
 	// filter recordings that are shown on the startpage by mimetype
-	'newsrecfilter'  => array( '%video%' ),
+	'newsrecfilter'  => array( '%video%', '%matterhorn%' ),
 
 	// how much objects should be displayed
 	'objectsPerPage' => 10,
