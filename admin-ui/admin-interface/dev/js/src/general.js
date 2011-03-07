@@ -32,11 +32,11 @@ function init() {
 /* Fit interface in window                                                   */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function setSize() {
-    $('navigation').style.height = (window.innerHeight - 95) + 'px'; 
-    $('stage').style.height = (window.innerHeight - 95) + 'px'; 
-    $('bottom_container').style.height = (window.innerHeight - 90) + 'px'; 
-    $('main_table').style.width = (window.innerWidth - 10 ) + 'px';
-    //$('main_table').setAttribute('style', 'width: ' + window.innerWidth + 'px;');
+    $('#navigation').style.height = (window.innerHeight - 95) + 'px'; 
+    $('#stage').style.height = (window.innerHeight - 95) + 'px'; 
+    $('#bottom_container').style.height = (window.innerHeight - 90) + 'px'; 
+    $('#main_table').style.width = (window.innerWidth - 10 ) + 'px';
+    //$('#main_table').setAttribute('style', 'width: ' + window.innerWidth + 'px;');
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -51,11 +51,11 @@ function trigger_search() {
 /* Search for series or lecturer                                             */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function search() {
-    searchtext = $('searchbox').value;
+    searchtext = $('#searchbox').value;
     new Ajax.Request( lf_url,{
                       method: "post",
                       onSuccess: function(r) {
-                          $('navigation').innerHTML = r.responseText;
+                          $('#navigation').innerHTML = r.responseText;
                           open_result = null;
                       },
                       parameters: {cmd:"search", search:searchtext}
@@ -72,11 +72,11 @@ function search() {
 /*   id  {Optional: Identifier of a specified record to load}                */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function load_editor(t, id) {
-    $('stage').innerHTML = loadingHTML;
+    $('#stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('stage').innerHTML = r.responseText;
+                          $('#stage').innerHTML = r.responseText;
                           editortype = t;
                       },
                       parameters: {cmd:'get_editor', type:t, id:id}
@@ -157,14 +157,14 @@ function show_cal(el, inp) {
 /* ???                                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function show_select_window(table, text, callback) {
-    $('select_window').style.display = 'inline';
-    $('select_window_caption').innerHTML = text;
-    selectwnd_ok_action = callback + "($('select_window_selector').value);";
+    $('#select_window').style.display = 'inline';
+    $('#select_window_caption').innerHTML = text;
+    selectwnd_ok_action = callback + "($('#select_window_selector').value);";
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('select_window_selector').innerHTML = r.responseText;
-                          $('select_window_ok').disabled = false;
+                          $('#select_window_selector').innerHTML = r.responseText;
+                          $('#select_window_ok').disabled = false;
                       },
                       parameters: {cmd:'get_option_list', type:table, supress_none_option:true}
                     } );
@@ -174,8 +174,8 @@ function show_select_window(table, text, callback) {
 /* ???                                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function hide_select_window() {
-    $('select_window_ok').disabled = true;
-    $('select_window').style.display = 'none';
+    $('#select_window_ok').disabled = true;
+    $('#select_window').style.display = 'none';
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

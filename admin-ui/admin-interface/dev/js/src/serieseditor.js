@@ -15,11 +15,11 @@ serieseditor = Class.create();
 serieseditor.load = function(id) {
     editortype = 'series';
     current_id = id;
-    $('stage').innerHTML = loadingHTML;
+    $('#stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('stage').innerHTML = r.responseText;
+                          $('#stage').innerHTML = r.responseText;
                       },
                       parameters: {
                           cmd:'get_serieseditor', 
@@ -34,13 +34,13 @@ serieseditor.load = function(id) {
 serieseditor.create = function(id) {
     editortype = 'series';
     current_id = id;
-    $('stage').innerHTML = loadingHTML;
+    $('#stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('stage').innerHTML = r.responseText;
+                          $('#stage').innerHTML = r.responseText;
                           serieseditor.getLastRecordings(10, false);
-                          $('term_id').selectedIndex = $('term_id').length - 1;
+                          $('#term_id').selectedIndex = $('#term_id').length - 1;
                       },
                       parameters: {
                           cmd:'get_seriescreator' 
@@ -52,7 +52,7 @@ serieseditor.getLastRecordings = function( count, withoutSeries ) {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('mediaobjectselector').innerHTML = r.responseText;
+                          $('#mediaobjectselector').innerHTML = r.responseText;
                       },
                       parameters: {
                           cmd:'get_last_recordings',
@@ -66,7 +66,7 @@ serieseditor.getLastRecordings = function( count, withoutSeries ) {
 /* Save new mediaobject (seriescreator)                                      */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 serieseditor.save_new = function() {
-    // alert( Object.toJSON($('fields').serialize(true)) );
+    // alert( Object.toJSON($('#fields').serialize(true)) );
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
@@ -77,7 +77,7 @@ serieseditor.save_new = function() {
                       },
                       parameters: {
                           cmd:'save_new_series', 
-                          record: r = Object.toJSON($('fields').serialize(true))
+                          record: r = Object.toJSON($('#fields').serialize(true))
                       }
     });
 }
@@ -89,12 +89,12 @@ serieseditor.save = function() {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                            $('savebutton').disabled = true;
+                            $('#savebutton').disabled = true;
                       },
                       parameters: {
                           cmd:'save_series', 
-                          id:$('series_id').value, 
-                          record: r = Object.toJSON($('fields').serialize(true))
+                          id:$('#series_id').value, 
+                          record: r = Object.toJSON($('#fields').serialize(true))
                       }
     });
 }
@@ -109,7 +109,7 @@ serieseditor.remove_lecturer = function(lecturer_id) {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('lecturers').innerHTML = r.responseText;
+                          $('#lecturers').innerHTML = r.responseText;
                       },
                       parameters: {
                           cmd:'series_remove_lecturer', 
@@ -128,7 +128,7 @@ serieseditor.add_lecturer = function(lecturer_id) {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('lecturers').innerHTML = r.responseText;
+                          $('#lecturers').innerHTML = r.responseText;
                           hide_select_window();
                       },
                       parameters: {

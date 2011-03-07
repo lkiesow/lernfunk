@@ -25,7 +25,7 @@
                 id="pl_title" 
                 name="pl_title" 
                 value="(:pl_title:)" 
-                onkeypress="$('savebutton').disabled = false;" />
+                onkeypress="$('#savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -38,7 +38,7 @@
                 class="w400" 
                 id="pl_description" 
                 name="pl_description" 
-                onkeypress="$('savebutton').disabled = false;">(:pl_description:)</textarea>
+                onkeypress="$('#savebutton').disabled = false;">(:pl_description:)</textarea>
         </td>
     </tr>
 
@@ -51,7 +51,7 @@
                 class="w400" 
                 id="reciever_id" 
                 name="reciever_id" 
-                onchange="$('savebutton').disabled = false;" >
+                onchange="$('#savebutton').disabled = false;" >
                     (:series_options:)
             </select>
         </td>
@@ -105,7 +105,7 @@
     <tr>
         <td colspan="6" style="text-align: center; padding-top: 15px; border-top: 1px solid grey;">
             <input type="button" id="addentrybutton"
-                onclick="$('new_entry_editor').style.display = 'inline';" value="add new entry" />
+                onclick="$('#new_entry_editor').style.display = 'inline';" value="add new entry" />
         </td>
     </tr>
 </table>
@@ -152,7 +152,7 @@
             class="w400"
             name="object_id"
             id="new_object_id"
-            onchange="$('savenewentrybutton').disabled = false;" >
+            onchange="$('#savenewentrybutton').disabled = false;" >
             <option value="-1">loading data...</option>
         </select>
 
@@ -161,7 +161,7 @@
             class="w400" 
             id="new_access_id" 
             name="access_id" 
-            onchange="$('savenewentrybutton').disabled = false;" >
+            onchange="$('#savenewentrybutton').disabled = false;" >
                 (:access_options:)
         </select>
 
