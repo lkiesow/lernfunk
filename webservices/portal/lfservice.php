@@ -660,7 +660,7 @@ class LFService {
 		} elseif ($mediatype == 'series') {
 			
 			$sql = 'SELECT s.series_id, s.name, s.description, s.description_sh, '
-				  .'s.thumbnail_url, s.add_url, s.add_url_text, '
+				  .'s.thumbnail_url, s.add_url, s.add_url_text, s.portal_url, '
 				  .'s.keywords, t.term_sh, t.term_lg, c.category, f.feed_url '
 				  .'FROM series s '
 				  .'left outer join terms t on s.term_id = t.term_id '
@@ -689,6 +689,7 @@ class LFService {
 					$data['term']         = $r->term_lg;
 					$data['term_sh']      = $r->term_sh;
 					$data['feed_url']     = $r->feed_url;
+					$data['portal_url']   = $r->portal_url;
 					
 					// get lecturer, department and academy
 					$sql2 = 'SELECT ls.lecturer_id, l.ac_title, l.firstname, l.name, '
