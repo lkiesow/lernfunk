@@ -25,7 +25,7 @@
                 id="feed_url" 
                 name="feed_url" 
                 value="(:feed_url:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -38,7 +38,7 @@
                 class="w400" 
                 id="series_id" 
                 name="series_id" 
-                onchange="$('#savebutton').disabled = false;" >
+                onchange="$('savebutton').disabled = false;" >
                     (:series_options:)
             </select>
         </td>
@@ -52,7 +52,7 @@
             <select id="feedtype_id" 
                 name="feedtype_id" 
                 class="w400" 
-                onchange="$('#savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;">
                     (:feedtype_options:)
             </select>
         </td>
@@ -70,7 +70,7 @@
                 class="w400" 
                 value="(:itunes_status:)"
                 onkeyup="var val = parseInt( this.value ); this.value = Math.min( Math.abs( val ? val : 0 ), 255 );"
-                onchange="$('#savebutton').disabled = false;" />
+                onchange="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -100,3 +100,5 @@
     </tr>
 </table>
 </form>
+
+

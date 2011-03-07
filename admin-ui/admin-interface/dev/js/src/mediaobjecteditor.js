@@ -14,11 +14,11 @@ mediaobjecteditor = Class.create();
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 mediaobjecteditor.add = function(series_id) {
     editortype = 'mediaobject';
-    $('#stage').innerHTML = loadingHTML;
+    $('stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('#stage').innerHTML = r.responseText;
+                          $('stage').innerHTML = r.responseText;
                       },
                       parameters: {cmd:'get_empty_mediaobjecteditor', series_id:series_id}
     });
@@ -32,11 +32,11 @@ mediaobjecteditor.add = function(series_id) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 mediaobjecteditor.load = function(object_id) {
     editortype = 'mediaobject';
-    $('#stage').innerHTML = loadingHTML;
+    $('stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('#stage').innerHTML = r.responseText;
+                          $('stage').innerHTML = r.responseText;
                       },
                       parameters: {cmd:'get_mediaobjecteditor', object_id:object_id}
     });
@@ -46,18 +46,18 @@ mediaobjecteditor.load = function(object_id) {
 /* Save currently opened mediaobject                                         */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 mediaobjecteditor.save = function() {
-    var keepSeries = ($('#series_id').value == $('#old_series_id').value) || ($('#old_series_id').value = '');
+    var keepSeries = ($('series_id').value == $('old_series_id').value) || ($('old_series_id').value = '');
     if (keepSeries || confirm('Are you shure you want to change the series?')) {
         new Ajax.Request( lf_url, {
                           method: 'post',
                           onSuccess: function(r) {
-                                  $('#mediaobject_response').innerHTML = r.responseText;
-                                  trigger_result($('#old_series_id').value);
-                                  trigger_result($('#series_id').value);
+                                  $('mediaobject_response').innerHTML = r.responseText;
+                                  trigger_result($('old_series_id').value);
+                                  trigger_result($('series_id').value);
                           },
-                          parameters: {cmd:'save_mediaobject', record: r = Object.toJSON($('#fields').serialize(true))}
+                          parameters: {cmd:'save_mediaobject', record: r = Object.toJSON($('fields').serialize(true))}
         });
-        $('#mediaobject_response').innerHTML = '<pre>saving feed...</pre>';
+        $('mediaobject_response').innerHTML = '<pre>saving feed...</pre>';
     }
 }
 
@@ -73,13 +73,13 @@ mediaobjecteditor.remove = function(object_id, series_id) {
         new Ajax.Request( lf_url, {
                           method: 'post',
                           onSuccess: function(r) {
-                                  $('#stage').innerHTML = r.responseText;
+                                  $('stage').innerHTML = r.responseText;
                                   trigger_result(series_id);
                                   trigger_result(series_id);
                           },
                           parameters: {cmd:'delete_mediaobject', object_id:object_id}
         });
-        $('#mediaobject_response').innerHTML = '<pre>deleting mediaobject...</pre>';
+        $('mediaobject_response').innerHTML = '<pre>deleting mediaobject...</pre>';
     }
 }
 
@@ -93,7 +93,7 @@ mediaobjecteditor.load_cou = function(id) {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('#cou_editor_pane').innerHTML = r.responseText;
+                          $('cou_editor_pane').innerHTML = r.responseText;
                       },
                       parameters: {cmd:'get_couobjecteditor', id:id}
                     });
@@ -110,12 +110,14 @@ mediaobjecteditor.save_cou = function() {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                            $('#cousavebutton').disabled = true;
+                            $('cousavebutton').disabled = true;
                       },
                       parameters: {cmd:'save_cou_object', 
-                                   id:$('#object_id').value, 
-                                   record: r = Object.toJSON($('#cou_object_editor').serialize(true))}
+                                   id:$('object_id').value, 
+                                   record: r = Object.toJSON($('cou_object_editor').serialize(true))}
     });
 }
 */
+
+
 

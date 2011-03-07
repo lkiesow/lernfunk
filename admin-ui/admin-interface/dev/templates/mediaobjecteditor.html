@@ -13,17 +13,17 @@
     <tr>
         <td>
             <select id="related_object_select" size="4" style="width:400px;" 
-                ondblclick="mediaobjecteditor.load($('#related_object_select').value)" 
+                ondblclick="mediaobjecteditor.load($('related_object_select').value)" 
                 style="border: 1px solid grey;">
                     (:related_objects:)
             </select>
         </td>
         <td valign="top">
             <input type="button" 
-                onclick="mediaobjecteditor.load($('#related_object_select').value);" 
+                onclick="mediaobjecteditor.load($('related_object_select').value);" 
                 style="width:80px" value="edit" /> <br />
             <input type="button" 
-                onclick="$('#object_id').value = '';" 
+                onclick="$('object_id').value = '';" 
                 style="width:80px" value="dublicate" />
             <!--
             <button type="button" 
@@ -64,7 +64,7 @@
                 id="title" 
                 name="title" 
                 value="(:title:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -78,7 +78,7 @@
                 rows="3"
                 id="description" 
                 name="description" 
-                onkeypress="$('#savebutton').disabled = false;" >(:description:)</textarea>
+                onkeypress="$('savebutton').disabled = false;" >(:description:)</textarea>
         </td>
     </tr>
 
@@ -92,7 +92,7 @@
                 id="cou_id" 
                 name="cou_id" 
                 value="(:cou_id:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -105,7 +105,7 @@
                 class="w400" 
                 id="series_id" 
                 name="series_id" 
-                onkeypress="$('#savebutton').disabled = false;" >
+                onkeypress="$('savebutton').disabled = false;" >
                     (:series_options:)
             </select>
         </td>
@@ -116,9 +116,9 @@
             Aufzeichnungsdatum:
         </td>
         <td>
-            <select name="day" id="day" onchange="$('#savebutton').disabled=false;">(:day_options:)</select>.
-            <select name="month" id="month" onchange="$('#savebutton').disabled=false;">(:month_options:)</select>.
-            <select name="year" id="year" onchange="$('#savebutton').disabled=false;">(:year_options:)</select>
+            <select name="day" id="day" onchange="$('savebutton').disabled=false;">(:day_options:)</select>.
+            <select name="month" id="month" onchange="$('savebutton').disabled=false;">(:month_options:)</select>.
+            <select name="year" id="year" onchange="$('savebutton').disabled=false;">(:year_options:)</select>
         </td>
     </tr>
 
@@ -127,9 +127,9 @@
             Uhrzeit:
         </td>
         <td>
-            <select name="hour" id="hour" onchange="$('#savebutton').disabled=false;">(:hour_options:)</select>:
-            <select name="minute" id="minute" onchange="$('#savebutton').disabled=false;">(:minute_options:)</select>:
-            <select name="second" id="second" onchange="$('#savebutton').disabled=false;">(:second_options:)</select>
+            <select name="hour" id="hour" onchange="$('savebutton').disabled=false;">(:hour_options:)</select>:
+            <select name="minute" id="minute" onchange="$('savebutton').disabled=false;">(:minute_options:)</select>:
+            <select name="second" id="second" onchange="$('savebutton').disabled=false;">(:second_options:)</select>
         </td>
     </tr>
 
@@ -143,7 +143,7 @@
                 id="lrs_object_id" 
                 name="lrs_object_id" 
                 value="(:lrs_object_id:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -155,7 +155,7 @@
             <select id="language_id" 
                 name="language_id" 
                 class="w400" 
-                onchange="$('#savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;">
                     (:language_options:)
             </select>
         </td>
@@ -169,7 +169,7 @@
             <select id="format_id" 
                 name="format_id" 
                 class="w400" 
-                onchange="$('#savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;">
                     (:format_options:)
             </select>
         </td>
@@ -183,7 +183,7 @@
             <select id="access_id" 
                 name="access_id" 
                 class="w400" 
-                onchange="$('#savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;">
                     (:access_options:)
             </select>
         </td>
@@ -199,7 +199,7 @@
                 id="url" 
                 name="url" 
                 value="(:url:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -213,7 +213,7 @@
                 id="memory_size" 
                 name="memory_size" 
                 value="(:memory_size:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -228,7 +228,7 @@
                 id="author" 
                 name="author" 
                 value="(:author:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -242,7 +242,7 @@
                 id="thumbnail_url" 
                 name="thumbnail_url" 
                 value="(:thumbnail_url:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -256,7 +256,7 @@
                 id="preview_url" 
                 name="preview_url" 
                 value="(:preview_url:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -270,7 +270,7 @@
                 id="image_url" 
                 name="image_url" 
                 value="(:image_url:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
 				<button id="imguploadbtn" type="button" class="w100" 
 					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
         </td>
@@ -286,7 +286,7 @@
                 id="duration" 
                 name="duration" 
                 value="(:duration:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -300,7 +300,7 @@
                 id="location"
                 name="location" 
                 value="(:location:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -314,7 +314,7 @@
                 id="add_url"
                 name="add_url" 
                 value="(:add_url:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -328,7 +328,7 @@
                 id="add_url_text"
                 name="add_url_text" 
                 value="(:add_url_text:)" 
-                onkeypress="$('#savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" />
         </td>
     </tr>
 
@@ -358,3 +358,5 @@
     </tr>   
 </table>
 </form>
+
+

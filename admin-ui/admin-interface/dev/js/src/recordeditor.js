@@ -24,12 +24,12 @@ recordeditor.remove = function() {
                       method: 'post',
                       onSuccess: function(r) {
                           document.fields.reset();
-                          $('#record_select').innerHTML = r.responseText;
+                          $('record_select').innerHTML = r.responseText;
                       },
                       parameters: {
                           cmd:'delete_record', 
                           type:editortype, 
-                          record: r = Object.toJSON($('#fields').serialize(true))
+                          record: r = Object.toJSON($('fields').serialize(true))
                       }
     });
 
@@ -40,7 +40,7 @@ recordeditor.remove = function() {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 recordeditor.dublicate = function() {
 
-    id = $('#record_select').value;
+    id = $('record_select').value;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
@@ -49,7 +49,7 @@ recordeditor.dublicate = function() {
                               var elm = document.getElementById(key);
                               elm.value = elm.getAttribute('readonly') ? '' : obj[key];
                           }
-                          $('#savebutton').disabled = false;
+                          $('savebutton').disabled = false;
                       },
                       parameters: {cmd:'get_record', type:editortype, id:id}
     });
@@ -61,7 +61,7 @@ recordeditor.dublicate = function() {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 recordeditor.load_record = function() {
 
-    id = $('#record_select').value;
+    id = $('record_select').value;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
@@ -70,7 +70,7 @@ recordeditor.load_record = function() {
                             var elm = document.getElementById(key);
                             elm.value = obj[key];
                           }
-                          $('#savebutton').disabled = true;
+                          $('savebutton').disabled = true;
                       },
                       parameters: {cmd:'get_record', type:editortype, id:id}
     });
@@ -81,16 +81,16 @@ recordeditor.load_record = function() {
 /* Save current record                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 recordeditor.save = function() {
-    //$('#stage').innerHTML = loadingHTML;
+    //$('stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                              $('#record_select').innerHTML = r.responseText;
+                              $('record_select').innerHTML = r.responseText;
                       },
                       parameters: {
                           cmd:'save_record', 
                           type:editortype, 
-                          record: r = Object.toJSON($('#fields').serialize(true))
+                          record: r = Object.toJSON($('fields').serialize(true))
                       }
     });
 }
@@ -100,7 +100,7 @@ recordeditor.save = function() {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 recordeditor.toggle_savebutton = function() {
     
-    $('#savebutton').disabled = false;
+    $('savebutton').disabled = false;
 
 }
 
@@ -112,7 +112,7 @@ recordeditor.refresh_record_select = function() {
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('#record_select').innerHTML = r.responseText;
+                          $('record_select').innerHTML = r.responseText;
                       },
                       parameters: {
                           cmd:'get_option_list', 
@@ -122,3 +122,7 @@ recordeditor.refresh_record_select = function() {
     });
 
 }
+
+
+
+

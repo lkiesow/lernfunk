@@ -16,7 +16,7 @@
 				id="series_id" 
 				value="(:series_id:)"
 				readonly="true"
-				onkeypress="$('#savebutton').disabled=false;" />
+				onkeypress="$('savebutton').disabled=false;" />
 			</td>
 		</tr>
 
@@ -28,7 +28,7 @@
 				name="name" 
 				id="name" 
 				value="(:name:)" 
-				onkeypress="$('#savebutton').disabled=false;" />
+				onkeypress="$('savebutton').disabled=false;" />
 			</td>
 		</tr>
 
@@ -39,7 +39,7 @@
 					class="w400"
 					name="description" 
 					rows="5" 
-					onkeypress="$('#savebutton').disabled=false;" />(:description:)</textarea>
+					onkeypress="$('savebutton').disabled=false;" />(:description:)</textarea>
 			</td>
 		</tr>
 
@@ -47,7 +47,7 @@
 			<td>Kurzbeschreibung:</td>
 			<td>
 				<textarea id="description_sh" name="description_sh" cols="46" rows="3" 
-					onkeypress="$('#savebutton').disabled=false;" 
+					onkeypress="$('savebutton').disabled=false;" 
 					style="width:400px;">(:description_sh:)</textarea>
 			</td>
 		</tr>
@@ -56,7 +56,7 @@
 			<td>Semester:</td>
 			<td>
 				<select name="term_id" id="term_id" 
-					onchange="$('#savebutton').disabled=false;" 
+					onchange="$('savebutton').disabled=false;" 
 					style="width:400px;">(:term_options:)</select>
 			</td>
 		</tr>
@@ -65,7 +65,7 @@
 			<td>Kurs ID:</td>
 			<td>
 				<input type="text" name="course_id" id="course_id" 
-				value="(:course_id:)" onkeypress="$('#savebutton').disabled=false;" 
+				value="(:course_id:)" onkeypress="$('savebutton').disabled=false;" 
 				style="width:400px;">
 			</td>
 		</tr>
@@ -73,21 +73,21 @@
 		<tr>
 			<td>Zugriff:</td>
 			<td>
-				<select name="access_id" id="access_id" onchange="$('#savebutton').disabled=false;" style="width:400px;">(:access_options:)</select>
+				<select name="access_id" id="access_id" onchange="$('savebutton').disabled=false;" style="width:400px;">(:access_options:)</select>
 			</td>
 		</tr>
 
 		<tr>
 			<td>Portal URL:</td>
 			<td>
-				<input type="text" name="portal_url" id="portal_url" value="(:portal_url:)" onkeypress="$('#savebutton').disabled=false;" style="width:400px;">
+				<input type="text" name="portal_url" id="portal_url" value="(:portal_url:)" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
 			</td>
 		</tr>
 
 		<tr>
 			<td>Klassifikation:</td>
 			<td>
-				<select name="clas_id" id="clas_id" onchange="$('#savebutton').disabled=false;" style="width:400px;">(:clas_options:)</select>
+				<select name="clas_id" id="clas_id" onchange="$('savebutton').disabled=false;" style="width:400px;">(:clas_options:)</select>
 			</td>
 		</tr>
 
@@ -95,7 +95,7 @@
 			<td>Preview URL:</td>
 			<td>
 				<input type="text" name="thumbnail_url" id="thumbnail_url" class="w300" 
-				value="(:thumbnail_url:)" onkeypress="$('#savebutton').disabled=false;">
+				value="(:thumbnail_url:)" onkeypress="$('savebutton').disabled=false;">
 				<button id="uploadbtn" type="button" class="w100" 
 					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
 			</td>
@@ -104,7 +104,7 @@
 		<tr>
 			<td>LMS Kurs ID:</td>
 			<td>
-				<input type="text" name="lms_course_id" id="lms_course_id" value="(:lms_course_id:)" onkeypress="$('#savebutton').disabled=false;" style="width:400px;">
+				<input type="text" name="lms_course_id" id="lms_course_id" value="(:lms_course_id:)" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
 			</td>
 		</tr>
 
@@ -112,7 +112,7 @@
 			<td>Add. URL:</td>
 			<td>
 				<input type="text" name="add_url" id="add_url" value="(:add_url:)" 
-				onkeypress="$('#savebutton').disabled=false;" style="width:400px;">
+				onkeypress="$('savebutton').disabled=false;" style="width:400px;">
 			</td>
 		</tr>
 
@@ -120,7 +120,7 @@
 			<td>Add. URL Text:</td>
 			<td>
 				<input type="text" name="add_url_text" id="add_url_text" 
-				value="(:portal_url:)" onkeypress="$('#savebutton').disabled=false;" 
+				value="(:portal_url:)" onkeypress="$('savebutton').disabled=false;" 
 				style="width:400px;">
 			</td>
 		</tr>
@@ -129,7 +129,7 @@
 			<td>LRS Series ID:</td>
 			<td>
 				<input type="text" name="lrs_series_id" id="lrs_series_id" 
-				value="(:lrs_series_id:)" onkeypress="$('#savebutton').disabled=false;" 
+				value="(:lrs_series_id:)" onkeypress="$('savebutton').disabled=false;" 
 				style="width:400px;">
 			</td>
 		</tr>
@@ -138,7 +138,7 @@
 			<td>Social Web:</td>
 			<td>
 				<input type="text" name="social_web" id="social_web" 
-				value="(:social_web:)" onkeypress="$('#savebutton').disabled=false;" 
+				value="(:social_web:)" onkeypress="$('savebutton').disabled=false;" 
 				style="width:400px;">
 			</td>
 		</tr>
@@ -147,7 +147,7 @@
 			<td>Keywords:</td>
 			<td>
 				<input type="text" name="keywords" id="keywords" 
-				value="(:keywords:)" onkeypress="$('#savebutton').disabled=false;" 
+				value="(:keywords:)" onkeypress="$('savebutton').disabled=false;" 
 				style="width:400px;">
 			</td>
 		</tr>
@@ -156,7 +156,7 @@
 			<td>Kategorie:</td>
 			<td>
 				<select name="cat_id" id="cat_id" 
-					onchange="$('#savebutton').disabled=false;" 
+					onchange="$('savebutton').disabled=false;" 
 					style="width:400px;">(:cat_options:)</select>
 			</td>
 		</tr>
@@ -165,7 +165,7 @@
 			<td>Default Playlist:</td>
 			<td>
 				<select name="default_playlist_id" id="default_playlist_id" 
-					onchange="$('#savebutton').disabled=false;" 
+					onchange="$('savebutton').disabled=false;" 
 					style="width:400px;">(:defaultplaylist_options:)</select>
 			</td>
 		</tr>
@@ -192,8 +192,10 @@
 			<input type="button" 
 			onclick="show_select_window('lecturer', 'Select a lecturer:', 'serieseditor.add_lecturer');"
 			style="width:80px;" value="add" /><br />
-			<input type="button" onclick="serieseditor.remove_lecturer($('#lecturers').value);" style="width:80px;" value="delete" />
+			<input type="button" onclick="serieseditor.remove_lecturer($('lecturers').value);" style="width:80px;" value="delete" />
 		</td>
 	</tr>
 </table>
+
+
 

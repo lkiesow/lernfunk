@@ -26,7 +26,7 @@
                 style="width: 100px;"
                 id="(access_id_(:object_id:)" 
                 name="access_id" 
-                onchange="$('#saveallbutton').disabled = false;" >
+                onchange="$('saveallbutton').disabled = false;" >
                     (:access_options:)
             </select>
             <div class="hidden">(:access_id:)</div>
@@ -37,7 +37,7 @@
                 id="start_access_(:object_id:)"
                 name="start_access"
                 value="(:start_access:)" 
-                onchange="$('#saveallbutton').disabled = false; checkDateFormat('start_access_(:object_id:)');" />
+                onchange="$('saveallbutton').disabled = false; checkDateFormat('start_access_(:object_id:)');" />
             <div class="hidden">(:start_access:)</div>
             <input type="button" style="margin-left: 0px;" onclick="show_cal(this, 'start_access_(:object_id:)');" value="..." />
         </td>
@@ -47,7 +47,7 @@
                 id="stop_access_(:object_id:)"
                 name="stop_access"
                 value="(:stop_access:)"
-                onchange="$('#saveallbutton').disabled = false; checkDateFormat('stop_access_(:object_id:)');" />
+                onchange="$('saveallbutton').disabled = false; checkDateFormat('stop_access_(:object_id:)');" />
             <div class="hidden">(:stop_access:)</div>
             <input type="button" style="margin-left: 0px;" onclick="show_cal(this, 'stop_access_(:object_id:)');" value="..." />
         </td>
@@ -56,4 +56,6 @@
             onclick="playlisteditor.delete_entry((:playlist_id:), (:object_id:))" />
         </td>
     </tr>
+
+
 

@@ -20,7 +20,7 @@ playlisteditor.series_mediaobjects = new Object();
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 playlisteditor.add = function(series_id) {
     editortype = 'playlist';
-    $('#stage').innerHTML = loadingHTML;
+    $('stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
@@ -37,7 +37,7 @@ playlisteditor.add = function(series_id) {
                               'onclick="playlisteditor.save(); serieseditor.load(' + series_id + ');"');
 
                           // last: insert editor html
-                          $('#stage').innerHTML = r.responseText;
+                          $('stage').innerHTML = r.responseText;
                       },
                       parameters: {cmd:'get_empty_playlisteditor', series_id:series_id}
     });
@@ -52,11 +52,11 @@ playlisteditor.add = function(series_id) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 playlisteditor.load = function(playlist_id) {
     editortype = 'playlist';
-    $('#stage').innerHTML = loadingHTML;
+    $('stage').innerHTML = loadingHTML;
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                          $('#stage').innerHTML = r.responseText;
+                          $('stage').innerHTML = r.responseText;
                       },
                       parameters: {cmd:'get_playlisteditor', playlist_id:playlist_id}
     });
@@ -68,8 +68,8 @@ playlisteditor.load = function(playlist_id) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 playlisteditor.save = function() {
 
-    var series_id = $('#reciever_id').value;
-    var old_series_id = $('#old_series_id').innerHTML;
+    var series_id = $('reciever_id').value;
+    var old_series_id = $('old_series_id').innerHTML;
     var keepSeries = (series_id == old_series_id) || (old_series_id = '');
     if (!old_series_id) 
         old_series_id = series_id;
@@ -77,17 +77,17 @@ playlisteditor.save = function() {
         new Ajax.Request( lf_url, {
                           method: 'post',
                           onSuccess: function(r) {
-                              if ($('#playlist_response'))
-                                  $('#playlist_response').innerHTML = r.responseText;
+                              if ($('playlist_response'))
+                                  $('playlist_response').innerHTML = r.responseText;
                               try {
                                   trigger_result(old_series_id);
                                   trigger_result(series_id);
                               } catch (err) {}
                           },
-                          parameters: {cmd:'save_playlist', record: r = Object.toJSON($('#fields').serialize(true))}
+                          parameters: {cmd:'save_playlist', record: r = Object.toJSON($('fields').serialize(true))}
         });
-        $('#playlist_response').innerHTML = '<pre>saving all playlist data...</pre>';
-        $('#savebutton').disabled = true;
+        $('playlist_response').innerHTML = '<pre>saving all playlist data...</pre>';
+        $('savebutton').disabled = true;
     }
 
 }
@@ -97,10 +97,10 @@ playlisteditor.save = function() {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 playlisteditor.closeentryeditor = function() {
     
-    $('#add_entry_response').innerHTML = '';
-    $('#new_entry_editor').style.display = 'none';
-    $('#new_entry_fields').reset();
-    $('#new_index_position').value = $('#max_index_position').innerHTML;
+    $('add_entry_response').innerHTML = '';
+    $('new_entry_editor').style.display = 'none';
+    $('new_entry_fields').reset();
+    $('new_index_position').value = $('max_index_position').innerHTML;
     playlisteditor.generate_seriesoptions(playlisteditor.series_mediaobjects, 'new_object_id', '', '');
     
 }
@@ -110,22 +110,22 @@ playlisteditor.closeentryeditor = function() {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 playlisteditor.addentry = function() {
     // check input
-    if ($('#new_index_position').value == '') {
+    if ($('new_index_position').value == '') {
         alert('You must specify a position!');
-        $('#new_index_position').focus();
+        $('new_index_position').focus();
         return;
     }
-    if ($('#new_object_id').value == '') {
+    if ($('new_object_id').value == '') {
         alert('You must specify a mediaobject!');
-        $('#new_object_id').focus();
+        $('new_object_id').focus();
         return;
     }
 
     // get index for next editorcall
     new_max_index = 1 + parseInt(
-            $('#max_index_position').innerHTML > $('#new_index_position').value 
-                ? $('#max_index_position').innerHTML 
-                : $('#new_index_position').value
+            $('max_index_position').innerHTML > $('new_index_position').value 
+                ? $('max_index_position').innerHTML 
+                : $('new_index_position').value
         );
 
     // send data
@@ -136,18 +136,18 @@ playlisteditor.addentry = function() {
                                   newEntry = document.createElement('table');
                                   newEntry.innerHTML = r.responseText;
                                   trNode = newEntry.getElementsByTagName('tr')[0];
-                                  $('#entry_list_end').parentNode.insertBefore(trNode, $('#entry_list_end'));
+                                  $('entry_list_end').parentNode.insertBefore(trNode, $('entry_list_end'));
                                   // hide and reset editor
                                   playlisteditor.closeentryeditor();
-                                  $('#max_index_position').innerHTML = new_max_index;
-                                  $('#new_index_position').value = new_max_index;
+                                  $('max_index_position').innerHTML = new_max_index;
+                                  $('new_index_position').value = new_max_index;
                               } else {
-                                  $('#add_entry_response').innerHTML = r.responseText;
+                                  $('add_entry_response').innerHTML = r.responseText;
                               }
                           },
-                      parameters: {cmd:'add_playlistentry', record: r = Object.toJSON($('#new_entry_fields').serialize(true))}
+                      parameters: {cmd:'add_playlistentry', record: r = Object.toJSON($('new_entry_fields').serialize(true))}
     });
-    $('#add_entry_response').innerHTML = '<pre>inserting playlistentry...</pre>';
+    $('add_entry_response').innerHTML = '<pre>inserting playlistentry...</pre>';
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -158,7 +158,7 @@ playlisteditor.saveall = function() {
     playlisteditor.save();
     
     // Entries -> JSON
-    var entries = $('#playlist_entries').getElementsByTagName('tr');
+    var entries = $('playlist_entries').getElementsByTagName('tr');
     var es = new Array();
     for (var i = 0; i < entries.length; i++) {
         var entry_fields = entries[i].getElementsByTagName('input');
@@ -182,20 +182,20 @@ playlisteditor.saveall = function() {
                 es.push(e);
         }
     }
-    entries = Object.toJSON( new Hash( { playlist_id:$('#playlist_id').value, entries:es } ) );
+    entries = Object.toJSON( new Hash( { playlist_id:$('playlist_id').value, entries:es } ) );
     
     // send data
     new Ajax.Request( lf_url, {
                       method: 'post',
                       onSuccess: function(r) {
-                              $('#playlist_entry_response').innerHTML = r.responseText;
-                              trigger_result($('#old_series_id').innerHTML);
-                              trigger_result($('#reciever_id').value);
+                              $('playlist_entry_response').innerHTML = r.responseText;
+                              trigger_result($('old_series_id').innerHTML);
+                              trigger_result($('reciever_id').value);
                       },
                       parameters: { cmd: 'save_all_playlist', 
                                     entries: entries }
     });
-    $('#playlist_entry_response').innerHTML = '<pre>saving all playlist entries...</pre>';
+    $('playlist_entry_response').innerHTML = '<pre>saving all playlist entries...</pre>';
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -211,7 +211,7 @@ playlisteditor.delete_entry = function(playlist_id, object_id) {
                           method: 'post',
                           onSuccess: function(r) {
                                   if (r.responseText == 'SUCCESS') {
-                                      var entry = $('#entry_' + object_id);
+                                      var entry = $('entry_' + object_id);
                                       entry.parentNode.removeChild(entry);
                                   } else
                                       alert(r.responseText);
@@ -233,13 +233,13 @@ playlisteditor.remove = function(playlist_id, series_id) {
         new Ajax.Request( lf_url, {
                           method: 'post',
                           onSuccess: function(r) {
-                                  $('#stage').innerHTML = r.responseText;
+                                  $('stage').innerHTML = r.responseText;
                                   trigger_result(series_id);
                                   trigger_result(series_id);
                           },
                           parameters: {cmd:'delete_playlist', playlist_id:playlist_id}
         });
-        $('#playlist_entry_response').innerHTML = '<pre>deleting playliat...</pre>';
+        $('playlist_entry_response').innerHTML = '<pre>deleting playliat...</pre>';
     }
 }
 
@@ -340,10 +340,12 @@ playlisteditor.new_object_series_search = function() {
     playlisteditor.generate_seriesoptions(
             playlisteditor.series_mediaobjects,
             'new_object_id',
-            $('#new_object_series_search').value,
-            $('#new_object_search').value
+            $('new_object_series_search').value,
+            $('new_object_search').value
         );
     window.clearInterval(new_object_series_search_thread);
     new_object_series_search_thread = null;
         
 }
+
+
