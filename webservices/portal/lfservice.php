@@ -906,10 +906,12 @@ class LFService {
 			$result = array();
 			
 			foreach ($rs as $r) {
-				if (!is_array( $result[$r->year] ))
+				if ( !array_key_exists( $r->year, $result) || !is_array( $result[$r->year] ) ) {
 					$result[$r->year] = array();
-				if (!is_array( $result[$r->year][$r->month] ))
+				}
+				if ( !array_key_exists( $r->month, $result[$r->year]) || !is_array( $result[$r->year][$r->month] ) ) {
 					$result[$r->year][$r->month] = array();
+				}
 				$result[$r->year][$r->month][] = $r->day;
 			}
 
