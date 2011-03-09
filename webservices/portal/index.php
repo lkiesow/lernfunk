@@ -82,7 +82,7 @@ require_once(dirname(__FILE__).'/lzw.php');
 	// call the service function assosiated with the given command
 	$result = LFService::$request['cmd'](array_key_exists('args', $request) ? $request['args'] : null);
 	if ( COMPRESSION || ( array_key_exists('compression', $request) && ( $request['compression'] == 'on' ) ) ) {
-		echo "var qwert = '" . lzw_encode( $result ) . "'";
+		echo gzencode( $result );
 	} else {
 		echo $result;
 	}

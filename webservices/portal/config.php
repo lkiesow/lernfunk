@@ -27,7 +27,7 @@ define('ACCESS_KEY', '___');
 define('DATETIME_FMT', '%d.%m.%Y');
 
 // enable/disable lzw-compression
-define('COMPRESSION', false);
+define('COMPRESSION', true);
 
 // Set debug state
 if (!defined('__DEBUG__'))
