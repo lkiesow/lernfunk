@@ -27,7 +27,7 @@ if ( $gzip ) {
  **/
 function get_url( $url,  $javascript_loop = 0, $timeout = 5 )
 {
-	$url = str_replace( "&amp;", "&", urldecode(trim($url)) );
+//	$url = str_replace( "&amp;", "&", urldecode(trim($url)) );
 
 	$cookie = tempnam ("/tmp", "CURLCOOKIE");
 	$ch = curl_init();
