@@ -1,5 +1,3 @@
-<div style="width: 100px; margin-left: auto; margin-right: auto;">
-        <div style="height: 100px; position: absolute; margin-top: -50px; top: 50%;">
-                <img src="template/uni_os_red/img/loading.gif" style="width: 300px;" alt="loading..." />
-        </div>
+<div style="width: 300px; margin-left: auto; margin-right: auto;">
+	<img src="template/uni_os_red/img/loading.gif" style="width: 300px;" alt="loading..." />
 </div>
