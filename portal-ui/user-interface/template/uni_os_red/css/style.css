@@ -168,6 +168,7 @@ a.nohover:hover {
 }
 
 div.objcontainer {
+        text-align: left;
 
 }
 
@@ -670,7 +671,7 @@ td {
 }
 
 .onover_graybg:hover {
-        background-color:#FFb56c ;
+        background-color: #FFb56c ;
         cursor: pointer;
 }
 
@@ -687,4 +688,8 @@ img[alt=rss] {
 	margin-bottom: -4px;
 	width: 16px;
 	height: 16px;
+}
+
+a.nohover:hover {
+        background: none;
 }

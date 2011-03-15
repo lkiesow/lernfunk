@@ -6,8 +6,8 @@
 (:(format):(Opencast Matterhorn):(<img src="./template/uni_os_red/img/icons/matterhorn.gif" style="width: 15px;" />):():)
 (:format:)</a> 
 <small>
-(:(format):(Video Podcast):(<a href="(:url:)">(Download)</a>):():)
-(:(format):(Audio Podcast):(<a href="(:url:)">(Download)</a>):():)
-(:(format):(Screenrecording Podcast):(<a href="(:url:)">(Download)</a>):():)
+(:(format):(Video Podcast):(<a href="(:url:)" class="nohover"><img src="./template/uni_os_red/img/icons/download.png" style="width: 80px;" alt="Download" /></a>):():)
+(:(format):(Audio Podcast):(<a href="(:url:)" class="nohover"><img src="./template/uni_os_red/img/icons/download.png" style="width: 80px;" alt="Download" /></a>):():)
+(:(format):(Screenrecording Podcast):(<a href="(:url:)" class="nohover"><img src="./template/uni_os_red/img/icons/download.png" style="width: 80px; a:hover: background-color:white;" alt="Download" /></a>):():)
 </small>
 <br />
