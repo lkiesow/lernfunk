@@ -1,4 +1,4 @@
-<p style="text-align: center;">
+<p style="text-align: left;">
 	<object id="player" type="application/x-shockwave-flash"
 			data="app/jwplayer/player.swf" style="width: 360px; height: 300px;">
 		<param name="allowScriptAccess" value="always"/>

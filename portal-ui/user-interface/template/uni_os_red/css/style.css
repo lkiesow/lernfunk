@@ -168,8 +168,6 @@ a.nohover:hover {
 }
 
 div.objcontainer {
-        text-align: left;
-
 }
 
 img {
@@ -671,8 +669,17 @@ td {
 }
 
 .onover_graybg:hover {
-        background-color: #FFb56c ;
+        background-color: #F58E7A ;
         cursor: pointer;
+}
+
+.recordingselected {
+  background-color: #F58E7A;
+  
+}
+
+.recordingselected:hover {
+  background-color: #F58E7A;
 }
 
 tr.link:hover {
@@ -692,4 +699,32 @@ img[alt=rss] {
 
 a.nohover:hover {
         background: none;
+}
+
+.download {
+  width: 92px;
+  background-color: #eeeeee;
+  color: #3E424A;
+  border: 1px solid #cccccc;
+  font-size: large;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.download:hover {
+  background-color: #fefefe;
+  color: #3E424A;
+  border: 1px solid #999999;
+}
+
+.standalone {
+  width: 180px;
+  background-color: #eeeeee;
+  color: #3E424A;
+  border: 1px solid #cccccc;
+  font-size: large;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
