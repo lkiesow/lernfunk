@@ -728,3 +728,9 @@ a.nohover:hover {
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
+
+.standalone:hover {
+  background-color: #fefefe;
+  color: #3E424A;
+  border: 1px solid #999999;
+}
