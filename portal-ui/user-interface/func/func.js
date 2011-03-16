@@ -1170,20 +1170,15 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 						rtmp = rtmp[0].split( '&' );
 						data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 					}
-					data.player  = '<p style="text-align: center;">';
-					data.player += fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
-					data.player += '</p>';
+					data.player = fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
 
 				// if recording is virtpresenter recording
 				} else if ( data.mimetype.match( /.*virtpresenter.*/ ) ) {
-					data.player = '<iframe src="' + data.url + '" style="width: 600px; height: 400px; border: none;"></iframe>'
-						+ '<p style="text-align: right;"><a href="' + data.url + '">Standalone-Player</a></p>';
+					data.player = fillTemplate( tpl.details.virtpresenterplayer, { 'url' : data.url } );
 
 				// if recording is audio recording
 				} else if ( data.mimetype.match( /.*audio.*/ ) ) {
-					data.player  = '<p style="text-align: center;">';
-					data.player += fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
-					data.player += '</p>';
+					data.player = fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
 				}
 				loadTemplate( 'recordingDetails.tpl', data, setContent );
 
@@ -1333,9 +1328,7 @@ function loadVideo( target, couid, id ) {
 			rtmp = rtmp[0].split( '&' );
 			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 		}
-		player += '<p style="text-align: center;">';
 		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
-		player += '</p>';
 
 	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
 		if (preview) {
@@ -1347,9 +1340,7 @@ function loadVideo( target, couid, id ) {
 				rtmp = rtmp[0].split( '&' );
 				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 			}
-			player += '<p style="text-align: center;">';
 			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
-			player += '</p>';
 			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
 		} else {
 			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
@@ -1361,18 +1352,14 @@ function loadVideo( target, couid, id ) {
 			//   This is a UOS specific thing.
 			//   And a dirty workaround!
 			//   Matterhorn => Embed-Code in Preview-URL
-			player += '<p style="text-align: center;">';
-			player += preview;
-			player += '</p>';
-			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
+			player += fillTemplate( tpl.details.matterhornplayer, { 'url' : preview } );
+			player += fillTemplate( tpl.details.standalonelink,   { 'url' : url }     );
 		} else {
 			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
 		}
 
 	} else if ( mimetype.match( /.*audio.*/ ) ) {
-		player += '<p style="text-align: center;">';
 		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
-		player += '</p>';
 	}
 
 	$( target ).html( player );
@@ -1393,9 +1380,7 @@ function loadPlayer( target, mimetype, url, preview ) {
 			rtmp = rtmp[0].split( '&' );
 			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 		}
-		player += '<p style="text-align: center;">';
 		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
-		player += '</p>';
 
 	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
 		if (preview) {
@@ -1407,9 +1392,7 @@ function loadPlayer( target, mimetype, url, preview ) {
 				rtmp = rtmp[0].split( '&' );
 				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 			}
-			player += '<p style="text-align: center;">';
 			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
-			player += '</p>';
 			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
 		} else {
 			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
@@ -1421,18 +1404,14 @@ function loadPlayer( target, mimetype, url, preview ) {
 			//   This is a UOS specific thing.
 			//   And a dirty workaround!
 			//   Matterhorn => Embed-Code in Preview-URL
-			player += '<p style="text-align: center;">';
-			player += preview;
-			player += '</p>';
+			player += fillTemplate( tpl.details.matterhornplayer, { 'url' : preview } );
 			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
 		} else {
 			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
 		}
 
 	} else if ( mimetype.match( /.*audio.*/ ) ) {
-		player += '<p style="text-align: center;">';
 		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
-		player += '</p>';
 	}
 
 	$( target ).html( player );

@@ -1,3 +1,4 @@
+<p style="text-align: center;">
 	<object id="player" type="application/x-shockwave-flash"
 		data="app/jwplayer/player.swf" style="width: 480px; height: 24px;">
 		<param name="allowScriptAccess" value="always"/>
@@ -7,4 +8,4 @@
 		<param name="bgcolor" value="#ffffff" />
 		<param name="flashvars" value="file=(:url:)" />
 	</object>
-
+</p>
