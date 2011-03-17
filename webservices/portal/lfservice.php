@@ -709,8 +709,12 @@ class LFService {
 						foreach ($rs2 as $r2) {
 							$insert_this_dataset = true;
 							$lecturer[$r2->lecturer_id] = $r2->fullname;
-							$department[$r2->dep_id]	= $r2->dep_name;
-							$academy[$r2->academy_id]   = $r2->ac_name;
+							if ( $r2->dep_id && $r2->dep_name ) {
+								$department[$r2->dep_id]	= $r2->dep_name;
+							}
+							if ( $r2->academy_id && $r2->ac_name ) {
+								$academy[$r2->academy_id]   = $r2->ac_name;
+							}
 						}
 
 						$data['lecturer']   = $lecturer;
@@ -764,10 +768,7 @@ class LFService {
 						$feeds = array();
 				
 						foreach ($rs4 as $r4) {
-							$feeds[] = array(
-									'url'  => $r4->feed_url,
-									'type' => $r4->feedtype_desc
-								);
+							$feeds[$r4->feed_url] = $r4->feedtype_desc;
 						}
 
 						$data['feeds'] = $feeds;
