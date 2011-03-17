@@ -701,36 +701,33 @@ a.nohover:hover {
         background: none;
 }
 
-.download {
-  width: 92px;
+.format_link {
   background-color: #eeeeee;
   color: #3E424A;
   border: 1px solid #cccccc;
-  font-size: large;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+  font-size: smaller;
+  display: inline-block;
   border-radius: 3px;
+  padding: 3px;
+  margin: 1px;
 }
 
-.download:hover {
+.format_link:hover {
   background-color: #fefefe;
   color: #3E424A;
   border: 1px solid #999999;
 }
 
-.standalone {
-  width: 180px;
-  background-color: #eeeeee;
-  color: #3E424A;
-  border: 1px solid #cccccc;
-  font-size: large;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
+.informationln {
+	border-top: 1px solid #dddddd; 
+	border-bottom: 1px solid #cccccc; 
+	text-align: center; 
+	font-size: smaller; 
+	padding: 3px; 
+	cursor: pointer;
 }
 
-.standalone:hover {
-  background-color: #fefefe;
-  color: #3E424A;
-  border: 1px solid #999999;
+input#shortlink {
+	border:1px solid #aaaaaa;
+	width: 250px
 }

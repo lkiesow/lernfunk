@@ -83,6 +83,13 @@ function formatJSON( json ) {
 
 }
 
+function alertj( o ) {
+	alert( $.toJSON( o ) );
+}
+
+function alertfj( o ) {
+	alert( formatJSON( $.toJSON( o ) ) );
+}
 /*
  * Initialize calendar
  **/
@@ -978,6 +985,14 @@ function shallowCopy( obj ) {
 }
 
 
+function shallowCopyWithPointer( obj ) {
+	copy = {};
+	for ( key in obj )
+		copy[ key ] = obj[ key ];
+	return copy;
+}
+
+
 function addLecturerBlock(obj) {
 	var tll = tpl.details.lecturerlink;
 	var tlb = tpl.details.lecturerblock;
@@ -1198,16 +1213,6 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 			} else if ( mediatype == 'series' ) {
 				setBackPager();
 				data = data.details;
-				data.lecturer   = addLecturerBlock( data, 
-						tpl.seriesdetails.info.lecturerlink, 
-						tpl.seriesdetails.info.lecturerblock );
-				data.academy    = addAcademyBlock( data,
-						tpl.seriesdetails.info.academylink, 
-						tpl.seriesdetails.info.academyblock );
-				data.department = addDepartmentBlock( data,
-						tpl.seriesdetails.info.departmentlink, 
-						tpl.seriesdetails.info.departmentblock );
-				data.feeds = data.feeds ? $.toJSON( data.feeds ) : '[]';
 
 				// shorten description
 				if (!data.desc_sh) {
@@ -1222,7 +1227,8 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 							data.recordings[i].cou_id = data.recordings[i].id;
 					}
 
-					data.recordings = makeMediaobjectTable( data.recordings, 'recordings', firstRecording );
+					data.recordings = makeMediaobjectTable( data.recordings, 
+							'recordings', firstRecording );
 					data.firstrecording_title    = firstRecording.result.title;
 					data.firstrecording_mimetype = firstRecording.result.mimetype;
 					data.firstrecording_url      = firstRecording.result.url;
@@ -1230,6 +1236,12 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 				} else {
 					data.recordings = fillTemplate( tpl.seriesdetails.norecording, {} );
 				}
+
+				tplData = shallowCopyWithPointer( data );
+
+				data.academy    = $.toJSON( data.academy );
+				data.department = $.toJSON( data.department );
+				data.feeds      = $.toJSON( data.feeds );
 
 				loadTemplate( 'seriesDetails.tpl', data, function( data ) {
 							$('#content').html( data ).ready( function() {
@@ -1449,7 +1461,12 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 		var link = '';
 		var rec_data = [];
 		var title = null;
-		for ( i in rel_rec[cou_id] ) {
+		var format_links = '';
+		for ( var i in rel_rec[cou_id] ) {
+
+			/* get format links */
+			format_links += fillTemplate( tpl.seriesdetails.rec_link, rel_rec[cou_id][i] );
+
 			var recording = shallowCopy( rel_rec[cou_id][i] );
 			recording.mediatype = mediatype;
 			if ( first ) {
@@ -1466,6 +1483,7 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 		}
 		var recording = shallowCopy( rel_rec[cou_id][0] );
 		recording.link = link;
+		recording.format_links = format_links;
 		recording.rec_data = $.toJSON( { 'title' : title, 'data' : rec_data } ).replace(/"/g, "'");
 		recording.desc75 = (recording.desc.length <= 75) 
 			? recording.desc 
