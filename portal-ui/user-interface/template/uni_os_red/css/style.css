@@ -731,3 +731,27 @@ input#shortlink {
 	border:1px solid #aaaaaa;
 	width: 250px
 }
+
+.hidden {
+	display: none;
+}
+
+div#seriesdetails_leftbox {
+	vertical-align: top; 
+	padding: 0px 15px 0px 0px;
+}
+
+div#seriesdetails_rightbox {
+	width: 40%; 
+	min-width: 350px; 
+	vertical-align: top; 
+	border-left: 1px solid #3E424A; 
+	padding: 0px; 
+	padding-left: 15px;
+}
+
+tr#share img {
+	width: 16px;
+	height: 16px;
+	margin-bottom: -4px;
+}

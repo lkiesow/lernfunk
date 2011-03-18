@@ -4,10 +4,12 @@ $('#pagetitle').text( t.name );
 $('#titlebox_bottom').hide();
 
 /* load feeds */
-var f = t.feeds ? t.feeds : {};
-for ( var url in f ) {
-	$('#pdct').append('<a href="' + url + '">'
-			+ '<img src="template/uni_os_red/img/rss.png" alt="rss" /> ' + f[url] + '</a> ');
+if (t.feeds) {
+	$( '#feeds' ).show();
+	for ( var url in t.feeds ) {
+		$('#pdct').append('<a href="' + url + '">'
+				+ '<img src="template/uni_os_red/img/rss.png" alt="rss" /> ' + t.feeds[url] + '</a> ');
+	}
 }
 
 /* load academies */
@@ -34,10 +36,17 @@ for ( var id in l ) {
 /* load first recording */
 loadRec( '#mediaobjectplayer', tplData.firstrecording_cou_id );
 
+$('#seriesdetails_rightbox').children( 'div' )
+	.css( 'max-height', ($('#seriesdetails_leftbox').height() - 30) + 'px' );
+
 
 /***************************  FUNCTIONS  *************************************/
 function showHideSlide( hide, show ) {
 	$( hide ).slideUp( 'fast', function() { 
-			$( show ).slideDown( 'fast' ) 
+			$('#seriesdetails_rightbox').children( 'div' ).css( 'max-height', '400px' );
+			$( show ).slideDown( 'fast', function() {
+					$('#seriesdetails_rightbox').children( 'div' )
+						.css( 'max-height', ($('#seriesdetails_leftbox').height() - 30) + 'px' );
+				} ) 
 		} );
 }
