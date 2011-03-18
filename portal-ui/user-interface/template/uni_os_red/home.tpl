@@ -31,3 +31,11 @@
 		</div>
 	</div>
 </div>
+<script>
+	$( 'img.home_preview' ).each( function( index, elem ) {
+			$( this ).siblings( 'span' ).offset( { 
+					'left' : $( this ).offset().left + 100, 
+					'top'  : $( this ).offset().top  + 40
+				} );
+		} )
+</script>

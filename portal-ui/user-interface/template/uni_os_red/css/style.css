@@ -755,3 +755,19 @@ tr#share img {
 	height: 16px;
 	margin-bottom: -4px;
 }
+
+.home_preview_par {
+	cursor: pointer; 
+	text-align: left; 
+	padding-left: 20px;
+	display: inline;
+}
+
+.home_preview_par:hover {
+	color: #ffffff;
+}
+
+.home_preview_par img {
+	padding-top: 10px; 
+	max-width: 280px;
+}
