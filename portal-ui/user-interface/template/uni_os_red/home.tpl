@@ -32,7 +32,7 @@
 	</div>
 </div>
 <script>
-	$( 'img.home_preview' ).each( function( index, elem ) {
+	$( 'img.home_preview' ).bind('load', function() {
 			$( this ).siblings( 'span' ).offset( { 
 					'left' : $( this ).offset().left + 100, 
 					'top'  : $( this ).offset().top  + 40
