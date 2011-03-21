@@ -551,7 +551,7 @@ div.series_update {
 }
 
 div.series_update:hover {
-        background-color: #dddddd;
+        background-color: #f6eae3;
         padding: 15px;
 }
 
@@ -665,21 +665,21 @@ td {
 }
 
 .onover_graybg {
-        background-color: #eeeeee;
+        background-color: #ffe8d9;
 }
 
 .onover_graybg:hover {
-        background-color: #F58E7A ;
+        background-color: #FFb56c ;
         cursor: pointer;
 }
 
 .recordingselected {
-  background-color: #F58E7A;
+  background-color: #FFb56c;
   
 }
 
 .recordingselected:hover {
-  background-color: #F58E7A;
+  background-color: #FFb56c;
 }
 
 tr.link:hover {
@@ -708,7 +708,9 @@ a.nohover:hover {
   font-size: smaller;
   display: inline-block;
   border-radius: 3px;
-  padding: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  padding: 2px 4px 2px 2px;
   margin: 1px;
 }
 
@@ -718,13 +720,28 @@ a.nohover:hover {
   border: 1px solid #999999;
 }
 
+.format_link img {
+  padding: 3px 3px 0px 2px;
+  height: 9px;
+}
+
 .informationln {
-	border-top: 1px solid #dddddd; 
-	border-bottom: 1px solid #cccccc; 
+	background-color:#EEEEEE; 
+	color:#555555; 
 	text-align: center; 
 	font-size: smaller; 
-	padding: 3px; 
 	cursor: pointer;
+	border: 1px solid #DEDEDE;
+	-webkit-border-bottom-right-radius: 8px;
+	-webkit-border-bottom-left-radius: 8px;
+	-moz-border-radius-bottomright: 8px;
+	-moz-border-radius-bottomleft: 8px;
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+.informationln img {
+	height:7px; 
 }
 
 input#shortlink {
@@ -770,4 +787,17 @@ tr#share img {
 .home_preview_par img {
 	padding-top: 10px; 
 	max-width: 280px;
+}
+
+.play_home {
+	background: url(../img/play_home.png) no-repeat;
+	height: 70px;
+	width: 80px;
+	position:absolute;
+}
+
+.play_home:hover {
+	background: url(../img/play_home1.png) no-repeat;
+	height: 70px;
+	width: 80px;
 }

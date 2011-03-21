@@ -42,9 +42,9 @@ $('#seriesdetails_rightbox').children( 'div' )
 
 /***************************  FUNCTIONS  *************************************/
 function showHideSlide( hide, show ) {
-	$( hide ).slideUp( 'fast', function() { 
+	$( hide ).slideUp( 'slow', function() { 
 			$('#seriesdetails_rightbox').children( 'div' ).css( 'max-height', '400px' );
-			$( show ).slideDown( 'fast', function() {
+			$( show ).slideDown( 'slow', function() {
 					$('#seriesdetails_rightbox').children( 'div' )
 						.css( 'max-height', ($('#seriesdetails_leftbox').height() - 30) + 'px' );
 				} ) 

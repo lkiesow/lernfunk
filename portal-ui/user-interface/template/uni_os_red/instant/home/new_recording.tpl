@@ -4,7 +4,7 @@
 	<div>
 		<p class="home_preview_par" style="position: relative;" onclick=" replaceBy( this.parentNode, '(:mediatype:)', '(:url:)'); ">
 			<img class="home_preview" src="(:img:)" alt="(:title:)" />
-			<span style="font-size: 70px; position: absolute;">▶</span>
+			<span class="play_home"></span>
 		</p>
 	</div>
 </div>

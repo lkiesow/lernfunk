@@ -11,26 +11,22 @@
 		<div class="tr">
 			<div class="td" id="seriesdetails_leftbox">
 
-				<div class="objcontainer">
-					<div id="mediaobjectplayer">
-						<center><img style="max-height: 300px;" 
-							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
-					</div>
-				</div>
-
 				<div>
 					<h4 class="headline">Informationen zur Veranstaltung</h4>
 
-					<div id="desc_sh" class="infoblock" style="padding: 7px 0px;">
-						(:desc_sh:)...
+					<div id="desc_sh" class="infoblock" style="background-color: #FEFEFE;">
+						<div style="padding: 7px 0px;">(:desc_sh:)...</div>
 						<div class="informationln" onclick="showHideSlide( '#desc_sh', '#desc_long' );">
-							▾ ▾ ▾ Mehr Details ▾ ▾ ▾ </div>
+							<img src="template/uni_os_red/img/pfeil_down.png" />
+								&nbsp;Mehr Details&nbsp;
+							<img src="template/uni_os_red/img/pfeil_down.png" />
+						</div>
 					</div>
 
-					<div id="desc_long" class="infoblock hidden" style="padding: 7px 0px;">
-						(:desc:)
+					<div id="desc_long" class="infoblock hidden" style="background-color: #FEFEFE;">
+						<div style="padding: 7px 0px;">(:desc:)</div>
 						
-						<table style="margin-top: 10px;">
+						<table>
 							<tr>
 								<td> Direktlink: </td>
 								<td> <input type="text" id="shortlink" 
@@ -50,11 +46,25 @@
 									<a href="http://del.icio.us/post?url=http://lernfunk.de/Main/(:portal_url:)&title=lernfunk.de: (:name:)">
 										<img src="template/uni_os_red/img/share/delicious.png" alt="delicious" /> Bookmark</a>
 						</table>
-
+						
+						
 						<div class="informationln" onclick="showHideSlide( '#desc_long', '#desc_sh' );">
-							▴ ▴ ▴ Weniger Details ▴ ▴ ▴ </div>
+							<img src="template/uni_os_red/img/pfeil_up.png" />
+								&nbsp;Weniger Details&nbsp;
+							<img src="template/uni_os_red/img/pfeil_up.png" />
+						</div>
 					</div>
 				</div>
+        
+        
+        <div class="objcontainer">
+					<div id="mediaobjectplayer">
+						<center><img style="max-height: 300px;" 
+							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
+					</div>
+				</div>
+
+				
 			
 			</div>
 
