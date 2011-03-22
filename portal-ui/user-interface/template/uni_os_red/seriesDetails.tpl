@@ -11,7 +11,7 @@
 						<center><img style="max-height: 300px;" 
 							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
 					</div>
-				</div>			
+				</div>(:desc:)			
 			</div>
 
 			<div class="td" id="seriesdetails_rightbox">
@@ -65,6 +65,7 @@
 				<div style="max-height: 400px; overflow-y: auto; margin-top: 5px;">
 					(:recordings:)
 				</div>
+				
 			</div>
 		</div>
 	</div>

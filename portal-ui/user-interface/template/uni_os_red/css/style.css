@@ -702,22 +702,26 @@ a.nohover:hover {
 }
 
 .format_link {
-  background-color: #eeeeee;
-  color: #3E424A;
-  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  color: #222222;
+  border: 1px solid #898989;
   font-size: 11px;
   display: inline-block;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  padding: 2px 4px 2px 2px;
+  padding: 2px 5px;
   margin: 1px;
+  text-align: center; 
 }
 
 .format_link:hover {
   background-color: #fefefe;
-  color: #3E424A;
-  border: 1px solid #999999;
+  color: #000000;
+  border: 1px solid #777777;
+  box-shadow: inset 0 0 4px #555555;
+  -moz-box-shadow: inset 0 0 4px #555555;
+  -webkit-box-shadow: inset 0 0 4px #555555;
 }
 
 .format_link img {

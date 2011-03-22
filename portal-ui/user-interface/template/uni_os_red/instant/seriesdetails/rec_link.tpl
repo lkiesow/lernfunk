@@ -1,5 +1,5 @@
-(:(format):(Audio Podcast):(<a href="(:url:)" class="format_link"><img src="./template/uni_os_red/img/icons/download.png">Audio</a>):():)
-(:(format):(Video Podcast):(<a href="(:url:)" class="format_link"><img src="./template/uni_os_red/img/icons/download.png">Video&nbsp;<span style="font-size:8px;">Dozent</span></a>):():) 
-(:(format):(Screenrecording Podcast):(<a href="(:url:)" class="format_link"><img src="./template/uni_os_red/img/icons/download.png">Video&nbsp;<span style="font-size:8px;">Bildschirm</span></a>):():)
+(:(format):(Audio Podcast):(<a href="(:url:)" class="format_link">Audio</a>):():)
+(:(format):(Video Podcast):(<a href="(:url:)" class="format_link">Dozent<br /><span style="font-size:9px;">Video</span></a>):():) 
+(:(format):(Screenrecording Podcast):(<a href="(:url:)" class="format_link">Bildschirm<br /><span style="font-size:8px;">Video</span></a>):():)
 (:(format):(Opencast Matterhorn):(<a href="(:url:)" class="format_link" target="Matterhorn"><img src="./template/uni_os_red/img/icons/erweitert.png">Erweiterter Player</a>):():)
 (:(format):(virtPresenter II (Flash)):(<a href="(:url:)" class="format_link" target="VirtPresenter"><img src="./template/uni_os_red/img/icons/erweitert.png">Erweiterter Player</a>):():)
