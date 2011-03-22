@@ -1,32 +1,34 @@
 <script type="text/javascript" src="template/uni_os_red/seriesDetails.js" />
 
 <div>
-	<div style="padding-bottom: 15px; min-width: 700px;">
-		<div id="academies"   style="display: none;">&rarr;</div> 
-		<div id="departments" style="display: none;">&rarr;</div> 
-		<div id="lecturer"    style="display: inline;"> </div> 
-	</div>
 
 	<div class="table" style="width: 100%;">
 		<div class="tr">
 			<div class="td" id="seriesdetails_leftbox">
+             
+        <div class="objcontainer">
+					<div id="mediaobjectplayer">
+						<center><img style="max-height: 300px;" 
+							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
+					</div>
+				</div>			
+			</div>
 
+			<div class="td" id="seriesdetails_rightbox">
 				<div>
-					<h4 class="headline">Informationen zur Veranstaltung</h4>
+					<h4 class="headline">Veranstaltungsdetails</h4>
 
 					<div id="desc_sh" class="infoblock" style="background-color: #FEFEFE;">
 						<div style="padding: 7px 0px;">(:desc_sh:)...</div>
 						<div class="informationln" onclick="showHideSlide( '#desc_sh', '#desc_long' );">
-							<img src="template/uni_os_red/img/pfeil_down.png" />
-								&nbsp;Mehr Details&nbsp;
-							<img src="template/uni_os_red/img/pfeil_down.png" />
+								&#9660;&#8195;Mehr Details&#8195;&#9660;
 						</div>
 					</div>
 
 					<div id="desc_long" class="infoblock hidden" style="background-color: #FEFEFE;">
 						<div style="padding: 7px 0px;">(:desc:)</div>
 						
-						<table>
+						<table style="padding-bottom: 10px;">
 							<tr>
 								<td> Direktlink: </td>
 								<td> <input type="text" id="shortlink" 
@@ -37,7 +39,7 @@
 								<td id="pdct"> </td>
 							</tr>
 							<tr id="share">
-								<td> Share </td>
+								<td> Share: </td>
 								<td> 
 									<a href="http://twitter.com/home?status=(:name:) http://lernfunk.de/Main/(:portal_url:)">
 										<img src="template/uni_os_red/img/share/twitter.png" alt="twitter" /> Tweet This!</a> 
@@ -47,29 +49,19 @@
 										<img src="template/uni_os_red/img/share/delicious.png" alt="delicious" /> Bookmark</a>
 						</table>
 						
-						
+						<div style="padding: 10px 0px; border-top: 1px solid #cccccc;">
+		          <div id="academies"   style="display: none;">&rarr;</div> 
+		          <div id="departments" style="display: none;">&rarr;</div> 
+		          <div id="lecturer"    style="display: inline;"> </div> 
+	          </div>
+												
 						<div class="informationln" onclick="showHideSlide( '#desc_long', '#desc_sh' );">
-							<img src="template/uni_os_red/img/pfeil_up.png" />
-								&nbsp;Weniger Details&nbsp;
-							<img src="template/uni_os_red/img/pfeil_up.png" />
+                &#9650;&#8195;Weniger Details&#8195;&#9650;
 						</div>
 					</div>
 				</div>
         
-        
-        <div class="objcontainer">
-					<div id="mediaobjectplayer">
-						<center><img style="max-height: 300px;" 
-							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
-					</div>
-				</div>
-
-				
-			
-			</div>
-
-			<div class="td" id="seriesdetails_rightbox">
-				<h4 class="headline">Aufzeichnungen</h4>
+        <h4 class="headline" style="margin-top: 10px">Aufzeichnungen</h4>
 				<div style="max-height: 400px; overflow-y: auto; margin-top: 5px;">
 					(:recordings:)
 				</div>

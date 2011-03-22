@@ -4,11 +4,11 @@
 
 			<div style="display: table; width: 100%;">
 				<div style="display: table-row;">
-					<div style="display: table-cell; background-color: #3E424A; padding: 5px; color: white; font-weight: bold;">
-						Neue Aufzeichnungen
+					<div class="headline" style="display: table-cell; padding: 5px;">
+						<b>Neue Aufzeichnungen</b>
 					</div>
-					<div style="display: table-cell; background-color: #3E424A; padding: 5px; color: white; font-weight: bold;">
-						Zuletzt Aktualisiert
+					<div class="headline" style="display: table-cell; padding: 5px; color: white;">
+						<b>Zuletzt Aktualisiert</b>
 					</div>
 				</div>
 				<div style="display: table-row; background-color: #fffcfa;">
