@@ -784,11 +784,18 @@ tr#share img {
 	display: inline;
 }
 
-.home_preview_par:hover {
-	color: #ffffff;
-}
-
 .home_preview_par img {
 	padding-top: 10px; 
 	max-width: 280px;
+}   
+
+.playbutton {
+  width: 70px;
+  height: 70px;
+  background: url(../img/playbutton.png) no-repeat;
+  position: absolute;
+}
+
+.playbutton:hover {
+  background: url(../img/playbutton_hover.png) no-repeat;
 }

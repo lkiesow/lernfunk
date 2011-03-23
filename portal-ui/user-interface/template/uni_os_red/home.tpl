@@ -23,10 +23,11 @@
 		</div>
 		<div style="display: table-cell; background-color: white; width: 200px; padding-left: 15px;">
 			<div id="rcbx" style="display: block;">
-				<h2>Kalender</h2>
-				<div id="datepicker" style="font-size: smaller; margin-bottom: 25px;"></div>
-				<h2>Tag-Cloud</h2>
+				<div id="datepicker" style="font-size: smaller; margin-bottom: 25px; width: 17em;"></div>
+				<div class="tagcloud">
+        <h4 class="headline">Tag-Cloud</h4>
 				<div id="tagcloud"></div>
+				</div>
 			</div>
 		</div>
 	</div>
