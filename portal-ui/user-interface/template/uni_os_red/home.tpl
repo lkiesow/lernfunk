@@ -25,7 +25,7 @@
 			<div id="rcbx" style="display: block;">
 				<div id="datepicker" style="font-size: smaller; margin-bottom: 25px; width: 17em;"></div>
 				<div class="tagcloud">
-        <h4 class="headline">Tag-Cloud</h4>
+        <h4 class="headline" style="padding: 4px;">Tag-Cloud</h4>
 				<div id="tagcloud"></div>
 				</div>
 			</div>

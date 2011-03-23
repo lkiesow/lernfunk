@@ -626,6 +626,14 @@ h4 {
          color: white;
 }
 
+#tagcloud { 
+         margin-top: 10px; 
+}
+
+.tagcloud {
+         width: 170px;
+}
+           
 .infoblock {
 }
 
@@ -716,16 +724,16 @@ a.nohover:hover {
 }
 
 .format_link:hover {
-  background-color: #fefefe;
-  color: #000000;
+  background-color: #FF934A;
+  color: #ffffff;
   border: 1px solid #777777;
-  box-shadow: inset 0 0 4px #555555;
-  -moz-box-shadow: inset 0 0 4px #555555;
-  -webkit-box-shadow: inset 0 0 4px #555555;
+  box-shadow: inset 0 0 4px #555555, 0 0 5px #dddddd;
+  -moz-box-shadow: inset 0 0 4px #555555, 0 0 5px #dddddd;
+  -webkit-box-shadow: inset 0 0 4px #555555, 0 0 5px #dddddd;
 }
 
 .format_link img {
-  padding: 3px 3px 0px 2px;
+  padding: 0px 4px 0px 2px; 
   height: 9px;
 }
 
@@ -742,6 +750,11 @@ a.nohover:hover {
 	-moz-border-radius-bottomleft: 8px;
 	border-bottom-right-radius: 8px;
 	border-bottom-left-radius: 8px;
+}
+
+.informationln:active {
+  background-color: #e7e7e7;
+  color: #000000;
 }
 
 .informationln img {

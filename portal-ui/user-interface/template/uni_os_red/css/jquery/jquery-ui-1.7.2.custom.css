@@ -279,7 +279,6 @@
 .ui-accordion .ui-accordion-content { padding: 1em 2.2em; border-top: 0; margin-top: -2px; position: relative; top: 1px; margin-bottom: 2px; overflow: auto; display: none; }
 .ui-accordion .ui-accordion-content-active { display: block; }/* Datepicker
 ----------------------------------*/
-.tagcloud { width: 170px; }
 .ui-datepicker { 17em; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }

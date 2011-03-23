@@ -11,7 +11,7 @@
 						<center><img style="max-height: 300px;" 
 							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" /></center>
 					</div>
-				</div>(:desc:)			
+				</div>			
 			</div>
 
 			<div class="td" id="seriesdetails_rightbox">
