@@ -1189,11 +1189,13 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 
 				// if recording is virtpresenter recording
 				} else if ( data.mimetype.match( /.*virtpresenter.*/ ) ) {
-					data.player = fillTemplate( tpl.details.virtpresenterplayer, { 'url' : data.url } );
+					data.player = fillTemplate( tpl.details.virtpresenterplayer, 
+							{ 'url' : data.url } );
 
 				// if recording is audio recording
 				} else if ( data.mimetype.match( /.*audio.*/ ) ) {
-					data.player = fillTemplate( tpl.details.audioplayer, { 'url' : data.url } );
+					data.player = fillTemplate( tpl.details.audioplayer, 
+							{ 'url' : data.url } );
 				}
 				loadTemplate( 'recordingDetails.tpl', data, setContent );
 
@@ -1227,21 +1229,32 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 							data.recordings[i].cou_id = data.recordings[i].id;
 					}
 
-					data.recordings = makeMediaobjectTable( data.recordings, 
+					data.recording_html = makeMediaobjectTable( data.recordings, 
 							'recordings', firstRecording );
 					data.firstrecording_title    = firstRecording.result.title;
 					data.firstrecording_mimetype = firstRecording.result.mimetype;
 					data.firstrecording_url      = firstRecording.result.url;
 					data.firstrecording_cou_id   = firstRecording.result.cou_id;
 				} else {
-					data.recordings = fillTemplate( tpl.seriesdetails.norecording, {} );
+					data.recording_html = fillTemplate( tpl.seriesdetails.norecording, {} );
 				}
+
+				data.share_twitter = 'http://twitter.com/home?status=' + data.name 
+					+ ' http://lernfunk.de/Main/' + data.portal_url;
+				data.share_facebook = 'http://www.facebook.com/sharer.php?u='
+					+ 'http://lernfunk.de/Main/' + data.portal_url;
+				data.share_delicious = 'http://del.icio.us/post?url='
+					+ 'http://lernfunk.de/Main/' + data.portal_url 
+					+ '&amp;title=lernfunk.de: ' + data.name;
 
 				tplData = shallowCopyWithPointer( data );
 
 				data.academy    = $.toJSON( data.academy );
 				data.department = $.toJSON( data.department );
 				data.feeds      = $.toJSON( data.feeds );
+
+				/* Format description */
+				data.desc = '<p>' + data.desc.replace( /\n\n/g, '</p><p>' ) + '</p>';
 
 				loadTemplate( 'seriesDetails.tpl', data, function( data ) {
 							$('#content').html( data ).ready( function() {
