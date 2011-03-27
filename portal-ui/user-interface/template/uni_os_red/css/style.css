@@ -220,9 +220,11 @@ div#bottomlogoblock {
 
 
 div#main {
-        width: 100%;
-        margin: 0px;
-        padding: 0px;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: Veranda;
+  min-height: 300px;
 }
 
 div#leftblock {
@@ -289,10 +291,6 @@ div#rightblock {
         font-size: smaller;
         text-align: center;
         max-width: 245px;
-}
-
-div#main {
-        font-family: Veranda;
 }
 
 input {
@@ -424,10 +422,6 @@ div#searchcatblock {
         margin-top: 15px;
         width: 250px;
         overflow: visible;
-}
-
-div#main {
-        min-height: 550px;
 }
 
 div.category {
