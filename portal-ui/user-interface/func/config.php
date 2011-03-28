@@ -41,8 +41,8 @@ include_once( dirname(__FILE__).'/../template/'.$cfg['tplName'].'/tplconfig.php'
 $includes = '
 	<!-- jQuery UI -->
 	<link type="text/css" href="template/'.$cfg['tplName'].'/css/jquery/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
-	<script type="text/javascript" src="./func/imports/jquery/jquery-1.4.4.min.js"></script>
-	<script type="text/javascript" src="./func/imports/jquery/jquery-ui-1.7.3.custom.min.js"></script>
+	<script type="text/javascript" src="./func/imports/jquery/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="./func/imports/jquery/jquery-ui-1.8.11.custom.min.js"></script>
 
 	<script type="text/javascript" src="./func/imports/jquery-json/jquery.json-2.2.min.js"></script>
 	<script type="text/javascript" src="./func/imports/jquery-hashchange/jquery.ba-hashchange.min.js"></script>

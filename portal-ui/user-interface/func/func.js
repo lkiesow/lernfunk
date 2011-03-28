@@ -154,21 +154,29 @@ function calendar_init() {
 function tagcloud_init() {
 
 	// make tag cloud
-	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 25 } },
+	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 100 } },
 		function(data) {
 			if (handleError(data)) {
-				tags = new Array();
+				var tags_html = new Array();
+				tags = [];
+
 				var max = null;
 				for ( tag in data.tags ) {
-					if (!max)
-						max = data.tags[tag];
-					tags.push('<a href="#cmd=search&filter=' 
-						+ tag + '" onclick="doSearch( { \'cmd\' : \'getData\', \'args\' : { \'filter\' : \'' 
-						+ tag + '\' } } ); return false;" style="font-size: ' 
-						+ Math.ceil(12 * data.tags[tag] / max) + 'pt">' + tag + '</a>');
+					if ( tags.length < 25 ) {
+						if (!max) {
+							max = data.tags[tag];
+						}
+						tags_html.push('<a href="#cmd=search&filter=' 
+							+ tag + '" onclick="doSearch( { \'cmd\' : \'getData\', \'args\' : { \'filter\' : \'' 
+							+ tag + '\' } } ); return false;" style="font-size: ' 
+							+ Math.ceil(12 * data.tags[tag] / max) + 'pt">' + tag + '</a>');
+					}
+					tags.push( tag );
 				}
-				tags.sort();
-				$('#tagcloud').html(tags.join(' '));
+
+				tags_html.sort();
+				$('#tagcloud').html(tags_html.join(' '));
+				$( "#search" ).autocomplete({ 'source' : tags });
 			}
 		});
 
@@ -1295,11 +1303,13 @@ function loadRec( target, couid ) {
 		}
 		format_links += fillTemplate( tpl.seriesdetails.rec_link, seriesRecBuf[couid][i] );
 	}
-	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, { 
-			'title'        : first.title, 
-			'format_links' : format_links, 
-			'playerid'     : 'playerplaceholder' 
-		} ) ).ready( function() { 
+	
+	var rec          = shallowCopyWithPointer( seriesRecBuf[couid][i] );
+	rec.format_links = format_links;
+	rec.playerid     = 'playerplaceholder';
+
+	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, rec ) ).
+		ready( function() { 
 			loadVideo( '#playerplaceholder', couid, first.id ); 
 		} );
 }
