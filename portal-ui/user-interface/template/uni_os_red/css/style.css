@@ -118,7 +118,7 @@ h1#pagetitle {
 
 h1 {
         font-variant: small-caps;
-        font-family: Helvetica;
+        font-family: Helvetica, sans-serif;
         font-weight: bold;
         font-size: large;
         letter-spacing: 0.1em;
@@ -128,7 +128,7 @@ h1 {
 
 h2 {
         font-variant: small-caps;
-        font-family: Helvetica;
+        font-family: Helvetica, sans-serif;
         font-weight: bold;
         font-size: medium;
         letter-spacing: 0.1em;
@@ -223,7 +223,7 @@ div#main {
   width: 100%;
   margin: 0px;
   padding: 0px;
-  font-family: Veranda;
+  font-family: Veranda, sans-serif;
   min-height: 300px;
 }
 
@@ -407,7 +407,7 @@ div#leftlinkblock {
 
 div.virtuos_name {
         font-weight: bold;
-        font-family: Helvetica;
+        font-family: Helvetica, sans-serif;
 }
 
 a.leftlink:hover {
@@ -714,16 +714,19 @@ a.nohover:hover {
   -webkit-border-radius: 3px;
   padding: 2px 5px;
   margin: 1px;
-  text-align: center; 
+  text-align: center;
+  box-shadow: inset 0 0 4px #aaa;
+  -moz-box-shadow: inset 0 0 4px #aaa;
+  -webkit-box-shadow: inset 0 0 4px #aaa; 
 }
 
 .format_link:hover {
-  background-color: #FF934A;
+  background-color: #3E424A;
   color: #ffffff;
   border: 1px solid #777777;
-  box-shadow: inset 0 0 4px #555555, 0 0 5px #dddddd;
-  -moz-box-shadow: inset 0 0 4px #555555, 0 0 5px #dddddd;
-  -webkit-box-shadow: inset 0 0 4px #555555, 0 0 5px #dddddd;
+  box-shadow: inset 0 0 4px #000000;
+  -moz-box-shadow: inset 0 0 4px #000000;
+  -webkit-box-shadow: inset 0 0 4px #000000; 
 }
 
 .format_link img {
