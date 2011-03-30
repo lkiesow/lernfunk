@@ -50,11 +50,10 @@ $includes = '
 	<script type="text/javascript" src="./func/imports/jquery-bbq/jquery.ba-bbq.min.js"></script>
 
 	<!-- fancybox -->
-	<!--
-	<script type="text/javascript" src="./func/imports/jquery-fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
-	<script type="text/javascript" src="./func/imports/jquery-fancybox/jquery.fancybox-1.3.1.pack.js"></script>
-	<link rel="stylesheet" type="text/css" href="./func/imports/jquery-fancybox/jquery.fancybox-1.3.1.css" media="screen" />
-	-->
+	<script type="text/javascript" src="./func/imports/jquery-fancybox/jquery.easing-1.3.pack.js"></script>
+	<script type="text/javascript" src="./func/imports/jquery-fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+	<script type="text/javascript" src="./func/imports/jquery-fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="./func/imports/jquery-fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
 	<link rel="stylesheet" type="text/css" href="template/'.$cfg['tplName'].'/css/style.css" />
 	<script type="text/javascript" src="./func/template-js.php?x=y.js.js"></script>

@@ -53,6 +53,15 @@ var playerMinTop = $( '#mediaobjectplayer' ).offset().top;
 var playerLeft   = $( '#mediaobjectplayer' ).offset().left;
 
 
+$( 'a.enhanced_player' ).fancybox({
+	'width'         : '90%',
+	'height'        : '90%',
+	'autoScale'     : false,
+	'transitionIn'  : 'none',
+	'transitionOut' : 'none',
+	'type'          : 'iframe'
+});
+
 /***************************  FUNCTIONS  *************************************/
 function showHideSlide( hide, show ) {
 	/*
@@ -69,3 +78,5 @@ function showHideSlide( hide, show ) {
 	$( hide ).hide();
 	$( show ).show();
 }
+
+
