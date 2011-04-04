@@ -245,6 +245,7 @@ div.pager {
 
 div#toppager {
         margin-top: 5px;
+        height: 26px;
 }
 
 div.pagelink_active {
@@ -621,11 +622,11 @@ h4 {
 }
 
 #tagcloud { 
-         margin-top: 10px; 
+         margin-top: 10px;        
 }
 
 .tagcloud {
-         width: 170px;
+         width: 189px;
 }
            
 .infoblock {
