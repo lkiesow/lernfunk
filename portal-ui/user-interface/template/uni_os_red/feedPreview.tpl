@@ -1,7 +1,7 @@
 <a href="javascript: $.bbq.pushState( { 'mediatype' : 'series', 'identifier' : '(:series_id:)' } );">
 	<h3>
 		(:title:)
-		<span style="float: right; padding-right: 20px; font-weight: normal;"><img height="11" src="template/uni_os_red/img/pfeil.png"/>&nbsp;&nbsp;mehr</span>
+		<span style="float: right; padding-right: 20px; font-weight: normal;">&#9658;&#8194;mehr</span>
 	</h3>
 </a>
 <div>

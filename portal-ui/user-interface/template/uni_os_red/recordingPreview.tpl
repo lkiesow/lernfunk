@@ -2,7 +2,7 @@
   <h3>
          (:title:)
          <span style="font-size: smaller; font-weight: normal; padding-top: 2px;"></span>
-         <span style="float: right; padding-right: 20px; font-weight: normal;"><img height="11" src="template/uni_os_red/img/pfeil.png"/>&nbsp;&nbsp;mehr</span>
+         <span style="float: right; padding-right: 20px; font-weight: normal;">&#9658;&#8194;mehr</span>
   </h3>
 </a>
 
