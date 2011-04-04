@@ -1,7 +1,6 @@
 <!-- one row of the recordings-table (details-page) -->
 <table style="width: 100%; padding-left: 0px;">
-	<tr class="onover_graybg recordingslistitem" 
-		style="width: 100%">
+	<tr class="onover_graybg recordingslistitem" style="width: 100%">
 		<td style="padding-left: 8px; width: 100%" 
 		onclick=" loadRec( '#mediaobjectplayer', '(:cou_id:)' ); 
 			$('.recordingselected').removeClass('recordingselected'); 
