@@ -385,6 +385,7 @@
 	display:block;
 	padding:.2em .4em;
 	line-height:1.5;
+	font-size: x-small;
 	zoom:1;
 }
 .ui-menu .ui-menu-item a.ui-state-hover,

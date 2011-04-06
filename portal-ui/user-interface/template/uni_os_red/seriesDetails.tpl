@@ -4,7 +4,7 @@
 	<div class="tr">
 		<div class="td" id="seriesdetails_leftbox">
 
-			<div class="objcontainer">
+			<div class="objcontainer" style="min-width: 340px;">
 				<div id="mediaobjectplayer">
 						<img style="max-height: 300px;" 
 							src="(:(thumb):():(./template/uni_os_red/img/std_preview.jpg):():)(:thumb:)" />

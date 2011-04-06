@@ -154,7 +154,7 @@ function calendar_init() {
 function tagcloud_init() {
 
 	// make tag cloud
-	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 100 } },
+	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 25 } },
 		function(data) {
 			if (handleError(data)) {
 				var tags_html = new Array();
@@ -178,6 +178,24 @@ function tagcloud_init() {
 				$('#tagcloud').html(tags_html.join(' '));
 				$( "#search" ).autocomplete({ 'source' : tags });
 			}
+		});
+
+}
+
+
+function autocomplete_init() {
+
+	// make tag cloud
+	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 250 } },
+		function(data) {
+			if (!handleError(data)) {
+				return;
+			}
+			tags = [];
+			for ( tag in data.tags ) {
+				tags.push( tag );
+			}
+			$( "#search" ).autocomplete({ 'source' : tags });
 		});
 
 }
@@ -211,6 +229,10 @@ function init() {
 	loadTemplate( 'seriesPreview.tpl'    );
 
 	$(window).trigger( 'hashchange' );
+	autocomplete_init();
+
+	// Include ThemeRoller
+	//	jquitr = {}; jquitr.s = document.createElement('script'); jquitr.s.src = 'http://jqueryui.com/themeroller/developertool/developertool.js.php?a=b.js'; document.getElementsByTagName('head')[0].appendChild(jquitr.s);
 }
 
 
@@ -1304,34 +1326,14 @@ function loadRec( target, couid ) {
 		format_links += fillTemplate( tpl.seriesdetails.rec_link, seriesRecBuf[couid][i] );
 	}
 	
-	var rec          = shallowCopyWithPointer( seriesRecBuf[couid][i] );
+	var rec          = shallowCopyWithPointer( first );
 	rec.format_links = format_links;
 	rec.playerid     = 'playerplaceholder';
+	rec.portal_url   = tplData.portal_url;
 
 	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, rec ) ).
 		ready( function() { 
 			loadVideo( '#playerplaceholder', couid, first.id ); 
-		} );
-}
-
-
-function loadRecording( target, recording ) {
-	var format_links = '';
-	var first = null;
-	for ( i in recording.data ) {
-		if ( !first ) {
-			first = recording.data[i];
-		} else if ( recording.data[i].mimetype.match(/.*video.*/) ) {
-			first = recording.data[i];
-		}
-		format_links += fillTemplate( tpl.seriesdetails.rec_link, recording.data[i] );
-	}
-	$( target ).html(  fillTemplate( tpl.seriesdetails.recordingplayerview, { 
-			'title'        : recording.title, 
-			'format_links' : format_links, 
-			'playerid'     : 'playerplaceholder' 
-		} ) ).ready( function() { 
-			loadPlayer( '#playerplaceholder', first.mimetype, first.url, first.preview ); 
 		} );
 }
 
