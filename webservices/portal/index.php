@@ -19,7 +19,6 @@
 	along with Lernfunk.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
-require_once(dirname(__FILE__).'/lzw.php');
 
 	// check if debugmode is requested
 	if ( array_key_exists('debug', $_REQUEST) && ($_REQUEST['debug'] == 'true') ) {
