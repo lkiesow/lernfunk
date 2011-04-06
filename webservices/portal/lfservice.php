@@ -87,8 +87,11 @@ class LFService {
 				  .'FROM mediaobject m NATURAL JOIN format f left outer join series s on s.series_id = m.series_id '
 				  .'where (m.access_id = 1) and (s.access_id = 1)'; // access_id 1 is public
 			if ($filter) {
+				/*
 				$sql .= ' and ( (m.title like "%'.$filter.'%") or (m.description like "%'.$filter.'%") '
 					   .'or (s.name like "%'.$filter.'%") )';
+				*/
+				$sql .= ' and ( (m.title like "%'.$filter.'%") or (m.description like "%'.$filter.'%") );';
 			}
 			if ($date) {
 				$sql .= ' and ( DATE(m.date) = "'.$date.'" )';
