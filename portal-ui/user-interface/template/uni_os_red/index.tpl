@@ -13,15 +13,15 @@
 		<title>virtUOS Lernfunk</title>
 		
 <script  type="text/javascript">
- var _gaq = _gaq || [];
- _gaq.push(['_setAccount', 'UA-8292154-1']);
- _gaq.push(['_gat._anonymizeIp']);
- _gaq.push(['_trackPageview']);
- (function() {
-   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
- })();
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-8292154-1']);
+	_gaq.push(['_gat._anonymizeIp']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
 </script>
 
 
@@ -32,12 +32,9 @@
 
 		<div id="wrapper">
 
+
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<div id="header">
-				<div id="logobox">
-					<a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
-					<p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
-				</div>
 
 				<div id="hakengr" class="hakengr_default"></div>
 
@@ -50,87 +47,90 @@
 				</div>
 			</div>
 
-			<div id="main">
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ left ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<div id="leftblock">
+				<div id="logobox">
+					<a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
+					<p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
+				</div>
 
-
-				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ left ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-				<div id="leftblock">
-					<div id="searchblock">
-						<form action="javascript: triggerSearch('Suche　');">
-							<div id="searchline">
-								<input type="text" id="search" name="search" value="Suche　"
-								onfocus="clear_inp(this, 'Suche　');" onblur="leave_inp(this, 'Suche　');" />
-								<div id="clear" class="clearbutton" onclick="$('#search').val('').focus();"></div>
-								<!--
-							</div>
-							<div>
-								<input type="text" id="department_search" name="department_search" value="Fachbereich"
-								onfocus="clear_inp(this, 'Fachbereich'); trigger_dep_select_hide(false);"
-								onblur="leave_inp(this, 'Fachbereich'); trigger_dep_select_hide(true);" />
-								<input type="button" id="trigger_dep_select_btn" value="..."
-								onclick="trigger_department_selection();"
-								onfocus="trigger_dep_select_hide(false)"
-								onblur=" trigger_dep_select_hide(true);" />
-								-->
-								<input id="searchbutton" type="submit" value="" />
-							</div>
+				<div id="searchblock">
+					<form action="javascript: triggerSearch('Suche　');">
+						<div id="searchline">
+							<input type="text" id="search" name="search" value="Suche　"
+							onfocus="clear_inp(this, 'Suche　');" onblur="leave_inp(this, 'Suche　');" />
+							<div id="clear" onclick="$('#search').val('').focus();"></div>
 							<!--
-
-							<div id="department_selection">
-								-->
-								<!--<div class="select_category">cat</div>-->
-								<!--<div class="select" onclick=" select_department( this );">FB</div>-->
-								<!--
-								<div class="select" onclick="select_department( this );">Alle Fachbereiche</div>
-							</div>
+						</div>
+						<div>
+							<input type="text" id="department_search" name="department_search" value="Fachbereich"
+							onfocus="clear_inp(this, 'Fachbereich'); trigger_dep_select_hide(false);"
+							onblur="leave_inp(this, 'Fachbereich'); trigger_dep_select_hide(true);" />
+							<input type="button" id="trigger_dep_select_btn" value="..."
+							onclick="trigger_department_selection();"
+							onfocus="trigger_dep_select_hide(false)"
+							onblur=" trigger_dep_select_hide(true);" />
 							-->
-						</form>
-					</div>
+							<input id="searchbutton" type="submit" value="" />
+						</div>
+						<!--
 
-
-					<div id="searchcatblock">
-						<div class="categorySelector">
-							<img src="template/uni_os_red/img/haken1.png" class="navihaken" alt="" /><!--
-							--><div id="categorySelector_series"
-								class="category"
-								onclick="setFilterHash( 'series' );">
-								<div class="object_count" id="count_series" ></div>
-								Veranstaltungen
-							</div>
+						<div id="department_selection">
+							-->
+							<!--<div class="select_category">cat</div>-->
+							<!--<div class="select" onclick=" select_department( this );">FB</div>-->
+							<!--
+							<div class="select" onclick="select_department( this );">Alle Fachbereiche</div>
 						</div>
-						<div class="categorySelector">
-							<img src="template/uni_os_red/img/haken2.png" class="navihaken" alt="" /><!--
-							--><div id="categorySelector_recordings"
-								class="category"
-								onclick="setFilterHash( 'recordings' );">
-								<div class="object_count" id="count_recordings" ></div>
-								Aufzeichnungen
-							</div>
-						</div>
-						<div class="categorySelector">
-							<img src="template/uni_os_red/img/haken3.png" class="navihaken" alt="" /><!--
-							--><div id="categorySelector_lecturer"
-								class="category"
-								onclick="setFilterHash( 'lecturer' );">
-								<div class="object_count" id="count_lecturer" ></div>
-								Personen
-							</div>
-						</div>
-						<div class="categorySelector">
-							<img src="template/uni_os_red/img/haken4.png" class="navihaken" alt="" /><!--
-							--><div id="categorySelector_podcast"
-								class="category"
-								onclick="setFilterHash( 'podcast' );">
-								<div class="object_count" id="count_podcast" ></div>
-								Podcasts
-							</div>
-						</div>
-					</div>
-
+						-->
+					</form>
 				</div>
 
 
-				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<div id="searchcatblock">
+					<div class="categorySelector">
+						<img src="template/uni_os_red/img/haken1.png" class="navihaken" alt="" /><!--
+						--><div id="categorySelector_series"
+							class="category"
+							onclick="setFilterHash( 'series' );">
+							<div class="object_count" id="count_series" ></div>
+							Veranstaltungen
+						</div>
+					</div>
+					<div class="categorySelector">
+						<img src="template/uni_os_red/img/haken2.png" class="navihaken" alt="" /><!--
+						--><div id="categorySelector_recordings"
+							class="category"
+							onclick="setFilterHash( 'recordings' );">
+							<div class="object_count" id="count_recordings" ></div>
+							Aufzeichnungen
+						</div>
+					</div>
+					<div class="categorySelector">
+						<img src="template/uni_os_red/img/haken3.png" class="navihaken" alt="" /><!--
+						--><div id="categorySelector_lecturer"
+							class="category"
+							onclick="setFilterHash( 'lecturer' );">
+							<div class="object_count" id="count_lecturer" ></div>
+							Personen
+						</div>
+					</div>
+					<div class="categorySelector">
+						<img src="template/uni_os_red/img/haken4.png" class="navihaken" alt="" /><!--
+						--><div id="categorySelector_podcast"
+							class="category"
+							onclick="setFilterHash( 'podcast' );">
+							<div class="object_count" id="count_podcast" ></div>
+							Podcasts
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<div id="main">
 
 				<div id="contentbox">
 					<div id="toppager" class="pager"> </div>

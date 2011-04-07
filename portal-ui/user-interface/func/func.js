@@ -158,25 +158,20 @@ function tagcloud_init() {
 		function(data) {
 			if (handleError(data)) {
 				var tags_html = new Array();
-				tags = [];
 
 				var max = null;
 				for ( tag in data.tags ) {
-					if ( tags.length < 25 ) {
-						if (!max) {
-							max = data.tags[tag];
-						}
-						tags_html.push('<a href="#cmd=search&filter=' 
-							+ tag + '" onclick="doSearch( { \'cmd\' : \'getData\', \'args\' : { \'filter\' : \'' 
-							+ tag + '\' } } ); return false;" style="font-size: ' 
-							+ Math.ceil(12 * data.tags[tag] / max) + 'pt">' + tag + '</a>');
+					if (!max) {
+						max = data.tags[tag];
 					}
-					tags.push( tag );
+					tags_html.push('<a href="#cmd=search&filter=' 
+						+ tag + '" onclick="doSearch( { \'cmd\' : \'getData\', \'args\' : { \'filter\' : \'' 
+						+ tag + '\' } } ); return false;" style="font-size: ' 
+						+ Math.ceil(12 * data.tags[tag] / max) + 'pt">' + tag + '</a>');
 				}
 
 				tags_html.sort();
 				$('#tagcloud').html(tags_html.join(' '));
-				$( "#search" ).autocomplete({ 'source' : tags });
 			}
 		});
 
@@ -195,7 +190,8 @@ function autocomplete_init() {
 			for ( tag in data.tags ) {
 				tags.push( tag );
 			}
-			$( "#search" ).autocomplete({ 'source' : tags });
+			tags.sort();
+			$( "#search" ).autocomplete({ 'source' : tags, 'minLength' : 2 });
 		});
 
 }
