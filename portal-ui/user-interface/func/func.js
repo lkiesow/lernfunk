@@ -35,6 +35,28 @@ loading = {
 		'podcast'    : false
 	}
 
+function validatePage() {
+	
+	/* Get page source */
+	var pageSrc = document.getElementsByTagName( 'html' )[0].outerHTML;
+	alert( pageSrc );
+
+	/* Create form */
+	var form = document.createElement( 'form' );
+	form.setAttribute( 'method', 'post' );
+	form.setAttribute( 'enctype', 'multipart/form-data' );
+	form.setAttribute( 'action', 'http://validator.w3.org/check' );
+
+	/* Create textarea */
+	var texta = document.createElement( 'textarea' );
+	texta.setAttribute( 'id', 'fragment' );
+	texta.setAttribute( 'name', 'fragment' );
+	texta.value = pageSrc;
+	form.appendChild( texta );
+
+//	form.submit();
+
+}
 
 /**
  * Takes JSON-data as string and returns it formatted
