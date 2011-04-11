@@ -203,7 +203,7 @@ function tagcloud_init() {
 function autocomplete_init() {
 
 	// make tag cloud
-	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 250 } },
+	requestWebservices( {"cmd" : "getTags", "args" : { "maxcount" : 350 } },
 		function(data) {
 			if (!handleError(data)) {
 				return;
