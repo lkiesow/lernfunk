@@ -527,7 +527,6 @@ div.series_update {
 
 div.series_update:hover {
 	background-color: #f6eae3;
-	padding: 15px;
 }
 
 div.new_recording {
@@ -727,6 +726,13 @@ a.nohover:hover {
 
 .informationln img {
 	height:7px; 
+}
+
+.recordinginfo {
+  padding: 5px 15px;
+  margin-top: 5px;
+  background-color: #fffcf9;
+  border: 1px solid #de7814;
 }
 
 input#shortlink {

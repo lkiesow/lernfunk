@@ -6,6 +6,7 @@
 			
       <img class="home_preview" src="(:img:)" alt="(:title:)" />
 			<span class="playbutton"></span>
+			 
 		</p>
 	</div>
 </div>

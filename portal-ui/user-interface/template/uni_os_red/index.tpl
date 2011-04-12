@@ -149,7 +149,8 @@
 			</div>
 
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-			<div id="footer">
+
+      <div id="footer">       
 				<div id="addrblock">
 					<div class="virtuos_name">virtUOS</div>
 					<div>Zentrum für Informationsmanagement</div>

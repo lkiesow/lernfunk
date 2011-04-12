@@ -54,7 +54,7 @@
 				</table>
 
 				<div style="padding: 10px 0px; border-top: 1px solid #cccccc;">
-					<div id="academies"   style="display: none;">&rarr;</div> 
+					<div id="academies"   style="display: none; font-weight: bold;">&rarr;</div> 
 					<div id="departments" style="display: none;">&rarr;</div> 
 					<div id="lecturer"    style="display: inline;"> </div> 
 				</div>

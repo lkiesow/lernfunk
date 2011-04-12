@@ -18,9 +18,9 @@
 					<div style="display: table-cell; max-width: 300px;">
 						(:series_updates:)
 					</div>
-				</div>
-			</div>
-		</div>
+				</div>               
+			</div> 
+		</div>  
 		<div style="display: table-cell; background-color: white; width: 200px; padding-left: 15px;">
 			<div id="rcbx" style="display: block;">
 				<div id="datepicker" style="font-size: smaller; margin-bottom: 25px;"></div>
@@ -32,9 +32,10 @@
 		</div>
 	</div>
 </div>
+
 <script>
 	$( 'img.home_preview' ).bind('load', function() {
-			$( this ).siblings( 'span' ).offset( { 
+			$( this ).siblings( 'span.playbutton' ).offset( { 
 					'left' : $( this ).offset().left + 100, 
 					'top'  : $( this ).offset().top  + 40
 				} );
