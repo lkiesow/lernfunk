@@ -80,4 +80,27 @@ function onContentLoaded() {
 				{ 'title' : 'Es tut uns leid...', 'msg' : 'Es konnten keine Daten '
 					+ 'zu Ihrer Suchanfrage gefunden werden.' },
 					setContent );
+
 }
+
+$( document ).ready( function() { 
+	var x = $( window ).height() - $( '#header' ).outerHeight() 
+		- $( '#footer' ).outerHeight() - 30; 
+	$( '#main' ).css( 'min-height', x + 'px' ); 
+} );
+
+/*******************************************************************************
+ * Special scrooling for the bottombar
+ ******************************************************************************/
+$( window ).scroll(function () { 
+		//$( '#mediaobjectplayer' ).css( 'padding-top' , Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ) + 'px' );
+		/*
+		if ( $( window ).scrollTop() - playerMinTop + 20  <  0 ) {
+			$( '#mediaobjectplayer' ).css( 'position', 'static' ).css( 'width', '100%' );
+		} else {
+			$( '#mediaobjectplayer' )
+				.css( 'width', $( '#mediaobjectplayer' ).width() + 'px' )
+				.css( 'top', '20px' ).css( 'position' , 'fixed' );
+		}
+		*/
+	} );

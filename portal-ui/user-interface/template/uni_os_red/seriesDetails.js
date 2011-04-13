@@ -44,8 +44,9 @@ $( window ).scroll(function () {
 		if ( $( window ).scrollTop() - playerMinTop + 20  <  0 ) {
 			$( '#mediaobjectplayer' ).css( 'position', 'static' ).css( 'width', '100%' );
 		} else {
-			$( '#mediaobjectplayer' ).css( 'width', $( '#mediaobjectplayer' ).width() + 'px' ).css( 'top', '20px' )
-				.css( 'position' , 'fixed' );
+			$( '#mediaobjectplayer' )
+				.css( 'width', $( '#mediaobjectplayer' ).width() + 'px' )
+				.css( 'top', '20px' ).css( 'position' , 'fixed' );
 		}
 	} );
 
