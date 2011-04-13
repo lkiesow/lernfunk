@@ -13,15 +13,17 @@
 		<title>virtUOS Lernfunk</title>
 		
 <script  type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-8292154-1']);
-	_gaq.push(['_gat._anonymizeIp']);
-	_gaq.push(['_trackPageview']);
-	(function() {
-	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
+	if ( !document.cookie.match( /.*ga_status=off.*/g ) ) {
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-8292154-1']);
+		_gaq.push(['_gat._anonymizeIp']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	}
 </script>
 
 
@@ -126,6 +128,22 @@
 					</div>
 				</div>
 
+			<div style="font-size: 60%; padding: 20px;">
+				<p>
+					Auf dieser Seite wird Google Analytics eingesetzt: <a
+					href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">
+					Weitere Informationen</a>.
+				</p>
+				<p>
+					Google Analytics 
+					<a class="gadeactivate" href="javascript: toggleGoogleAnalytics();"></a>.
+					<script type="text/javascript">
+						$( '.gadeactivate' ).html( googleAnalyticsStatus() ? 'deaktivieren' : 'aktivieren' );
+					</script>
+				</p>
+
+			</div>
+
 			</div>
 
 
@@ -159,14 +177,21 @@
 					<div>49074 Osnabrück</div>
 				</div>
 				<div id="bottomlinkblock">
-					<div><a class="bottomlink" href="#cmd=static&amp;title=Das Projekt&amp;std=1&amp;p=about">Über das Projekt</a></div>
-					<div><a class="bottomlink" href="#cmd=static&amp;title=Kontakt&amp;std=1&amp;p=kontakt">Kontakt</a></div>
-					<div><a class="bottomlink" href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">Impressum</a></div>
-					<div><a class="bottomlink" href="http://www.blogs.uni-osnabrueck.de/lernfunk/">lernfunk im Blog</a></div>
-					<!-- <div><a class="bottomlink" href="#cmd=static&amp;title=FAQ&amp;std=1&amp;p=faq">FAQ zu Vorlesungsaufzeichnungen</a></div>-->
+					<div><a class="bottomlink" 
+						href="#cmd=static&amp;title=Das Projekt&amp;std=1&amp;p=about">Über das Projekt</a></div>
+					<div><a class="bottomlink" 
+						href="#cmd=static&amp;title=Kontakt&amp;std=1&amp;p=kontakt">Kontakt</a></div>
+					<div><a class="bottomlink" 
+						href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">Impressum</a></div>
+					<div><a class="bottomlink" 
+						href="http://www.blogs.uni-osnabrueck.de/lernfunk/">lernfunk im Blog</a></div>
 				</div>
 				<div id="bottomlogoblock">
-					<a class="nohover" href="http://www.uos.de/" title="Uni Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/unilogo.png" alt="Uni Osnabrück" /></a>
+					<a class="nohover" href="http://www.uos.de/" 
+						title="Uni Osnabrück">
+						<img class="logo_footer" src="(:tplpath:)/img/unilogo.png" 
+						alt="Uni Osnabrück" />
+					</a>
 					<br/>
 					<br/>
 					<a class="nohover" href="http://www.fh-osnabrueck.de/" title="FH Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/fhlogo.png" alt="FH Osnabrück" /></a>
