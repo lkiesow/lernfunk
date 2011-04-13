@@ -36,6 +36,8 @@ for ( var id in l ) {
 /* load first recording */
 loadRec( '#mediaobjectplayer', tplData.firstrecording_cou_id );
 
+expandRecordingInfo( $( '.recordingslistitem' )[0] );
+
 //$('#seriesdetails_rightbox').children( 'div' )
 //	.css( 'max-height', ($('#seriesdetails_leftbox').height() - 30) + 'px' );
 
@@ -59,14 +61,6 @@ $( window ).resize( function() {
 var playerMinTop = $( '#mediaobjectplayer' ).offset().top;
 var playerLeft   = $( '#mediaobjectplayer' ).offset().left;
 
-$( document ).ready(function () { 
-	/*
-		$( '#content' ).children().each( function() { 
-				$( this ).css( 'min-width', $( this ).width() + 'px' );
-			});
-	*/
-	});
-
 $( 'a.enhanced_player' ).fancybox({
 	'width'         : '90%',
 	'height'        : '90%',
@@ -85,3 +79,18 @@ function showHideSlide( hide, show ) {
 }
 
 
+/*******************************************************************************
+ * Expand recordinginfo (Show description, links, …)
+ ******************************************************************************/
+function expandRecordingInfo( it ) {
+
+	$('.recordingselected').removeClass('recordingselected'); 
+	$( it ).addClass('recordingselected'); 
+	$('.closeall').hide(); 
+	$( it ).children( '.closeall' ).show(); 
+	$( '.eplcontainer' ).children( '.dll' ).hide();
+	$( '.eplcontainer' ).children( '.epl' ).parent().show();
+	$( '.dllcontainer' ).children( '.dll' ).parent().show();
+	$( '.dllcontainer' ).children( '.epl' ).hide();
+
+}

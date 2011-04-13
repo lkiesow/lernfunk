@@ -646,6 +646,7 @@ td {
 
 .onover_graybg {
 	background-color: #ffe8d9;
+	border-radius: 2px;
 }
 
 .onover_graybg:hover {
@@ -655,7 +656,7 @@ td {
 
 .recordingselected {
 	background-color: #FFb56c;
-
+	border-radius: 2px;
 }
 
 .recordingselected:hover {
@@ -732,6 +733,26 @@ a.nohover:hover {
   background-color: #fffcf9;
 }
 
+.recordinginfo div.eplcontainer, .recordinginfo div.dllcontainer {
+	border-bottom: 1px solid #cccccc;
+	display: none;
+}
+
+.recordinginfo > div {
+	padding: 5px 0px;
+}
+
+.recordinginfo em {
+	font-size: smaller;
+	width: 90px;
+	display: inline-block;
+}
+
+input.reclink {
+	border: 1px solid #aaaaaa;
+	width: 200px;
+}
+
 input#shortlink {
 	border:1px solid #aaaaaa;
 	width: 250px
@@ -783,3 +804,5 @@ tr#share img {
 .playbutton:hover {
 	background: url(../img/playbutton_hover.png) no-repeat;
 }
+
+

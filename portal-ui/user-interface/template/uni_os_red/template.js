@@ -107,6 +107,9 @@ function toggleGoogleAnalytics() {
 			? 'deaktivieren' : 'aktivieren' );
 }
 
+/*******************************************************************************
+ * Get status of Google Analytics (Is it activated or not)
+ ******************************************************************************/
 function googleAnalyticsStatus() {
 	return !document.cookie.match( /.*ga_status=off.*/g );
 }
