@@ -797,8 +797,8 @@ tr#share img {
 .playbutton {
 	width: 70px;
 	height: 70px;
-	background: url(../img/playbutton.png) no-repeat;
 	position: absolute;
+	z-index: 9999;
 }
 
 .playbutton:hover {

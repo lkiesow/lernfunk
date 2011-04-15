@@ -12,7 +12,7 @@
 					</div>
 				</div>
 				<div style="display: table-row; background-color: #fffcfa;">
-					<div style="display: table-cell; ; max-width: 440px;">
+					<div style="display: table-cell; width: 60%; max-width: 440px;">
 						(:new_recordings:)
 					</div>
 					<div style="display: table-cell; max-width: 300px;">
@@ -35,9 +35,9 @@
 
 <script>
 	$( 'img.home_preview' ).bind('load', function() {
-			$( this ).siblings( 'span.playbutton' ).offset( { 
+			$( this ).siblings( '.playbutton' ).offset( { 
 					'left' : $( this ).offset().left + 100, 
 					'top'  : $( this ).offset().top  + 40
-				} );
+				} ).show();
 		} )
 </script>
