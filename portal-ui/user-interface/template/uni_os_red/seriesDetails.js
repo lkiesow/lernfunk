@@ -42,7 +42,18 @@ expandRecordingInfo( $( '.recordingslistitem' )[0] );
 //	.css( 'max-height', ($('#seriesdetails_leftbox').height() - 30) + 'px' );
 
 $( window ).scroll(function () { 
-		//$( '#mediaobjectplayer' ).css( 'padding-top' , Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ) + 'px' );
+//		alert( $( window ).scrollTop() );
+		/*
+		alert( Math.min( 
+				Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ), 
+				$( '#recordinglinkblock' ).height() - $( '#objcontainer' ).height() - 15 ) );
+		*/
+//		alert( [ $( '#recordinglinkblock' ).outerHeight(), $( '.objcontainer' ).first().innerHeight(), 15 ] );
+		$( '#mediaobjectplayer' ).css( 'margin-top' , 
+			Math.min( 
+				Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ), 
+				$( '#recordinglinkblock' ).height() + $( '#desc_sh').height() + 25 - $( '.objcontainer' ).first().innerHeight() ) + 'px' );
+		/*
 		if ( $( window ).scrollTop() - playerMinTop + 20  <  0 ) {
 			$( '#mediaobjectplayer' ).css( 'position', 'static' ).css( 'width', '100%' );
 		} else {
@@ -50,6 +61,7 @@ $( window ).scroll(function () {
 				.css( 'width', $( '#mediaobjectplayer' ).width() + 'px' )
 				.css( 'top', '20px' ).css( 'position' , 'fixed' );
 		}
+		*/
 	} );
 
 $( window ).resize( function() { 
@@ -84,9 +96,9 @@ function showHideSlide( hide, show ) {
  ******************************************************************************/
 function expandRecordingInfo( it ) {
 
-	$('.recordingselected').removeClass('recordingselected'); 
-	$( it ).addClass('recordingselected'); 
-	$('.closeall').hide(); 
+	$( '.recordingselected' ).removeClass( 'recordingselected' ); 
+	$( it ).addClass( 'recordingselected' );
+	$( '.closeall' ).hide(); 
 	$( it ).children( '.closeall' ).show(); 
 	$( '.eplcontainer' ).children( '.dll' ).hide();
 	$( '.eplcontainer' ).children( '.epl' ).parent().show();

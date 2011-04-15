@@ -65,7 +65,7 @@
 			</div>
 
 			<h4 class="headline" style="margin-top: 10px">Aufzeichnungen</h4>
-			<div>
+			<div id="recordinglinkblock">
 				(:recording_html:)
 			</div>
 

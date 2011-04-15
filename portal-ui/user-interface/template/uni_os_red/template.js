@@ -101,7 +101,7 @@ function toggleGoogleAnalytics() {
 	if ( document.cookie.match( /.*ga_status=off.*/g ) ) {
 		document.cookie = 'ga_status=on';
 	} else {
-		document.cookie = 'ga_status=off';
+		document.cookie = 'ga_status=off; Expires=Wed, 09 Jun 2021 10:18:14 GMT';
 	}
 	$( '.gadeactivate' ).html( googleAnalyticsStatus() 
 			? 'deaktivieren' : 'aktivieren' );
