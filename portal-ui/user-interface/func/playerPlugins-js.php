@@ -2,7 +2,7 @@
 
 header( 'Content-Type: text/plain; charset=utf-8' );
 /* Disable caching for testing */
-header( 'Cache-Control: no-cache' );
+//header( 'Cache-Control: no-cache' );
 
 require_once( dirname(__FILE__).'/config.php' );
 
