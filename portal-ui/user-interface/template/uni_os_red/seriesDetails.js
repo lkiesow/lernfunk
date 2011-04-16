@@ -34,25 +34,22 @@ for ( var id in l ) {
 }
 
 /* load first recording */
-loadRec( '#mediaobjectplayer', tplData.firstrecording_cou_id );
+var cou_id = $.bbq.getState( 'couid' );
+if ( tplData.firstrecording_cou_id && !cou_id ) {
+	loadRec( '#mediaobjectplayer', tplData.firstrecording_cou_id );
+}
 
-expandRecordingInfo( $( '.recordingslistitem' )[0] );
+if ( !cou_id ) {
+	expandRecordingInfo( $( '.recordingslistitem' )[0] );
+}
 
-//$('#seriesdetails_rightbox').children( 'div' )
-//	.css( 'max-height', ($('#seriesdetails_leftbox').height() - 30) + 'px' );
 
 $( window ).scroll(function () { 
-//		alert( $( window ).scrollTop() );
-		/*
-		alert( Math.min( 
-				Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ), 
-				$( '#recordinglinkblock' ).height() - $( '#objcontainer' ).height() - 15 ) );
-		*/
-//		alert( [ $( '#recordinglinkblock' ).outerHeight(), $( '.objcontainer' ).first().innerHeight(), 15 ] );
 		$( '#mediaobjectplayer' ).css( 'margin-top' , 
 			Math.min( 
 				Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ), 
-				$( '#recordinglinkblock' ).height() + $( '#desc_sh').height() + 25 - $( '.objcontainer' ).first().innerHeight() ) + 'px' );
+				$( '#recordinglinkblock' ).height() + $( '#desc_sh').height() + 25
+					- $( '.objcontainer' ).first().innerHeight() ) + 'px' );
 		/*
 		if ( $( window ).scrollTop() - playerMinTop + 20  <  0 ) {
 			$( '#mediaobjectplayer' ).css( 'position', 'static' ).css( 'width', '100%' );

@@ -35,6 +35,9 @@ loading = {
 		'podcast'    : false
 	}
 
+/* storage for player plugins */
+playerPlugin = {};
+
 function validatePage() {
 	
 	/* Get page source */
@@ -279,29 +282,35 @@ function loadStartpage( data ) {
 			if (count <= cfg.newreccount) {
 				var player = '';
 				var replaceData = n;
-				delete( n.preview_url );
-				delete( n.seriesthumb );
-				if ( n.mimetype.match( /.*video.*/ ) ) {
-					replaceData.mediatype = 'Video';
-					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-				} else if ( n.mimetype.match( /.*audio.*/ ) ) {
-					replaceData.mediatype = 'Audio';
-					replaceData.img = 'template/' + cfg.tplName + '/' + cfg.stdAudPreImg;
-					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-				} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
-					replaceData.mediatype = 'virtPresenter';
-					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-				} else if ( n.mimetype.match( /.*matterhorn.*/ ) ) {
-					replaceData.mediatype = 'Matterhorn';
-					// WARNING! 
-					//   This is a UOS specific thing.
-					//   And a dirty workaround!
-					n.url = n.url.replace(/watch.html/, 'embed.html');
-					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-				}
+
+				replaceData.url = escape(replaceData.url);
+				replaceData.preview_url = escape(replaceData.preview_url);
+				replaceData.formatname = replaceData.formatname.replace( /[\W_]/g, '' );
+				replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
+				recordings += fillTemplate( tpl.home.new_recording, replaceData );
+			
+//				if ( n.mimetype.match( /.*video.*/ ) ) {
+//					replaceData.mediatype = 'Video';
+//					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
+//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+//				} else if ( n.mimetype.match( /.*audio.*/ ) ) {
+//					replaceData.mediatype = 'Audio';
+//					replaceData.img = 'template/' + cfg.tplName + '/' + cfg.stdAudPreImg;
+//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+//				} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
+//					replaceData.mediatype = 'virtPresenter';
+//					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
+//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+//				} else if ( n.mimetype.match( /.*matterhorn.*/ ) ) {
+//					replaceData.mediatype = 'Matterhorn';
+//					// WARNING! 
+//					//   This is a UOS specific thing.
+//					//   And a dirty workaround!
+//					n.url = n.url.replace(/watch.html/, 'embed.html');
+//					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
+//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
+//				}
+
 			}
 		}
 		loadTemplate( 'home.tpl', 
@@ -326,10 +335,8 @@ function getImageFromRecObj( o, stdimg ) {
 }
 
 
-function replaceBy( node, type, url ) {
+function replaceBy( node, type, url, preview_url ) {
 
-	type = type.toLowerCase();
-		
 	// WARNING! 
 	//   This is a UOS specific thing.
 	//   And a dirty workaround!
@@ -339,7 +346,11 @@ function replaceBy( node, type, url ) {
 		url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 	}
 
-	$(node).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
+	url         = unescape( url );
+	preview_url = unescape( preview_url );
+
+	$( node ).html( playerPlugin[ type ]( 'home', url, preview_url ) );
+	//$( node ).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
 
 }
 
@@ -1322,7 +1333,11 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 
 }
 
+/*******************************************************************************
+ * Load recording select best format and call loadVideo
+ ******************************************************************************/
 function loadRec( target, couid ) {
+
 	var p = $.deparam.fragment();
 	var search_best = true;
 	var format_links = '';
@@ -1356,6 +1371,9 @@ function loadRec( target, couid ) {
 }
 
 
+/*******************************************************************************
+ * Embed player into webpage
+ ******************************************************************************/
 function loadVideo( target, couid, id ) {
 
 	var mimetype = '';
@@ -1363,7 +1381,7 @@ function loadVideo( target, couid, id ) {
 	var preview  = '';
 	for (i in seriesRecBuf[couid]) {
 		if (seriesRecBuf[couid][i].id == id) {
-			mimetype = seriesRecBuf[couid][i].mimetype;
+			format   = seriesRecBuf[couid][i].format.replace( /[\W_]/g, '' );
 			url      = seriesRecBuf[couid][i].url;
 			preview  = seriesRecBuf[couid][i].preview;
 		}
@@ -1372,9 +1390,6 @@ function loadVideo( target, couid, id ) {
 	if (!url)
 		return;
 
-	var player   = '';
-	if ( mimetype.match( /.*video.*/ ) ) {
-	
 		// WARNING! 
 		//   This is a UOS specific thing.
 		//   And a dirty workaround!
@@ -1383,39 +1398,53 @@ function loadVideo( target, couid, id ) {
 			rtmp = rtmp[0].split( '&' );
 			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 		}
-		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
 
-	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
-		if (preview) {
-			// WARNING! 
-			//   This is a UOS specific thing.
-			//   And a dirty workaround!
-			var rtmp = preview.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-			if (rtmp) {
-				rtmp = rtmp[0].split( '&' );
-				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-			}
-			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
-			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
-		} else {
-			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
-		}
-
-	} else if ( mimetype.match( /.*matterhorn.*/ ) ) {
-		if (preview) {
-			// WARNING! 
-			//   This is a UOS specific thing.
-			//   And a dirty workaround!
-			//   Matterhorn => Embed-Code in Preview-URL
-			player += fillTemplate( tpl.details.matterhornplayer, { 'url' : preview } );
-			player += fillTemplate( tpl.details.standalonelink,   { 'url' : url }     );
-		} else {
-			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
-		}
-
-	} else if ( mimetype.match( /.*audio.*/ ) ) {
-		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
-	}
+	var player   = playerPlugin[ format ]( 'seriesDetails', url, preview );
+	
+//	if ( mimetype.match( /.*video.*/ ) ) {
+//	
+//		// WARNING! 
+//		//   This is a UOS specific thing.
+//		//   And a dirty workaround!
+//		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+//		if (rtmp) {
+//			rtmp = rtmp[0].split( '&' );
+//			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+//		}
+//		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
+//
+//	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
+//		if (preview) {
+//			// WARNING! 
+//			//   This is a UOS specific thing.
+//			//   And a dirty workaround!
+//			var rtmp = preview.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+//			if (rtmp) {
+//				rtmp = rtmp[0].split( '&' );
+//				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
+//			}
+//			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
+//			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
+//		} else {
+//			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
+//		}
+//
+//	} else if ( mimetype.match( /.*matterhorn.*/ ) ) {
+//		if (preview) {
+//			// WARNING! 
+//			//   This is a UOS specific thing.
+//			//   And a dirty workaround!
+//			//   Matterhorn => Embed-Code in Preview-URL
+//			player += fillTemplate( tpl.details.matterhornplayer, { 'url' : preview } );
+//			player += fillTemplate( tpl.details.standalonelink,   { 'url' : url }     );
+//		} else {
+//			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
+//		}
+//
+//	} else if ( mimetype.match( /.*audio.*/ ) ) {
+//		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
+//	}
+	
 
 	$( target ).html( player );
 
@@ -1687,3 +1716,14 @@ function doCleanUp() {
 	contentBuffer = [];
 	pStyleBuffer  = [];
 }
+
+/*******************************************************************************
+ * Bind a player plugin to a format name.
+ ******************************************************************************/
+function bindPlayerPlugin( name, pluginFunction ) {
+
+	name = name.replace( /[\W_]/g, '' );
+	playerPlugin[ name ] = pluginFunction;
+
+}
+

@@ -60,6 +60,7 @@ $includes = '
 	<script type="text/javascript" src="./func/config-js.php?x=y.js.js"></script>
 	<script type="text/javascript" src="./func/func.js"></script>
 
+	<script type="text/javascript" src="./func/playerPlugins-js.php?a=b.js"></script>
 	<script type="text/javascript" src="template/'.$cfg['tplName'].'/template.js"></script>
 ';
 

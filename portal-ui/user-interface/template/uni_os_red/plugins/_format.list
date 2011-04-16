@@ -1,0 +1,15 @@
+format_id | name                     | plugin
+——————————+——————————————————————————+————————
+   0      | NULL                     |
+   2      | virtPresenter II (Flash) |   ✓
+   3      | Audio Podcast            |   ✓
+   9      | Camtasia Film            |
+  10      | Flash-Video (swf)        |   ✓
+  11      | Enhanced Podcast         |   ✓
+  12      | Video Podcast            |   ✓
+  14      | Flash-Streaming          |   ✓
+  15      | Screenrecording Podcast  |   ✓
+  16      | Lecturnity Aufzeichnung  |
+  17      | Flash HD                 |   ✓
+  20      | youtube                  |   ✓
+  23      | Opencast Matterhorn      |   ✓
