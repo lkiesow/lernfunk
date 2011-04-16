@@ -1277,7 +1277,7 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 							data.recordings[i].cou_id = data.recordings[i].id;
 					}
 
-					data.recording_html = makeMediaobjectTable( data.recordings, 
+					data.recording_html = makeMediaobjectTable( data, 
 							'recordings', firstRecording );
 					data.firstrecording_title    = firstRecording.result.title;
 					data.firstrecording_mimetype = firstRecording.result.mimetype;
@@ -1489,8 +1489,8 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 	var firstRecording = null;
 	var objects = '';
 	var rel_rec = {};
-	for ( i in data ) {
-		var o = data[i];
+	for ( i in data.recordings ) {
+		var o = data.recordings[i];
 		if (! rel_rec[ o.cou_id ])
 			rel_rec[ o.cou_id ] = [];
 		rel_rec[ o.cou_id ].push( o );
@@ -1535,6 +1535,7 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 		if (!recording.img) {
 			recording.img = 'template/' + cfg.tplName + '/' + cfg.stdRecPreImg;
 		}
+		recording.portal_url = data.portal_url;
 		objects += fillTemplate( tpl.seriesdetails.recording, recording );
 		first = false;
 	}
