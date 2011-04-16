@@ -1,4 +1,4 @@
-function plugin_audio_podcast( site, url ) {
+function plugin_audio_podcast( site, url, preview_url ) {
 
 	if ( site.toLowerCase() == 'seriesdetails' ) {
 		return '<object id="player" type="application/x-shockwave-flash" '
