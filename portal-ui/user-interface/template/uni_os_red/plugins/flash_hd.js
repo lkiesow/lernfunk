@@ -1,4 +1,4 @@
-function plugin_flash_hd( site, url ) {
+function plugin_flash_hd( site, url, portal_ui ) {
 
 	if ( site.toLowerCase() == 'seriesdetails' ) {
 		return '<object id="player" type="application/x-shockwave-flash" '
