@@ -46,10 +46,10 @@ if ( !cou_id ) {
 
 $( window ).scroll(function () { 
 		$( '#mediaobjectplayer' ).css( 'margin-top' , 
-			Math.min( 
-				Math.max( $( window ).scrollTop() - playerMinTop + 20, 0 ), 
+			Math.max( Math.min( 
+				$( window ).scrollTop() - playerMinTop + 20, 
 				$( '#recordinglinkblock' ).height() + $( '#desc_sh').height() + 25
-					- $( '.objcontainer' ).first().innerHeight() ) + 'px' );
+					- $( '.objcontainer' ).first().innerHeight() ), 0 ) + 'px' );
 		/*
 		if ( $( window ).scrollTop() - playerMinTop + 20  <  0 ) {
 			$( '#mediaobjectplayer' ).css( 'position', 'static' ).css( 'width', '100%' );

@@ -257,9 +257,9 @@ function init() {
 }
 
 
-/**
+/*******************************************************************************
  * Load welcome page with news, new video-recordings, ...
- **/
+ ******************************************************************************/
 function loadStartpage( data ) {
 	if (handleError(data)) {
 		var recordings = '';
@@ -288,28 +288,6 @@ function loadStartpage( data ) {
 				replaceData.formatname = replaceData.formatname.replace( /[\W_]/g, '' );
 				replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
 				recordings += fillTemplate( tpl.home.new_recording, replaceData );
-			
-//				if ( n.mimetype.match( /.*video.*/ ) ) {
-//					replaceData.mediatype = 'Video';
-//					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-//				} else if ( n.mimetype.match( /.*audio.*/ ) ) {
-//					replaceData.mediatype = 'Audio';
-//					replaceData.img = 'template/' + cfg.tplName + '/' + cfg.stdAudPreImg;
-//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-//				} else if ( n.mimetype.match( /.*virtpresenter.*/ ) ) {
-//					replaceData.mediatype = 'virtPresenter';
-//					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-//				} else if ( n.mimetype.match( /.*matterhorn.*/ ) ) {
-//					replaceData.mediatype = 'Matterhorn';
-//					// WARNING! 
-//					//   This is a UOS specific thing.
-//					//   And a dirty workaround!
-//					n.url = n.url.replace(/watch.html/, 'embed.html');
-//					replaceData.img = getImageFromRecObj( n, 'template/' + cfg.tplName + '/' + cfg.stdVidPreImg );
-//					recordings += fillTemplate( tpl.home.new_recording, replaceData );
-//				}
 
 			}
 		}
@@ -327,8 +305,6 @@ function loadStartpage( data ) {
 
 
 function getImageFromRecObj( o, stdimg ) {
-	// do not use preview_url as it is often a link to the videofile
-	// -> o.preview_url ? o.preview_url 
 	return  o.image_url ? o.image_url 
 			: ( o.thumbnail_url ? o.thumbnail_url 
 				: stdimg );
@@ -350,7 +326,6 @@ function replaceBy( node, type, url, preview_url ) {
 	preview_url = unescape( preview_url );
 
 	$( node ).html( playerPlugin[ type ]( 'home', url, preview_url ) );
-	//$( node ).html( fillTemplate( tpl.home[type + 'player'], { 'url' : url } ) );
 
 }
 
@@ -1390,115 +1365,16 @@ function loadVideo( target, couid, id ) {
 	if (!url)
 		return;
 
-		// WARNING! 
-		//   This is a UOS specific thing.
-		//   And a dirty workaround!
-		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-		if (rtmp) {
-			rtmp = rtmp[0].split( '&' );
-			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-		}
-
-	var player   = playerPlugin[ format ]( 'seriesDetails', url, preview );
-	
-//	if ( mimetype.match( /.*video.*/ ) ) {
-//	
-//		// WARNING! 
-//		//   This is a UOS specific thing.
-//		//   And a dirty workaround!
-//		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-//		if (rtmp) {
-//			rtmp = rtmp[0].split( '&' );
-//			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-//		}
-//		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
-//
-//	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
-//		if (preview) {
-//			// WARNING! 
-//			//   This is a UOS specific thing.
-//			//   And a dirty workaround!
-//			var rtmp = preview.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-//			if (rtmp) {
-//				rtmp = rtmp[0].split( '&' );
-//				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-//			}
-//			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
-//			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
-//		} else {
-//			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
-//		}
-//
-//	} else if ( mimetype.match( /.*matterhorn.*/ ) ) {
-//		if (preview) {
-//			// WARNING! 
-//			//   This is a UOS specific thing.
-//			//   And a dirty workaround!
-//			//   Matterhorn => Embed-Code in Preview-URL
-//			player += fillTemplate( tpl.details.matterhornplayer, { 'url' : preview } );
-//			player += fillTemplate( tpl.details.standalonelink,   { 'url' : url }     );
-//		} else {
-//			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
-//		}
-//
-//	} else if ( mimetype.match( /.*audio.*/ ) ) {
-//		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
-//	}
-	
-
-	$( target ).html( player );
-
-}
-
-
-function loadPlayer( target, mimetype, url, preview ) {
-
-	var player = '';
-	if ( mimetype.match( /.*video.*/ ) ) {
-	
-		// WARNING! 
-		//   This is a UOS specific thing.
-		//   And a dirty workaround!
-		var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-		if (rtmp) {
-			rtmp = rtmp[0].split( '&' );
-			url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-		}
-		player += fillTemplate( tpl.details.videoplayer, { 'url' : url } );
-
-	} else if ( mimetype.match( /.*virtpresenter.*/ ) ) {
-		if (preview) {
-			// WARNING! 
-			//   This is a UOS specific thing.
-			//   And a dirty workaround!
-			var rtmp = preview.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-			if (rtmp) {
-				rtmp = rtmp[0].split( '&' );
-				preview = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-			}
-			player += fillTemplate( tpl.details.videoplayer, { 'url' : preview } );
-			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
-		} else {
-			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
-		}
-
-	} else if ( mimetype.match( /.*matterhorn.*/ ) ) {
-		if (preview) {
-			// WARNING! 
-			//   This is a UOS specific thing.
-			//   And a dirty workaround!
-			//   Matterhorn => Embed-Code in Preview-URL
-			player += fillTemplate( tpl.details.matterhornplayer, { 'url' : preview } );
-			player += fillTemplate( tpl.details.standalonelink, { 'url' : url } );
-		} else {
-			player += fillTemplate( tpl.details.virtpresenterplayer, { 'url' : url } );
-		}
-
-	} else if ( mimetype.match( /.*audio.*/ ) ) {
-		player += fillTemplate( tpl.details.audioplayer, { 'url' : url } );
+	// WARNING! 
+	//   This is a UOS specific thing.
+	//   And a dirty workaround!
+	var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
+	if (rtmp) {
+		rtmp = rtmp[0].split( '&' );
+		url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
 	}
 
-	$( target ).html( player );
+	$( target ).html( playerPlugin[ format ]( 'seriesDetails', url, preview ) );
 
 }
 
