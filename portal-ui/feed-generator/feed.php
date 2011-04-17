@@ -112,8 +112,8 @@ class LFFeedGenerator {
 			$item = new FeedItem();
 			$item->title = $r->title;
 			$item->link = $rss->link.'?stream_id='.$r->object_id;
-			$item->description = $r->description;
-			$item->date = $r->rfcdate;
+			$item->description = $r->description.$r->date;
+			$item->date = $r->rfcdate.' +0001 ';
 			$item->source = $rss->link;
 
 			$rss->addItem($item);

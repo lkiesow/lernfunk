@@ -28,9 +28,8 @@ define( 'PORTAL_URL', 'http://www.lernfunk.de/' );
 date_default_timezone_set( 'Europe/Berlin' );
 
 // set database access
-//      'server' => 'mysql5.serv.uni-osnabrueck.de',
 $mysql = array(
-      'server' => '127.0.0.1',
+      'server' => '',
       'user'   => '',
       'passwd' => '',
       'db'     => 'lernfunk'
