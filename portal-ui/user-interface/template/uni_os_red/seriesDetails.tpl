@@ -33,9 +33,12 @@
 						<td> <input type="text" id="shortlink" 
 							value="http://lernfunk.de/Main/(:portal_url:)" /> </td>
 					</tr>
-					<tr id="feeds" class="hidden">
+					<tr id="feeds">
 						<td> Feeds: </td>
-						<td id="pdct"> </td>
+						<td id="pdct">
+							<a href="http://lernfunk.de/portal-ui/feed-generator/?series=(:id:)"
+							><img src="template/uni_os_red/img/rss.png" alt="rss" /> Veranstaltungsfeed</a>
+						</td>
 					</tr>
 					<tr id="share">
 						<td> Share: </td>
