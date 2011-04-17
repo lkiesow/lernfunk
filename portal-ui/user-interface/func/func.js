@@ -686,10 +686,6 @@ function handleSearchResult( data, part, reqMediatype ) {
 		// set pager
 		setPager(1);
 
-		//if we want a specific page
-//		if ( page )
-//			goToPage( parseInt( page ) );
-
 		$(window).trigger( 'hashchange' );
 
 		if ( reqMediatype ) {
@@ -948,14 +944,14 @@ function setContent( data ) {
 }
 
 
-/**
+/********************************************************************************
  * Adds a content block to the main area of the page with short
  * information about the given object.
  *
  *  mediatype   The mediatype of the given object (video, slides, lecturer, 
  *              podcast, ...). This determines which information are displayed.
  *  object      The actual data of the object.
- **/
+ ********************************************************************************/
 function addObjectBlock(mediatype, obj) {
 	if (!mediatype || !obj)
 		return;
@@ -1185,7 +1181,8 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 		$.bbq.pushState( { 'mediatype' : mediatype, 'identifier' : identifier } );
 	}
 
-	requestWebservices( { "cmd" : "getDetails", "args" : { "mediatype" : mediatype, "identifier" : identifier } },
+	requestWebservices( { "cmd" : "getDetails", "args" : 
+		{ "mediatype" : mediatype, "identifier" : identifier } },
 		function(data) {
 			if (!handleError(data)) {
 				return; // some error occured
@@ -1388,7 +1385,9 @@ function setBackPager() {
 	$('div.pager').html( '<div class="pagelink" id="pagelink_back" onclick="history.back();">zur&uuml;ck</div>' );
 }
 
-
+/*******************************************************************************
+ * Build a table of all recordings
+ ******************************************************************************/
 function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 	
 	var firstRecording = null;
@@ -1450,6 +1449,9 @@ function makeMediaobjectTable( data, mediatype, firstRecordingObj ) {
 }
 
 
+/*******************************************************************************
+ * Fill the seriestable with data (lecturer details page)
+ ******************************************************************************/
 function makeSeriesTable( data ) {
 	series = '';
 	term_series = {};
@@ -1480,6 +1482,9 @@ function makeSeriesTable( data ) {
 }
 
 
+/*******************************************************************************
+ * Fills template (given as string) with data
+ ******************************************************************************/
 function fillTemplate( template, replaceData ) {
 
 	if ( typeof(replaceData) == 'undefined' )
@@ -1522,7 +1527,7 @@ function fillTemplate( template, replaceData ) {
 }
 
 
-/**
+/*******************************************************************************
  * Load a template from a file and replace the given keywords.
  * If a template is loaded once, it is stored in a local buffer.
  *
@@ -1533,7 +1538,7 @@ function fillTemplate( template, replaceData ) {
  *   onError       : Function for error handling
  *   onAJAXRequest : This function is executed right before an AJAX-request 
  *                   is made, thus only when onSuccess is executed asynchronous
- **/           
+ ******************************************************************************/
 function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest ) {
 	if (! onError) {
 		onError = function( err ) { 
@@ -1568,10 +1573,10 @@ function loadTemplate( template, replaceData, onSuccess, onError, onAJAXRequest 
 }
 
 
-/**
+/*******************************************************************************
  * Delete all temporary data like old search results or pager
  * and hide the pager and tabs
- **/
+ ******************************************************************************/
 function doCleanUp() {
 	// hide subfilter and show selectors
 	$('#rightview_content').css( 'display', 'none'  );

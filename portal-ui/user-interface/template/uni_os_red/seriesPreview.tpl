@@ -1,4 +1,4 @@
-<a href="javascript: getDetails('series', (:id:)); ">
+<a href="javascript: $.bbq.pushState( { 'mediatype': 'series', 'identifier' : '(:id:)' } );">
 	<h3>
 		(:title:)
 		<span style="float: right; padding-right: 20px; font-weight: normal;">&#9658;&#8194;mehr</span>
@@ -9,9 +9,9 @@
 	<div class="tbl objcontainer">
 		<div class="tr" style="background-color: #F9F9F9;">
 			<div class="td">
-				(:lecturer:)
+				<p>(:lecturer:)</p>
 				<p>(:desc_sh:)</p>
-				<span style="font-size: 11px;">(:mobjcount:) <b>Medien</b> &#124; (:term:) &#124; (:department:)</span>
+				<span style="font-size: smaller;">(:mobjcount:) Medien &#124; (:term:) &#124; (:department:)</span>
 			</div>
 			<div class="td">
 				<br />
