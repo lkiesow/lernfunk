@@ -1,4 +1,5 @@
-<h4 class="headline">(:title:)</h4>
+<h4 class="headline" style="margin-bottom: 5px;">(:title:)</h4>
+
 <div id="(:playerid:)"></div>
 
 <div>
