@@ -198,6 +198,25 @@ div#bottomlinkblock {
 	font-size: smaller;
 	padding-left: 15px;
 	display: inline-block;
+	width: 150px;
+}
+
+div#googleanalytics {
+  padding-top: 10px;
+  font-size: 60%;
+  width: 500px;
+  margin: 0px auto;
+}
+
+div#googleanalytics a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+div#googleanalytics a:hover {
+  color: #f6eae3;
+  background: none;
+  text-decoration: none;
 }
 
 a.bottomlink {

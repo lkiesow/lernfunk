@@ -126,23 +126,7 @@
 							Podcasts
 						</div>
 					</div>
-				</div>
-
-			<div style="font-size: 60%; padding: 20px;">
-				<p>
-					Auf dieser Seite wird Google Analytics eingesetzt: <a
-					href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">
-					Weitere Informationen</a>.
-				</p>
-				<p>
-					Google Analytics 
-					<a class="gadeactivate" href="javascript: toggleGoogleAnalytics();"></a>.
-					<script type="text/javascript">
-						$( '.gadeactivate' ).html( googleAnalyticsStatus() ? 'deaktivieren' : 'aktivieren' );
-					</script>
-				</p>
-
-			</div>
+				</div>			
 
 			</div>
 
@@ -185,7 +169,7 @@
 						href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">Impressum</a></div>
 					<div><a class="bottomlink" 
 						href="http://www.blogs.uni-osnabrueck.de/lernfunk/">lernfunk im Blog</a></div>
-				</div>
+				</div>				
 				<div id="bottomlogoblock">
 					<a class="nohover" href="http://www.uos.de/" 
 						title="Uni Osnabrück">
@@ -196,6 +180,16 @@
 					<br/>
 					<a class="nohover" href="http://www.fh-osnabrueck.de/" title="FH Osnabrück"><img class="logo_footer" src="(:tplpath:)/img/fhlogo.png" alt="FH Osnabrück" /></a>
 				</div>
+        <div id="googleanalytics">				  
+					 Auf dieser Seite wird Google Analytics eingesetzt: <a
+					 href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">
+					 Weitere Informationen</a>.
+					 Google Analytics 
+					 <a class="gadeactivate" href="javascript: toggleGoogleAnalytics();"></a>.
+					 <script type="text/javascript">
+					 	 $( '.gadeactivate' ).html( googleAnalyticsStatus() ? 'deaktivieren' : 'aktivieren' );
+					 </script>
+        </div>
 			</div>
 
 		</div>
