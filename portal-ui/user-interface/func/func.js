@@ -466,7 +466,7 @@ function onHashChange( e ) {
 				goToPage( 1, true );
 			// current page was a special page (details), this is regular
 			} else if ( isStrAttr( currentState.identifier ) && !isStrAttr( params.identifier ) 
-				&& ( !isStrAttr( currentState.resultfilter ) || params.resultfilter == currentState.resultfilter ) ) {
+				&& ( params.resultfilter == currentState.resultfilter ) ) { // !isStrAttr( currentState.resultfilter ) || 
 				goToPage( (params.page ? parseInt( params.page ) : 1) , true );
 			// new page is a special page (details)
 			} else if ( isStrAttr( params.mediatype ) && isStrAttr( params.identifier ) ) {
