@@ -310,12 +310,10 @@ div#rightblock {
 }
 
 input {
-
 	height: 20px;
 	padding: 0px;
 	margin: 0px;
 	padding-left: 5px;
-	font-size: x-small;
 }
 
 div#searchline {
@@ -814,6 +812,7 @@ tr#share img {
 }   
 
 .playbutton {
+  background: url(../img/playbutton.png) no-repeat;
 	width: 70px;
 	height: 70px;
 	position: absolute;

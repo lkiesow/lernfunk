@@ -6,7 +6,7 @@
 			onclick=" replaceBy( this.parentNode, '(:formatname:)', '(:url:)', '(:preview_url:)' ); ">
 
 			<img class="home_preview" src="(:img:)" alt="(:title:)" />
-			<img class="playbutton"   src="template/uni_os_red/img/playbutton.png" alt="play" />
+			<span class="playbutton"></span>
 
 		</p>
 	</div>
