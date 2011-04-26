@@ -313,15 +313,6 @@ function getImageFromRecObj( o, stdimg ) {
 
 function replaceBy( node, type, url, preview_url ) {
 
-	// WARNING! 
-	//   This is a UOS specific thing.
-	//   And a dirty workaround!
-	var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-	if (rtmp) {
-		rtmp = rtmp[0].split( '&' );
-		url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-	}
-
 	url         = unescape( url );
 	preview_url = unescape( preview_url );
 
@@ -1208,14 +1199,6 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 				// if recordings is a set of slides
 				if ( data.mimetype.match( /.*video.*/ ) ) {
 				
-					// WARNING! 
-					//   This is a UOS specific thing.
-					//   And a dirty workaround!
-					var rtmp = data.url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-					if (rtmp) {
-						rtmp = rtmp[0].split( '&' );
-						data.url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-					}
 					data.player = fillTemplate( tpl.details.videoplayer, { 'url' : data.url } );
 
 				// if recording is virtpresenter recording
@@ -1361,15 +1344,6 @@ function loadVideo( target, couid, id ) {
 
 	if (!url)
 		return;
-
-	// WARNING! 
-	//   This is a UOS specific thing.
-	//   And a dirty workaround!
-	var rtmp = url.match( /^rtmp:\/\/[^&]+&url=.*$/ );
-	if (rtmp) {
-		rtmp = rtmp[0].split( '&' );
-		url = rtmp[1].slice( 4 ) + '&amp;streamer=' + rtmp[0];
-	}
 
 	$( target ).html( playerPlugin[ format ]( 'seriesDetails', url, preview ) );
 
