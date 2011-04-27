@@ -58,13 +58,12 @@ div#logobox {
 	float: left;
 	margin: 10px;
 	margin-left: 15px;
+	text-align: center;
 }
 
-#logobox p {
+#logobox span {
 	color: #3e424a;
 	font-size: 14px;
-	width: 250px;
-	text-align: center;
 }
 
 div#titlebox {

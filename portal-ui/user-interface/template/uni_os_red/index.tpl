@@ -53,7 +53,7 @@
 			<div id="leftblock">
 				<div id="logobox">
 					<a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
-					<p>Medienportal der Universit&auml;t Osnabr&uuml;ck</p>
+					<span>Medienportal der Universit&auml;t Osnabr&uuml;ck</span>
 				</div>
 
 				<div id="searchblock">
