@@ -256,7 +256,7 @@ class LFMatterhornInportQueue {
 				."'".$title."', "
 				.$format_id.", "
 				."'".mysql_escape_string($url)."', "
-				."'".mysql_escape_string($id)."', "
+				."'".$cou_id."', "
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
@@ -277,7 +277,7 @@ class LFMatterhornInportQueue {
 			."'".$title."', "
 			."29, "
 			."'".$server."engage/ui/watch.html?id=".mysql_escape_string($id)."', "
-			."'".mysql_escape_string($id)."', "
+			."'".$cou_id."', "
 			."'".mysql_escape_string($id)."', "
 			."'".mysql_escape_string($thumb)."', "
 			."'".mysql_escape_string($image)."', "
@@ -289,7 +289,7 @@ class LFMatterhornInportQueue {
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
 				."( `title`, `format_id` , `url`, `cou_id`, `lrs_object_id`, `thumbnail_url`, "
-				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id`, `cou_id` ) VALUES \n"
+				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id` ) VALUES \n"
 				.$query.';';
 		}
 
