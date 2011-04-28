@@ -283,8 +283,7 @@ class LFMatterhornInportQueue {
 			."'".mysql_escape_string($image)."', "
 			."'".$duration."', '".ACCESS_ID."', "
 			."'".$server."engage/ui/embed.html?id=".mysql_escape_string($id)."', "
-			."'".$series_id."', "
-			."'".$cou_id."')";
+			."'".$series_id."')";
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
