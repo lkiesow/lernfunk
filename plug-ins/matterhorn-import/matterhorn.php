@@ -246,8 +246,8 @@ class LFMatterhornInportQueue {
 					} elseif ( in_array( 'hd-quality', $tags ) ) {
 						$format_id = 37;
 					}
-				}
 */
+				}
 			}
 			if ( !$format_id ) {
 				continue;
