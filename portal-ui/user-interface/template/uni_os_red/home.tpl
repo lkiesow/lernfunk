@@ -36,7 +36,7 @@
 <script>
 	$( 'img.home_preview' ).bind('load', function() {
 			$( this ).siblings( '.playbutton' ).offset( { 
-					'left' : $( this ).offset().left + 100, 
+					'left' : $( this ).offset().left + 105, 
 					'top'  : $( this ).offset().top  + 70
 				} ).show();
 		} )

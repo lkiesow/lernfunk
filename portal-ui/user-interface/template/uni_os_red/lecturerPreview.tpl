@@ -5,12 +5,10 @@
   </h3>
 </a>
 
-<div>
-        <div class="objcontainer" style="padding-left: 10px; padding-top: 10px; background-color: #F9F9F9;">
+<div style="margin-top:-13px;">
+        <div class="objcontainer" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #F9F9F9;">
                 (:academy:)
                 (:department:)
-                <br />
-                <br />
         </div>
 
 

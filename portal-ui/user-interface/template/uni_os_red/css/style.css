@@ -76,6 +76,10 @@ div#titlebox {
 	padding: 0px;
 }
 
+div#titlebox_bottom {
+  margin-top: 1px;
+}
+
 #hakengr {
 	float: right;
 	height: 95px;
@@ -201,10 +205,11 @@ div#bottomlinkblock {
 }
 
 div#googleanalytics {
-  padding-top: 10px;
+  margin-top: 10px;
+  padding-left: 10px;
   font-size: 60%;
   width: 500px;
-  margin: 0px auto;
+  display: inline-block;
 }
 
 div#googleanalytics a {

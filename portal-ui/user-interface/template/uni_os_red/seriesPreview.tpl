@@ -5,11 +5,11 @@
 	</h3>
 </a>
 
-<div>
+<div style="margin-top:-13px;">
 	<div class="tbl objcontainer">
 		<div class="tr" style="background-color: #F9F9F9;">
 			<div class="td">
-				<p>(:lecturer:)</p>
+				(:lecturer:)
 				<p>(:desc_sh:)</p>
 				<span style="font-size: smaller;">(:mobjcount:) Medien &#124; (:term:) &#124; (:department:)</span>
 			</div>
