@@ -192,15 +192,16 @@ class LFMatterhornInportQueue {
 			 *
 			 **/
 			
+			$tags = array();
 			try {
 				$tags = $track['tags']['tag'];
 			} catch ( Exception $e ) {
-				$tags = array();
 			}
 			$type     = $track['type'];
 			$mimetype = $track['mimetype'];
 			$url      = $track['url'];
 			$duration = $track['duration'];
+			$cou_id   = 'videoVirtuosUniOsnabrueckDe'.mysql_escape_string($id);
 
 			/* Continue if we got an RTMP-stream. We do not want them. */
 			if ( substr( strtolower($url), 0, 7 ) == 'rtmp://' ) {
@@ -259,7 +260,7 @@ class LFMatterhornInportQueue {
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
-				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."')";
+				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."','".$cou_id."')";
 		}
 
 		// finally add matterhorn recording
@@ -282,12 +283,13 @@ class LFMatterhornInportQueue {
 			."'".mysql_escape_string($image)."', "
 			."'".$duration."', '".ACCESS_ID."', "
 			."'".$server."engage/ui/embed.html?id=".mysql_escape_string($id)."', "
-			."'".$series_id."')";
+			."'".$series_id."', "
+			."'".$cou_id."')";
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
 				."( `title`, `format_id` , `url`, `cou_id`, `lrs_object_id`, `thumbnail_url`, "
-				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id` ) VALUES \n"
+				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id`, `cou_id` ) VALUES \n"
 				.$query.';';
 		}
 
