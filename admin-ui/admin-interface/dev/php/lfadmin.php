@@ -300,7 +300,8 @@ class LFAdmin {
         if ($rs = Lernfunk::query($sql)) {
 
             foreach ($rs as $r) {
-                $t  = '<div><a href="javascript:mediaobjecteditor.load('.$r->object_id.');">&rarr; '.$r->title.'</a>';
+                $t  = '<div style="padding-left: 15px; text-indent: -15px;">'
+					 	.'<a href="javascript:mediaobjecteditor.load('.$r->object_id.');">▸ '.$r->title.'</a>';
                 // add type
                 $t .= '<div style="display: inline; font-weight: bold; font-family: monospace; '
                      .'font-size: smaller; text-transform: uppercase;" ';
@@ -312,10 +313,12 @@ class LFAdmin {
 
         // get playlists
         $playlists = array();
-        $sql = 'SELECT playlist_id, pl_title, pl_description FROM playlist WHERE playlist.reciever_id = "'.$id.'";';
+        $sql = 'SELECT playlist_id, pl_title, pl_description '
+		  	.'FROM playlist WHERE playlist.reciever_id = "'.$id.'";';
         if ($rs = Lernfunk::query($sql)) {
             foreach ($rs as $r)
-                $playlists[] = '<div><a href="javascript:playlisteditor.load('.$r->playlist_id.')">&rarr; '.$r->pl_description.'</a></div>';
+                $playlists[] = '<div style="padding-left: 15px; text-indent: -15px;">'
+					 	.'<a href="javascript:playlisteditor.load('.$r->playlist_id.')">▸ '.$r->pl_description.'</a></div>';
         }
 
         // get feeds
@@ -323,11 +326,12 @@ class LFAdmin {
         $sql = 'select f.feed_id, t.feedtype_desc from feeds f natural left outer join feedtype t where f.series_id = "'.$id.'";';
         if ($rs = Lernfunk::query($sql)) {
             foreach ($rs as $r)
-                $feeds[] = '<div><a href="javascript:feededitor.load('.$r->feed_id.')">&rarr; '.$r->feedtype_desc.'</a></div>';
+                $feeds[] = '<div style="padding-left: 15px; text-indent: -15px;">'
+					 	.'<a href="javascript:feededitor.load('.$r->feed_id.')">▸ '.$r->feedtype_desc.'</a></div>';
         }
 
         // generate output
-        $out = '<td>';
+        $out = '';
         //if (count($mediaobjects) > 0) {
             $out .= '<div style="float: right; font-size: smaller; width: 20px;"><a href="javascript:mediaobjecteditor.add('.$id.');">add</a></div>';
             $out .= '<div style="font-weight: bold;">'.count($mediaobjects).'&nbsp;Medienobjekte</div>';
@@ -349,7 +353,7 @@ class LFAdmin {
             $out .= $f;
         $out .= '</p>';
             
-        return $out.'</td>';
+        return '<td colspan="2" style="border-left: 5px solid #dddddd; border-right: 15px solid #dddddd;">'.$out.'</td>';
     }
 
     public static function ajax_get_editor($params) {
