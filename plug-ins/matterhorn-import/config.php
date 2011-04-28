@@ -21,14 +21,14 @@
 
 
 // Define  access key
-define('ACCESS_KEY', 'uzl3ek12ex7th1aFR1ja');
+define('ACCESS_KEY', '__');
 
 // set database access
 $mysql = array(
-      'server' => '',
-      'user'   => '',
-      'passwd' => '',
-      'db'     => 'lernfunk'
+      'server' => '__',
+      'user'   => '__',
+      'passwd' => '__',
+      'db'     => '__'
    );
 
 // Set debug state

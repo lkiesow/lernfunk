@@ -37,52 +37,65 @@
 	}
 	
 	// check if there is any data request passed to this script
-	if (!array_key_exists('request', $_REQUEST) || !$_REQUEST['request'])
+	if (!array_key_exists('mediapackage', $_REQUEST) || !$_REQUEST['mediapackage']) {
+		header( 'HTTP/1.1 500 Internal Server Error' );
 		die( json_encode( array(
 				'type' => 'error', 
 				'errtype' => 'request_error', 
 				'errmsg' => 'No request data.', 
 				'request_data' => $_REQUEST) ) );
+	}
 
 	// try to decode the json to an assoc array
 //		print_r( preg_replace( "/\n\s*/s", '', $_REQUEST['request']) );
 //		print_r( json_decode( preg_replace( "/\n\s*/s", '', $_REQUEST['request']), true) );
 //		echo "\n\n\n";
-	$request = json_decode( $_REQUEST['request'], true );
-	if (!is_array($request))
+	$request = json_decode( $_REQUEST['mediapackage'], true );
+	if (!is_array($request)) {
+		header( 'HTTP/1.1 500 Internal Server Error' );
 		die( json_encode( array(
 				'type' => 'error', 
 				'errtype' => 'request_error', 
 				'errmsg' => 'Could not parse JSON data passed as request.', 
 				'request_data' => $_REQUEST) ) );
+	}
 		
 	// check if access key is correct
-	if (ACCESS_KEY != '')
-		if (!array_key_exists('key', $request) || $request['key'] != ACCESS_KEY)
+	if (ACCESS_KEY != '') {
+		if (!array_key_exists('key', $_REQUEST) || $_REQUEST['key'] != ACCESS_KEY) {
+			header( 'HTTP/1.1 500 Internal Server Error' );
 			die( json_encode( array(
 				'type' => 'error',
 				'errtype' => 'security_error',
 				'errmsg' => 'Invalid access key \''
-					.(is_array($request) && array_key_exists('key', $request) ? $request['key'] : '').'\'.') ) );
+					.(is_array($_REQUEST) && array_key_exists('key', $_REQUEST) ? $_REQUEST['key'] : '').'\'.') ) );
+		}
+	}
 		
 	// check if there is a command
-	if (!array_key_exists('cmd', $request) || empty($request['cmd']))
+	/*
+	if (!array_key_exists('cmd', $request) || empty($request['cmd'])) {
+		header( 'HTTP/1.1 500 Internal Server Error' );
 		die( json_encode( array(
 				'type' => 'error', 
 				'errtype' => 'request_error', 
 				'errmsg' => 'No request command.', 
 				'request_data' => $_REQUEST) ) );
+	}
+	*/
 
 	// convert command to lowercase and check if it is a valid command
-	$request['cmd'] = strtolower($request['cmd']);
-	if ( !LFMatterhornInportQueue::isvalidcmd($request['cmd']) )
+	$_REQUEST['cmd'] = strtolower($_REQUEST['cmd']);
+	if ( !LFMatterhornInportQueue::isvalidcmd($_REQUEST['cmd']) ) {
+		header( 'HTTP/1.1 500 Internal Server Error' );
 		die( json_encode( array(
 				'type' => 'error', 
 				'errtype' => 'request_error', 
-				'errmsg' => 'Invalid request command \''.$request['cmd'].'\'.', 'request_data' => $_REQUEST) ) );
+				'errmsg' => 'Invalid request command \''.$_REQUEST['cmd'].'\'.', 'request_data' => $_REQUEST) ) );
+	}
 
 	// call the service function assosiated with the given command
-	echo LFMatterhornInportQueue::$request['cmd']( $request );
+	echo LFMatterhornInportQueue::$_REQUEST['cmd']( $request );
 
 	if (__DEBUG__) {
 		echo "\n\n";
