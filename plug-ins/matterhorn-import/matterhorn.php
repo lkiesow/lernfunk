@@ -260,7 +260,7 @@ class LFMatterhornInportQueue {
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
-				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."','".$cou_id."')";
+				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."')";
 		}
 
 		// finally add matterhorn recording
