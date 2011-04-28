@@ -221,12 +221,14 @@ class LFMatterhornInportQueue {
 					} elseif ( in_array( 'hd-quality', $tags ) ) {
 						$format_id = 32;
 					}
+/*
 				} elseif ( $mimetype == 'video/x-flv' ) {
 					if ( in_array( 'high-quality', $tags ) ) {
 						$format_id = 34;
 					} elseif ( in_array( 'hd-quality', $tags ) ) {
 						$format_id = 36;
 					}
+*/
 				}
 			} elseif ( $type == 'presentation/delivery' ) {
 				if ( $mimetype == 'video/mp4' ) {
@@ -237,6 +239,7 @@ class LFMatterhornInportQueue {
 					} elseif ( in_array( 'hd-quality', $tags ) ) {
 						$format_id = 33;
 					}
+/*
 				} elseif ( $mimetype == 'video/x-flv' ) {
 					if ( in_array( 'high-quality', $tags ) ) {
 						$format_id = 35;
@@ -244,6 +247,7 @@ class LFMatterhornInportQueue {
 						$format_id = 37;
 					}
 				}
+*/
 			}
 			if ( !$format_id ) {
 				continue;
