@@ -132,9 +132,10 @@ class LFMatterhornInportQueue {
 
 	public static function adddata( $request ) {
 
-		$formats = self::getFormat();
+//		$formats = self::getFormat();
 
-		$mediapackage = array_key_exists( 'mediapackage', $request ) ? $request['mediapackage'] : null;
+		$mediapackage = array_key_exists( 'mediapackage', $request ) 
+			?  $request['mediapackage']  :  null;
 
 		if (!is_array( $mediapackage )) // nothing to do
 			return json_encode( array(
@@ -146,11 +147,13 @@ class LFMatterhornInportQueue {
 		$start = $mediapackage['start'];
 		$title = $mediapackage['title'];
 		$id    = $mediapackage['id'];
-		$lrsid = array_key_exists( 'series', $mediapackage )  ?  $mediapackage['series']  :  null;
+		$lrsid = array_key_exists( 'series', $mediapackage )  
+			?  $mediapackage['series']  :  null;
 		$series_id = 0;
 
 		if ( $lrsid ) {
-			$query = 'SELECT series_id FROM series where lrs_series_id = "'.mysql_escape_string( $lrsid ).'";';
+			$query = 'SELECT series_id FROM series '
+				.'where lrs_series_id = "'.mysql_escape_string( $lrsid ).'";';
 			$rs = self::query($query);
 			while ($r = mysql_fetch_object($rs)) {
 				$series_id = $r->series_id;
@@ -160,7 +163,8 @@ class LFMatterhornInportQueue {
 		// get images
 		$image = '';
 		$thumb = '';
-		foreach( self::ensureArray( $mediapackage['attachments']['attachment'] ) as $att ) {
+		$atts  = self::ensureArray( $mediapackage['attachments']['attachment'] );
+		foreach( $atts as $att ) {
 			if ($att['type'] == 'presenter/player preview') 
 				$image = $att['url'];
 			if ($att['type'] == 'presenter/search preview') 
@@ -171,25 +175,91 @@ class LFMatterhornInportQueue {
 		$query = '';
 		foreach( self::ensureArray( $mediapackage['media']['track'] ) as $track ) {
 
+			/**
+			 * type                   mimetype     tags          format                    format-id
+			 *
+			 * presenter/delivery     video/mp4    mobil         Video Podcast             12
+			 * presentation/delivery  video/mp4    mobil         Screenrecording Podcast   15
+			 * presenter/delivery     video/mp4    high-quality  HQ-Video                  30
+			 * presentation/delivery  video/mp4    high-quality  HQ-Screenrecording        31
+			 * presenter/delivery     video/mp4    hd-quality    HD-Video                  32
+			 * presentation/delivery  video/mp4    hd-quality    HD-Screenrecording        33
+			 * presenter/delivery     video/x-flv  high-quality  HQ-Flash-Video            34
+			 * presentation/delivery  video/x-flv  high-quality  HQ-Flash-Screenrecording  35
+			 * presenter/delivery     video/x-flv  hd-quality    HD-Flash-Video            36
+			 * presentation/delivery  video/x-flv  hd-quality    HD-Flash-Screenrecording  37
+			 *                        audio/mp3                  Audio Podcast             3
+			 *
+			 **/
+			
+			try {
+				$tags = $track['tags']['tag'];
+			} catch ( Exception $e ) {
+				$tags = array();
+			}
 			$type     = $track['type'];
 			$mimetype = $track['mimetype'];
 			$url      = $track['url'];
 			$duration = $track['duration'];
-			if ( substr( strtolower($url), 0, 7 ) != 'rtmp://' ) {
-				if ($query) {
-					$query .= ",\n";
+
+			/* Continue if we got an RTMP-stream. We do not want them. */
+			if ( substr( strtolower($url), 0, 7 ) == 'rtmp://' ) {
+				continue;
+			}
+
+			/* Select format */
+			$format_id = 0;
+			if ( $mimetype == 'audio/mp3' ) {
+				$format_id = 3;
+			} elseif ( $type == 'presenter/delivery' ) {
+				if ( $mimetype == 'video/mp4' ) {
+					if ( in_array( 'mobil', $tags ) ) {
+						$format_id = 12;
+					} elseif ( in_array( 'high-quality', $tags ) ) {
+						$format_id = 30;
+					} elseif ( in_array( 'hd-quality', $tags ) ) {
+						$format_id = 32;
+					}
+				} elseif ( $mimetype == 'video/x-flv' ) {
+					if ( in_array( 'high-quality', $tags ) ) {
+						$format_id = 34;
+					} elseif ( in_array( 'hd-quality', $tags ) ) {
+						$format_id = 36;
+					}
 				}
+			} elseif ( $type == 'presentation/delivery' ) {
+				if ( $mimetype == 'video/mp4' ) {
+					if ( in_array( 'mobil', $tags ) ) {
+						$format_id = 15;
+					} elseif ( in_array( 'high-quality', $tags ) ) {
+						$format_id = 31;
+					} elseif ( in_array( 'hd-quality', $tags ) ) {
+						$format_id = 33;
+					}
+				} elseif ( $mimetype == 'video/x-flv' ) {
+					if ( in_array( 'high-quality', $tags ) ) {
+						$format_id = 35;
+					} elseif ( in_array( 'hd-quality', $tags ) ) {
+						$format_id = 37;
+					}
+				}
+			}
+			if ( !$format_id ) {
+				continue;
+			}
+
+			if ($query) {
+				$query .= ",\n";
+			}
 			$query .= "( "
 				."'".$title."', "
-				.(array_key_exists( $mimetype, $formats ) ? $formats[$mimetype] : 'NULL').", "
+				.$format_id.", "
 				."'".mysql_escape_string($url)."', "
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
-				."'".$duration."', '3', NULL, '".$series_id."')";
-			}
-
+				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."')";
 		}
 
 		// finally add matterhorn recording
@@ -210,7 +280,7 @@ class LFMatterhornInportQueue {
 			."'".mysql_escape_string($id)."', "
 			."'".mysql_escape_string($thumb)."', "
 			."'".mysql_escape_string($image)."', "
-			."'".$duration."', '3', "
+			."'".$duration."', '".ACCESS_ID."', "
 			."'".$server."engage/ui/embed.html?id=".mysql_escape_string($id)."', "
 			."'".$series_id."')";
 

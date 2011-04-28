@@ -23,6 +23,9 @@
 // Define  access key
 define('ACCESS_KEY', '__');
 
+/* The access-id the mediaobjects should have */
+define( 'ACCESS_ID', 1 );
+
 // set database access
 $mysql = array(
       'server' => '__',
