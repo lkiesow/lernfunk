@@ -21,17 +21,17 @@
 
 
 // Define  access key
-define('ACCESS_KEY', '__');
+define('ACCESS_KEY', 'uzl3ek12ex7th1aFR1ja');
 
 /* The access-id the mediaobjects should have */
 define( 'ACCESS_ID', 1 );
 
 // set database access
 $mysql = array(
-      'server' => '__',
-      'user'   => '__',
-      'passwd' => '__',
-      'db'     => '__'
+      'server' => 'mysql5.serv.uni-osnabrueck.de',
+      'user'   => 'vader',
+      'passwd' => 'vr2go!_st',
+      'db'     => 'lernfunk-dev'
    );
 
 // Set debug state
@@ -44,8 +44,10 @@ if (!defined('__DEBUG__'))
 // set error mode
 // you may consider to disable error messages in the release build
 // but then useres cannot report any bugs properly
+/*
 error_reporting(E_ALL);
 ini_set("display_errors", TRUE);
+*/
 
 // set the encoding of the output
 //mb_internal_encoding('UTF-8');

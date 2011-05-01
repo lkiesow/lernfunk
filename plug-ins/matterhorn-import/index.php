@@ -97,6 +97,13 @@
 	// call the service function assosiated with the given command
 	echo LFMatterhornInportQueue::$_REQUEST['cmd']( $request );
 
+	/* If everything went well write log file */
+	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
+		.time().'.mediapackage', $_REQUEST['mediapackage'] );
+	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
+		.time().'.request', print_r( $_REQUEST, TRUE ) );
+
+
 	if (__DEBUG__) {
 		echo "\n\n";
 		echo $_REQUEST['request'];

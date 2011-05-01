@@ -264,7 +264,7 @@ class LFMatterhornInportQueue {
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
-				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."')";
+				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."')\n";
 		}
 
 		// finally add matterhorn recording
@@ -287,7 +287,7 @@ class LFMatterhornInportQueue {
 			."'".mysql_escape_string($image)."', "
 			."'".$duration."', '".ACCESS_ID."', "
 			."'".$server."engage/ui/embed.html?id=".mysql_escape_string($id)."', "
-			."'".$series_id."')";
+			."'".$series_id."')\n";
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
@@ -298,6 +298,9 @@ class LFMatterhornInportQueue {
 
 		if (__DEBUG__)
 			print_r($query);
+
+		file_put_contents( dirname(__FILE__).'/import_mediapackages/'
+			.time().'.query', $query );
 
 		if (self::query($query)) {
 			return json_encode( array(
