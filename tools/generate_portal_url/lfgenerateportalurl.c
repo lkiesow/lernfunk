@@ -24,7 +24,6 @@
 #include "termios.h"
 #include "unistd.h"
 #include "string.h"
-#include "curl/curl.h"
 
 char * make_url( char * name, char * portal_url ) {
 
@@ -43,6 +42,7 @@ char * make_url( char * name, char * portal_url ) {
 			urlchar++;
 		}
 	}
+	*urlchar = 0;
 	return portal_url;
 
 }
@@ -70,12 +70,37 @@ void prepare_database( char * db_server, char * db_user, char * db_password, cha
 	MYSQL_ROW row;
 	MYSQL_RES * res = mysql_use_result(conn);
 	char portal_url[250];
+	char * query[1000];
+	char ** current_query = query;
+	int addquerylen = strlen( "UPDATE series SET portal_url = '' "
+			"WHERE series_id = '' LIMIT 1" );
 
 	/* output fields 1 and 2 of each row */
 	while ((row = mysql_fetch_row(res)) != NULL) {
 		make_url( row[1], portal_url );
 		printf( "%4s: %s -> %s\n", row[0], row[1], portal_url );
+		*current_query = (char *) malloc( sizeof( char ) 
+			* ( strlen( portal_url ) + strlen( row[0] ) + addquerylen + 1 ) );
+		sprintf( *current_query, "UPDATE series SET portal_url = '%s' "
+			"WHERE series_id = '%s' LIMIT 1", portal_url, row[0] );
+		current_query++;
 	} 
+
+	current_query--;
+	printf( "---\n" );
+	fflush( stdout );
+
+	for ( ; current_query >= query; current_query-- ) {
+	printf( "%s\n", *current_query );
+		if ( mysql_query( conn, *current_query ) ) {
+			fprintf( stderr, "ERROR: %s\n", mysql_error(conn) );
+			fprintf( stderr, "%s\n", *current_query );
+			fflush( stderr );
+			exit(EXIT_FAILURE);
+		}
+		free( *current_query );
+	}
+	printf( "“portal_url” fields filled successfully…\n" );
 
 	/* Close connection */
 	mysql_close(conn);
