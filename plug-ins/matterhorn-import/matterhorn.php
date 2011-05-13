@@ -50,7 +50,6 @@ class LFMatterhornInportQueue {
 		$isArray = true;
 
 		foreach ( $arr as $key => $val ) {
-			//			echo $key.' --------> '.$val.' -- '.intval($key).' -- '.(strval($key) == strval(intval($key)))."\n\n";
 			$isArray = $isArray && (strval($key) == strval(intval($key)));
 		}
 
@@ -200,7 +199,7 @@ class LFMatterhornInportQueue {
 			$type     = $track['type'];
 			$mimetype = $track['mimetype'];
 			$url      = $track['url'];
-			$duration = $track['duration'];
+			$duration = intval( intval( $track['duration'] ) / 1000 );
 			$cou_id   = 'videoVirtuosUniOsnabrueckDe'.mysql_escape_string($id);
 
 			/* Continue if we got an RTMP-stream. We do not want them. */
