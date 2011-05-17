@@ -21,18 +21,21 @@
 
 
 // Define  access key
-define('ACCESS_KEY', 'uzl3ek12ex7th1aFR1ja');
+define('ACCESS_KEY', '___');
 
 /* The access-id the mediaobjects should have */
 define( 'ACCESS_ID', 1 );
 
 // set database access
 $mysql = array(
-      'server' => 'mysql5.serv.uni-osnabrueck.de',
-      'user'   => 'vader',
-      'passwd' => 'vr2go!_st',
-      'db'     => 'lernfunk-dev'
+      'server' => '__',
+      'user'   => '__',
+      'passwd' => '__',
+      'db'     => 'lernfunk'
    );
+
+/* Server adress to use if no server entry was in the request */
+$default_server = '__';
 
 // Set debug state
 if (!defined('__DEBUG__'))

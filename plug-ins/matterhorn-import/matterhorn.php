@@ -269,6 +269,9 @@ class LFMatterhornInportQueue {
 		// finally add matterhorn recording
 
 		$server = array_key_exists( 'server', $_REQUEST ) ? $_REQUEST['server'] : null;
+		if ( !$server ) {
+			$server = $default_server;
+		}
 		if (!$server) {
 			$url    = preg_replace('/^rtmp:/', 'http:', $url);
 			$server = preg_replace('/^(http:\/\/[^\/]+\/).*$/', '$1', $url);
