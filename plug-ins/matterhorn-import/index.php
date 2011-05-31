@@ -101,6 +101,8 @@
 	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
 		.time().'.mediapackage', $_REQUEST['mediapackage'] );
 	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
+		.time().'.mp_decode', print_r( $request, TRUE ) );
+	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
 		.time().'.request', print_r( $_REQUEST, TRUE ) );
 
 

@@ -21,6 +21,7 @@
 
 
 require_once(dirname(__FILE__).'/config.php');
+require_once(dirname(__FILE__).'/http_request.php');
 
 class LFMatterhornInportQueue {
 
@@ -170,6 +171,43 @@ class LFMatterhornInportQueue {
 				$thumb = $att['url'];
 		}
 
+		/* Try to get additional metadata */
+		$metadata = array( 
+				'title' => '', 
+				'creator' => '', 
+				'description' => ''
+			);
+		foreach( self::ensureArray( $mediapackage['metadata']['catalog'] ) as $meta ) {
+			$tags = array();
+			try {
+				$tags = is_array( $meta['tags']['tag'] ) ? $meta['tags']['tag'] : array( $meta['tags']['tag'] );
+			} catch ( Exception $e ) {
+			}
+			/* Check if there is a publish tag. If not: cancel import of these
+			 * metadata. */
+			if ( !in_array( 'publish', $tags ) ) {
+				continue;
+			}
+			if ( ( $meta['type'] == 'dublincore/episode' )
+				&& ( $meta['mimetype'] == 'text/xml' ) ) {
+				$xmlreq = get_url( $meta['url'] );
+				$xml = XMLReader::xml( $xmlreq['content'] );
+				while ( $xml->read() ) {
+					if ( $xml->localName == 'title' && $xml->nodeType == XMLReader::ELEMENT ) {
+						$xml->read(); // go to text
+						$metadata['title'] = mysql_escape_string( $xml->value );
+					} elseif ( $xml->localName == 'creator' && $xml->nodeType == XMLReader::ELEMENT ) {
+						$xml->read(); // go to text
+						$metadata['creator'] = mysql_escape_string( $xml->value );
+					} elseif ( $xml->localName == 'description' && $xml->nodeType == XMLReader::ELEMENT ) {
+						$xml->read(); // go to text
+						$metadata['description'] = mysql_escape_string( $xml->value );
+					}
+				}
+			}
+
+		}
+
 		// get tracks
 		$query = '';
 		foreach( self::ensureArray( $mediapackage['media']['track'] ) as $track ) {
@@ -196,11 +234,11 @@ class LFMatterhornInportQueue {
 				$tags = $track['tags']['tag'];
 			} catch ( Exception $e ) {
 			}
-			$type     = $track['type'];
-			$mimetype = $track['mimetype'];
-			$url      = $track['url'];
-			$duration = intval( intval( $track['duration'] ) / 1000 );
-			$cou_id   = 'videoVirtuosUniOsnabrueckDe'.mysql_escape_string($id);
+			$type        = $track['type'];
+			$mimetype    = $track['mimetype'];
+			$url         = $track['url'];
+			$duration    = intval( intval( $track['duration'] ) / 1000 );
+			$cou_id      = 'videoVirtuosUniOsnabrueckDe'.mysql_escape_string($id);
 
 			/* Continue if we got an RTMP-stream. We do not want them. */
 			if ( substr( strtolower($url), 0, 7 ) == 'rtmp://' ) {
@@ -268,7 +306,9 @@ class LFMatterhornInportQueue {
 				."'".mysql_escape_string($id)."', "
 				."'".mysql_escape_string($thumb)."', "
 				."'".mysql_escape_string($image)."', "
-				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."')\n";
+				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."', "
+				."'".$metadata['creator']."', "
+				."'".$metadata['description']."')\n";
 		}
 
 		// finally add matterhorn recording
@@ -290,12 +330,15 @@ class LFMatterhornInportQueue {
 			."'".mysql_escape_string($image)."', "
 			."'".$duration."', '".ACCESS_ID."', "
 			."'".$server."engage/ui/embed.html?id=".mysql_escape_string($id)."', "
-			."'".$series_id."')\n";
+			."'".$series_id."', "
+			."'".$metadata['creator']."', "
+			."'".$metadata['description']."')\n";
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
 				."( `title`, `format_id` , `url`, `cou_id`, `lrs_object_id`, `thumbnail_url`, "
-				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id` ) VALUES \n"
+				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id`, "
+				."`author`, `description` ) VALUES \n"
 				.$query.';';
 		}
 
