@@ -209,6 +209,11 @@ class LFMatterhornInportQueue {
 
 			/* Select format */
 			$format_id = 0;
+			/* Check if there is a publish tag. If not: cancel import of this 
+			 * track. */
+			if ( !in_array( 'publish', $tags ) ) {
+				continue;
+			}
 			if ( $mimetype == 'audio/mp3' ) {
 				$format_id = 3;
 			} elseif ( $type == 'presenter/delivery' ) {
@@ -271,10 +276,6 @@ class LFMatterhornInportQueue {
 		$server = array_key_exists( 'server', $_REQUEST ) ? $_REQUEST['server'] : null;
 		if ( !$server ) {
 			$server = $default_server;
-		}
-		if (!$server) {
-			$url    = preg_replace('/^rtmp:/', 'http:', $url);
-			$server = preg_replace('/^(http:\/\/[^\/]+\/).*$/', '$1', $url);
 		}
 
 		if ($query)
