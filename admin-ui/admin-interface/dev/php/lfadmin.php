@@ -305,7 +305,8 @@ class LFAdmin {
                 // add type
                 $t .= '<div style="display: inline; font-weight: bold; font-family: monospace; '
                      .'font-size: smaller; text-transform: uppercase;" ';
-                $t .= 'title="Format: '.self::get_format($r->format_id, 'name').'"> (T) ';
+                $t .= 'title="Format: '.self::get_format($r->format_id, 'name').'"> ('
+					 	.substr( self::get_format($r->format_id, 'name'), 0, 1 ).') ';
                 $t .= '</div></div>';
                 $mediaobjects[] = $t;
             }
