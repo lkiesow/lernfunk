@@ -70,9 +70,9 @@ function onResultFilter( mediatype ) {
 }
 
 
-/**
+/*******************************************************************************
  * Called after new content is loaded into the page
- **/
+ ******************************************************************************/
 function onContentLoaded() {
 	// Set error message if no data is available for the given request
 	if ( !$('#content').html() )
@@ -95,7 +95,7 @@ $( document ).ready( function() {
 
 
 /*******************************************************************************
- * Google Analytics (de-)aktivieren
+ * (De-)activate Google Analytics
  ******************************************************************************/
 function toggleGoogleAnalytics() {
 	if ( document.cookie.match( /.*ga_status=off.*/g ) ) {

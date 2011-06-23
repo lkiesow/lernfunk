@@ -48,7 +48,7 @@ $( window ).scroll(function () {
 		$( '#mediaobjectplayer' ).css( 'margin-top' , 
 			Math.max( Math.min( 
 				$( window ).scrollTop() - playerMinTop + 20, 
-				$( '#recordinglinkblock' ).height() + $( '#desc_sh').height() + 25
+				$( '#seriesdetails_rightbox' ).height()
 					- $( '.objcontainer' ).first().innerHeight() ), 0 ) + 'px' );
 		/*
 		if ( $( window ).scrollTop() - playerMinTop + 20  <  0 ) {
