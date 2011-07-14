@@ -22,6 +22,8 @@ include_once('../lernfunk/lernfunk.php');
 
 class RSSExporter {
 	
+	private static $default_email = 'harz@uni-osnabrueck.de';
+
 	private static $template_path = 'templates';
 	private static $template_item_file = 'item.xml';
 	private static $template_rss_file = 'itunes_rss.xml';
@@ -40,7 +42,7 @@ class RSSExporter {
 		$this->mimetypes = $this->loadMimeTypes();
 	}
 	
-	public function generateItem($mediaobject, $series_subs) {
+	public function generateItem($mediaobject, $series_subs, $item_num) {
 		if (!is_array($mediaobject)) {
 			$mediaobject = $mediaobject->toArray();
 			$mediaobject[date] = gmstrftime('%a, %d %b %Y %T %Z' , strtotime($mediaobject[date]));
@@ -48,8 +50,10 @@ class RSSExporter {
 				$mediaobject[format_id] = 12;
 			}
 		}
+		$mediaobject['title'] = htmlentities( $mediaobject['title'] );
 		$subs = $mediaobject;
-		$subs['site_link'] = 'http://www.lernfunk.de';   
+		$subs['site_link'] = $series_subs['series_link'];   
+		$subs['item_num'] = $item_num;
 		
 		$subs['mimetype'] = $this->mimetypes[$subs['format_id']];
 		if (!$subs['author'])
@@ -75,7 +79,11 @@ class RSSExporter {
 		$builddate = date('D, d M Y H:i:s Z', time());
 
 		$subs = $this->series->toArray();
-		$subs['lernfunk_link'] = 'http://www.lernfunk.de';
+		if ($subs['add_url']) {
+			$subs['series_link'] = $subs['add_url'];
+		} else {
+			$subs['series_link'] = 'http://www.lernfunk.de';
+		}
 		$subs['build_date'] = $builddate;
 		$subs['pub_date'] = $builddate;
 
@@ -83,7 +91,8 @@ class RSSExporter {
 		$sql = 'SELECT * FROM lecturer '
 			.'LEFT JOIN lecturer_series '
 			.'ON (lecturer.lecturer_id=lecturer_series.lecturer_id) '
-			.'WHERE lecturer_series.series_id = ' . $subs['series_id'];
+			.'WHERE lecturer_series.series_id = ' . $subs['series_id'] . ' '
+                        .'ORDER BY role DESC';
 		if ($rs = Lernfunk::query($sql)) {
 			$rs = $rs[0];
 			$author = array();
@@ -96,15 +105,21 @@ class RSSExporter {
 
 			$subs['author']      = implode(' ', $author);
 			$subs['owner_name']  = implode(' ', $author);
-			$subs['owner_email'] = $rs->email;
+			if ($rs->email) {
+                        	$subs['owner_email'] = $rs->email;
+			} else {
+				$subs['owner_email'] = $default_email;
+			}
 		}
 
 		// generate items
 		if ( (!$this->mediaobjects) || (count($this->mediaobjects) < 1) ) {
 			$subs['items'] = "";
 		} else {
-			foreach ($this->mediaobjects as $object)
-				$subs['items'] .= $this->generateItem($object, $subs);
+			$item_num = 1;
+			foreach ($this->mediaobjects as $object) {
+				$subs['items'] .= $this->generateItem($object, $subs, $item_num++);
+			}
 		}
 		$subs['itunes_block'] = ($this->series->itunes_status == 0) ? 'yes': 'no';
 

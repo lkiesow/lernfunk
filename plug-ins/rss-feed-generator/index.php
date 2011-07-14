@@ -26,6 +26,7 @@ require_once('rss_export.php');
 
 error_reporting(E_ERROR);
 ini_set("display_errors", TRUE);
+header( 'Content-Type: application/rss+xml; charset=UTF-8' );
 
 $formats = array( 'audio' => '3',
 		'enhanced' => '11',
@@ -50,7 +51,6 @@ if ( array_key_exists($path[0], $formats)) {
 		$sql = 'SELECT * FROM mediaobject'.
 			' WHERE mediaobject.series_id='.$id.
 			' AND mediaobject.format_id='.$format.
-			' and access_id = 1'
 			' ORDER BY mediaobject.date ASC;';
 		$mediaobjects = Lernfunk::query($sql);
 		$sql = 'SELECT * FROM series WHERE series.series_id='.$id.';';
@@ -63,7 +63,7 @@ if ( array_key_exists($path[0], $formats)) {
 		// get mo's and series for series id
 		$sql = "SELECT * FROM mediaobject ". 
 			"LEFT JOIN playlist_entry ON (mediaobject.object_id = playlist_entry.object_id) ".
-			"WHERE playlist_entry.playlist_id = '$id' and access_id = 1;";
+			"WHERE playlist_entry.playlist_id = '$id';";
 		//"AND mediaobject.format_id='$format';";
 		$mediaobjects = Lernfunk::query($sql);
 		$sql = "SELECT * FROM series ".
