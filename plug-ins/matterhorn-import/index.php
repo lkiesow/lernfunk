@@ -1,7 +1,7 @@
 <?php
 /* 
 	Copyright (c) 2006 - 2010  Universitaet Osnabrueck, virtUOS 
-	Authors: Nils Birnbaum, Lars Kiesow, Benjamin Wulff
+	Authors: Lars Kiesow
 
 	This file is part of Lernfunk. 
 
@@ -100,8 +100,6 @@
 	/* If everything went well write log file */
 	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
 		.time().'.mediapackage', $_REQUEST['mediapackage'] );
-	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
-		.time().'.mp_decode', print_r( $request, TRUE ) );
 	file_put_contents( dirname(__FILE__).'/import_mediapackages/'
 		.time().'.request', print_r( $_REQUEST, TRUE ) );
 

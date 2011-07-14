@@ -1,7 +1,7 @@
 <?php
 /* 
 	Copyright (c) 2006 - 2010  Universitaet Osnabrueck, virtUOS 
-	Authors: Nils Birnbaum, Lars Kiesow, Benjamin Wulff
+	Authors: Lars Kiesow
 
 	This file is part of Lernfunk. 
 
@@ -28,41 +28,17 @@ define( 'ACCESS_ID', 1 );
 
 // set database access
 $mysql = array(
-      'server' => '__',
-      'user'   => '__',
-      'passwd' => '__',
+      'server' => '___',
+      'user'   => '___',
+      'passwd' => '___',
       'db'     => 'lernfunk'
    );
 
 /* Server adress to use if no server entry was in the request */
-$default_server = '__';
+$default_server = 'http://video.virtuos.uni-osnabrueck.de:8080/';
 
 // Set debug state
 if (!defined('__DEBUG__'))
 	define('__DEBUG__', false);
-
-// Define valid access ids(which mediaobjects should be send)
-// define('ACCESS_CONDITIONi'); // so far ignored
-
-// set error mode
-// you may consider to disable error messages in the release build
-// but then useres cannot report any bugs properly
-/*
-error_reporting(E_ALL);
-ini_set("display_errors", TRUE);
-*/
-
-// set the encoding of the output
-//mb_internal_encoding('UTF-8');
-//mb_http_output('UTF8');
-
-// include lernfunk library
-//require_once(dirname(__FILE__).'/../lflib/lernfunk.php');
-
-// emulate the built-in JSON extension of PHP 5.2
-// maybe you have a new php version and don't need this anymore
-//include_once('/opt/pmwiki/local/studip_auth/vendor/phpxmlrpc/xmlrpc.inc');
-//include_once('/opt/pmwiki/local/studip_auth/vendor/phpxmlrpc/jsonrpc.inc');
-//include_once('/opt/pmwiki/local/studip_auth/vendor/phpxmlrpc/json_extension_api.inc');
 
 ?>

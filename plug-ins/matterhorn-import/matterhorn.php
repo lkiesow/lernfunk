@@ -22,6 +22,7 @@
 
 require_once(dirname(__FILE__).'/config.php');
 require_once(dirname(__FILE__).'/http_request.php');
+include_once(dirname(__FILE__).'/write_rss_item.php');
 
 class LFMatterhornInportQueue {
 
@@ -210,6 +211,7 @@ class LFMatterhornInportQueue {
 
 		// get tracks
 		$query = '';
+		$format_urls = array();
 		foreach( self::ensureArray( $mediapackage['media']['track'] ) as $track ) {
 
 			/**
@@ -309,6 +311,7 @@ class LFMatterhornInportQueue {
 				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."', "
 				."'".$metadata['creator']."', "
 				."'".$metadata['description']."')\n";
+				$format_urls[ $url ] = $format_id;
 		}
 
 		// finally add matterhorn recording
@@ -333,6 +336,7 @@ class LFMatterhornInportQueue {
 			."'".$series_id."', "
 			."'".$metadata['creator']."', "
 			."'".$metadata['description']."')\n";
+		$format_urls[ $url ] = 'Opencast Matterhorn 1.1';
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
@@ -341,6 +345,8 @@ class LFMatterhornInportQueue {
 				."`author`, `description` ) VALUES \n"
 				.$query.';';
 		}
+
+		write_rss_item( $title, $format_urls, $metadata['creator'], $metadata['description'], $id );
 
 		if (__DEBUG__)
 			print_r($query);
