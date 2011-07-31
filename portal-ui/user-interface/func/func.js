@@ -531,6 +531,17 @@ function handleSearchResult( data, part, reqMediatype ) {
 		// Set link counter
 		$('div.object_count').html( before_counter + '0' + after_counter );
 	}
+
+	if ( !part ) {
+		var new_objects = {
+			'series'     : [],
+			'lecturer'   : [],
+			'recordings' : [],
+			'podcast'    : [],
+			'other'      : []
+		};
+	}
+
 	for ( var mediatype in data.data ) {
 		var typecount = 0;
 		if ( part && lastSearch.count && lastSearch.count[ mediatype ] ) {
@@ -556,7 +567,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 				obj.cou_id     = r.ci ? r.ci : id;
 				obj.mediatype  = mediatype;
 				obj.id         = id;
-				lastSearch.data.push( obj );
+				if ( part ) {
+					lastSearch.data.push( obj );
+				} else {
+					new_objects.recordings.push( obj );
+				}
 				typecount++;
 			}
 
@@ -573,7 +588,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 				obj.title      = obj.ac_title + ' ' + obj.firstname + ' ' + obj.name;
 				obj.mediatype  = mediatype;
 				obj.id         = id;
-				lastSearch.data.push( obj );
+				if ( part ) {
+					lastSearch.data.push( obj );
+				} else {
+					new_objects.lecturer.push( obj );
+				}
 				typecount++;
 			}
 
@@ -596,7 +615,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 				obj.term          = r.tl ? r.tl : '';
 				obj.mediatype     = mediatype;
 				obj.id            = id;
-				lastSearch.data.push( obj );
+				if ( part ) {
+					lastSearch.data.push( obj );
+				} else {
+					new_objects.podcast.push( obj );
+				}
 				typecount++;
 			}
 
@@ -616,7 +639,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 				obj.mobjcount     = r.c  ? r.c  : '';
 				obj.mediatype     = mediatype;
 				obj.id            = id;
-				lastSearch.data.push( obj );
+				if ( part ) {
+					lastSearch.data.push( obj );
+				} else {
+					new_objects.series.push( obj );
+				}
 				typecount++;
 			}
 
@@ -626,7 +653,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 				var obj = data.data[mediatype][id];
 				obj.mediatype = mediatype;
 				obj.id = id;
-				lastSearch.data.push( obj );
+				if ( part ) {
+					lastSearch.data.push( obj );
+				} else {
+					new_objects.other.push( obj );
+				}
 				typecount++;
 			}
 		}
@@ -642,6 +673,12 @@ function handleSearchResult( data, part, reqMediatype ) {
 		}
 	}
 	lastSearch.count.all = countall;
+
+	if ( !part ) {
+		alert( ':::' );
+		lastSearch.data = new_objects.series.concat( new_objects.lecturer ).concat( new_objects.recordings ).concat( new_objects.podcast ).concat( new_objects.other );
+	}
+
 	if (!reqMediatype || (reqMediatype == $.bbq.getState( 'resultfilter' ) ) ) {
 		currData = lastSearch;
 	}
