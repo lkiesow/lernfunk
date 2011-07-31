@@ -9,26 +9,7 @@
 		<!-- autoinsert for includes (js-files, ...) -->
 		(:includes:)
 
-
 		<title>virtUOS Lernfunk</title>
-		
-<script  type="text/javascript">
-	if ( !document.cookie.match( /.*ga_status=off.*/g ) ) {
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-8292154-1']);
-		_gaq.push(['_gat._anonymizeIp']);
-		_gaq.push(['_trackPageview']);
-		(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	}
-</script>
-
-
-
-
 	</head>
 	<body onload="init();">
 
@@ -57,7 +38,7 @@
 				</div>
 
 				<div id="searchblock">
-					<form action="javascript: triggerSearch('Suche　');">
+					<form action="javascript: addGoogleAnalyticsTrackpoint( '/search/' + $('#search').val() ); triggerSearch('Suche　');">
 						<div id="searchline">
 							<input type="text" id="search" name="search" value="Suche　"
 							onfocus="clear_inp(this, 'Suche　');" onblur="leave_inp(this, 'Suche　');" />

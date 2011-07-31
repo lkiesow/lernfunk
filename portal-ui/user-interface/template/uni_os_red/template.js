@@ -1,3 +1,18 @@
+
+/* Add Google Analytics stuff… */
+if ( !document.cookie.match( /.*ga_status=off.*/g ) ) {
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-8292154-1']);
+	_gaq.push(['_gat._anonymizeIp']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+}
+
+
 /**
  * This function is called when the requested sets of data are filtered. For
  * example only show series, ...
@@ -112,4 +127,13 @@ function toggleGoogleAnalytics() {
  ******************************************************************************/
 function googleAnalyticsStatus() {
 	return !document.cookie.match( /.*ga_status=off.*/g );
+}
+
+/*******************************************************************************
+ * Add a track point to Google Analytics.
+ ******************************************************************************/
+function addGoogleAnalyticsTrackpoint( name ) {
+	if ( _gaq && name ) {
+		_gaq.push([ '_trackPageview', name ]);
+	}
 }
