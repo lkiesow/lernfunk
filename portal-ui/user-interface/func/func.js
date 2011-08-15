@@ -675,8 +675,11 @@ function handleSearchResult( data, part, reqMediatype ) {
 	lastSearch.count.all = countall;
 
 	if ( !part ) {
-		alert( ':::' );
-		lastSearch.data = new_objects.series.concat( new_objects.lecturer ).concat( new_objects.recordings ).concat( new_objects.podcast ).concat( new_objects.other );
+		lastSearch.data = new_objects.series.concat( 
+			new_objects.lecturer ).concat( 
+			new_objects.recordings ).concat( 
+			new_objects.podcast ).concat( 
+			new_objects.other );
 	}
 
 	if (!reqMediatype || (reqMediatype == $.bbq.getState( 'resultfilter' ) ) ) {
