@@ -1,1 +1,1 @@
-<a href="javascript: ">(:academy:)</a>
+(:academy:)

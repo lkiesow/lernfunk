@@ -43,7 +43,7 @@ if ( !cou_id ) {
 	expandRecordingInfo( $( '.recordingslistitem' )[0] );
 }
 
-
+/* Autoscrolling function for preview player */
 $( window ).scroll(function () { 
 		$( '#mediaobjectplayer' ).css( 'margin-top' , 
 			Math.max( Math.min( 
@@ -61,6 +61,7 @@ $( window ).scroll(function () {
 		*/
 	} );
 
+/* Adjust elements after the window was resized. */
 $( window ).resize( function() { 
 		if ( $( '#mediaobjectplayer' ).css( 'position' ) == 'fixed' ) {
 			$( '#mediaobjectplayer' ).css( 'width', $( '.objcontainer' ).width() + 'px' );
@@ -70,6 +71,7 @@ $( window ).resize( function() {
 var playerMinTop = $( '#mediaobjectplayer' ).offset().top;
 var playerLeft   = $( '#mediaobjectplayer' ).offset().left;
 
+/* Show enhanced player in lightbox. */
 $( 'a.enhanced_player' ).fancybox({
 	'width'         : '90%',
 	'height'        : '90%',
