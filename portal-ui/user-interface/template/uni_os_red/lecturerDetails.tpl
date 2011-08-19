@@ -3,7 +3,27 @@
 	$('#titlebox_bottom').hide();
 </script>
 <script type="text/javascript">
-//	alertfj( tplData );
+	if ( tplData.details.lms_lecturer_id ) {
+		requestStudIPLecturer( tplData.details.lms_lecturer_id, function( data ) {
+			var lecturerdata = mapStudIPLecturerData( data );
+			if ( lecturerdata['research-interests'] ) {
+				$( '#lecinfo' ).append( '<h4>Forschungsinteressen</h4><p>' 
+					+ lecturerdata['research-interests'] + '</p>' );
+			}
+			if ( lecturerdata['cv'] ) {
+				$( '#lecinfo' ).append( '<h4>Lebenslauf</h4><p>' + lecturerdata['cv'] + '</p>' );
+			}
+			if ( lecturerdata['publications'] ) {
+				$( '#lecinfo' ).append( '<h4>Publikationen</h4><p>' 
+					+ lecturerdata['publications'] + '</p>' );
+			}
+			if ( lecturerdata['image-href'] ) {
+				$( '#lecpic' ).html( '<img src="' + lecturerdata['image-href'] 
+					+ '" alt="' + lecturerdata['fullname'] + '" />' );
+			}
+		},
+		function() {} );
+	}
 </script>
 
 <h3>
@@ -17,6 +37,9 @@
 			(:academy:)
 			(:department:)
 		</div>
+		
+		<table style="width: 100%;"><tr><td id="lecinfo"></td><td id="lecpic"></td></tr></table>
+
 		<p> </p>
 		<h4>Veranstaltungen</h4>
 		<div class="infoblock">

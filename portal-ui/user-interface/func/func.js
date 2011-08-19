@@ -301,6 +301,31 @@ function loadStartpage( data ) {
 		$('#count_lecturer').html(   before_counter + data.news.count.lecturer  + after_counter );
 		$('#count_podcast').html(    before_counter + data.news.count.feed      + after_counter );
 	}
+
+}
+
+
+function mapStudIPLecturerData( data ) {
+	
+	if ( data == '' ) {
+		return {};
+	}
+
+	var key = [ 
+		'fullname',      'lastname',     'firstname',          'titlefront',
+		'titlerear',     'image-href',   'inst-name',          'inst-href',
+		'email',         'room',         'phone',              'fax',
+		'homepage-href', 'office-hours', 'research-interests', 'cv',
+		'publications'
+		];
+	var val = data.split( '\r\n<!-- -------------------- -->\r\n' );
+	var result = {};
+	for ( var i = 0; i < key.length; i++ ) {
+		result[ key[i] ] = val[i];
+	}
+
+	return result;
+
 }
 
 
@@ -318,6 +343,27 @@ function replaceBy( node, type, url, preview_url ) {
 
 	$( node ).html( playerPlugin[ type ]( 'home', url, preview_url ) );
 
+}
+
+
+function requestStudIPLecturer( user, onSuccess, onError ) {
+
+	if (!onError) {
+		onError = function() {
+			loadTemplate( 'error.tpl', 
+				{ 'title' : 'Error...', 'msg' : 'Could not connect to webservice...' }, 
+				setContent );
+		};
+	}
+
+	$.ajax({
+		type     : 'POST',
+		url      : './func/requestStudIPLecturer.php',
+		data	   : ( { 'user' : user } ),
+		dataType : 'text',
+		success  : onSuccess,
+		error    : onError
+	});
 }
 
 
@@ -990,6 +1036,7 @@ function addObjectBlock(mediatype, obj) {
 
 	// do this for all kinds of objects
 	var replace = shallowCopy( obj );
+	tplData     = shallowCopy( obj );
 	if (!obj.img)
 		obj.img = 'template/' + cfg.tplName + '/' + cfg.stdPreviewImg;
 	replace.department = addDepartmentBlock(obj);
@@ -1219,6 +1266,8 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 				return; // some error occured
 			}
 
+			tplData = shallowCopyWithPointer( data );
+
 			/**** LECTURER ***************************************************/
 			if ( mediatype == 'lecturer' ) {
 				setBackPager();
@@ -1300,8 +1349,6 @@ function getDetails( mediatype, identifier, hashIsSet ) {
 				data.share_delicious = 'http://del.icio.us/post?url='
 					+ 'http://lernfunk.de/Main/' + data.portal_url 
 					+ '&amp;title=lernfunk.de: ' + data.name;
-
-				tplData = shallowCopyWithPointer( data );
 
 				data.academy    = $.toJSON( data.academy );
 				data.department = $.toJSON( data.department );
