@@ -177,7 +177,7 @@ class LFService {
 //			$sql = 'SELECT l.lecturer_id, TRIM(CONCAT_WS(" ", l.ac_title, l.firstname, l.name)) fullname, '
 			$sql = 'SELECT l.lecturer_id,  '
 				  .'l.email, d.dep_id, d.dep_name, a.academy_id, a.ac_name, '
-				  .'l.ac_title, l.firstname, l.name '
+				  .'l.ac_title, l.firstname, l.name, l.lms_lecturer_id '
 				  .'FROM lecturer l '
 				  .'left outer join department d on l.dep_id = d.dep_id '
 				  .'left outer join academy a on d.academy_id = a.academy_id';
@@ -200,13 +200,14 @@ class LFService {
 				foreach ($rs as $r) {
 					
 					$data = array();
-//					if ($r->fullname)    $data['t']      = $r->fullname;
-					if ($r->email)       $data['e']      = $r->email;
-					if ($r->dep_id)      $data['d']      = array($r->dep_id => $r->dep_name);
-					if ($r->academy_id)  $data['a']      = array($r->academy_id => $r->ac_name);
-					if ($r->ac_title)    $data['at']     = $r->ac_title;
-					if ($r->name)        $data['n']      = $r->name;
-					if ($r->firstname)   $data['f']      = $r->firstname;
+//					if ($r->fullname)         $data['t']      = $r->fullname;
+					if ($r->email)            $data['e']      = $r->email;
+					if ($r->dep_id)           $data['d']      = array($r->dep_id => $r->dep_name);
+					if ($r->academy_id)       $data['a']      = array($r->academy_id => $r->ac_name);
+					if ($r->ac_title)         $data['at']     = $r->ac_title;
+					if ($r->name)             $data['n']      = $r->name;
+					if ($r->firstname)        $data['f']      = $r->firstname;
+					if ($r->lms_lecturer_id)  $data['l']      = $r->lms_lecturer_id;
 					$result['lecturer'][$r->lecturer_id] = $data;
 					$count++;
 				}
@@ -539,7 +540,7 @@ class LFService {
 		if ($mediatype == 'lecturer') {
 
 			$sql = 'select l.lecturer_id, l.ac_title, l.firstname, l.name, l.email, '
-				  .'l.lec_url, d.dep_id, d.dep_name, a.academy_id, a.ac_name '
+				  .'l.lec_url, d.dep_id, d.dep_name, a.academy_id, a.ac_name, l.lms_lecturer_id '
 				  .'from lecturer l '
 				  .'left outer join department d on l.dep_id = d.dep_id '
 				  .'left outer join academy a on d.academy_id = a.academy_id '
@@ -554,12 +555,13 @@ class LFService {
 
 					$data = array();
 					
-					$data['id']		 = $r->lecturer_id;
-					$data['ac_title']   = $r->ac_title;
-					$data['firstname']  = $r->firstname;
-					$data['name']	   = $r->name;
-					$data['email']	  = $r->email;
-					$data['url']		= $r->lec_url;
+					$data['id']               = $r->lecturer_id;
+					$data['ac_title']         = $r->ac_title;
+					$data['firstname']        = $r->firstname;
+					$data['name']             = $r->name;
+					$data['email']            = $r->email;
+					$data['url']		        = $r->lec_url;
+					$data['lms_lecturer_id']  = $r->lms_lecturer_id;
 					$data['academy']	= array( $r->academy_id => $r->ac_name  );
 					$data['department'] = array( $r->dep_id	 => $r->dep_name );
 					
