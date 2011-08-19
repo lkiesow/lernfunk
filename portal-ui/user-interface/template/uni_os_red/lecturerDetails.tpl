@@ -7,7 +7,7 @@
 		requestStudIPLecturer( tplData.details.lms_lecturer_id, function( data ) {
 			var lecturerdata = mapStudIPLecturerData( data );
 			if ( lecturerdata['research-interests'] ) {
-				$( '#lecinfo' ).append( '<h4>Forschungsinteressen</h4><p>' 
+				$( '#lecinfo' ).html( '<h4>Forschungsinteressen</h4><p>' 
 					+ lecturerdata['research-interests'] + '</p>' );
 			}
 			if ( lecturerdata['cv'] ) {
