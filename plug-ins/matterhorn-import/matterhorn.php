@@ -166,9 +166,9 @@ class LFMatterhornInportQueue {
 		$thumb = '';
 		$atts  = self::ensureArray( $mediapackage['attachments']['attachment'] );
 		foreach( $atts as $att ) {
-			if ($att['type'] == 'presenter/player preview') 
+			if ($att['type'] == 'presenter/player+preview') 
 				$image = $att['url'];
-			if ($att['type'] == 'presenter/search preview') 
+			if ($att['type'] == 'presenter/search+preview') 
 				$thumb = $att['url'];
 		}
 
