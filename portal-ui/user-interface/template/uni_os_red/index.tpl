@@ -33,8 +33,7 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ left ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<div id="leftblock">
 				<div id="logobox">
-					<a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
-					<span>Medienportal der Universit&auml;t Osnabr&uuml;ck</span>
+					<a class="nohover" href="#"><input type="image" id="lflogo" src="(:tplpath:)/img/lflogo.png" onmouseout="this.src='(:tplpath:)/img/lflogo.png'" onmouseover="this.src='(:tplpath:)/img/lflogo_hover.png'" alt="Lernfunk" /></a>
 				</div>
 
 				<div id="searchblock">

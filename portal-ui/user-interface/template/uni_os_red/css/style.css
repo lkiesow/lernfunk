@@ -56,14 +56,13 @@ div#header {
 div#logobox {
 	width: 250px;
 	float: left;
-	margin: 10px;
-	margin-left: 15px;
+	margin: 0px 10px 5px 15px;
 	text-align: center;
 }
 
-#logobox span {
-	color: #3e424a;
-	font-size: 14px;
+input#lflogo {
+  height: 80px;
+  padding: 0;
 }
 
 div#titlebox {
@@ -314,10 +313,10 @@ div#rightblock {
 }
 
 input {
-	height: 20px;
 	padding: 0px;
 	margin: 0px;
 	padding-left: 5px;
+	height: 20px;
 }
 
 div#searchline {
@@ -327,6 +326,7 @@ div#searchline {
 
 input#search {
 	padding-right: 20px;
+	height: 20px;
 	width: 193px;
 	margin-top: 10px;
 	border: 1px solid gray;
