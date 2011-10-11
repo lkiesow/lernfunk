@@ -373,8 +373,7 @@ class Lernfunk {
                             $d->user_name,
                             $d->password,
                             $d->lecturer_id,
-                            $d->is_admin,
-                            $d->is_pressoffice );
+                            0,0 );
         } else
             return false;
     }
