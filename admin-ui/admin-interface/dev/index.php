@@ -25,6 +25,8 @@ include_once('php/config.php');
 
 // include functionality
 include_once('php/lfadmin.php');
+include_once('php/lf_authetification.php');
+lf_request_http_auth_basic();
 
 $username = "admin";
 $password = "admin";
