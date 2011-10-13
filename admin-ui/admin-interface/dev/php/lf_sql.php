@@ -30,7 +30,7 @@ function query($query) {
 		) ) );
 	}
 
-	mysql_set_charset('utf8', $sql);
+//	mysql_set_charset('utf8', $sql);
 
 	$result = mysql_query($query, $sql);
 	if ( !$result ) {
