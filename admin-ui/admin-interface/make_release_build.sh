@@ -29,10 +29,10 @@ cp dev/gfx/loading.gif release/gfx
 
 echo 'copy php files...'
 mkdir release/php
-cp dev/php/lfadmin.php     release/php
-cp dev/php/config.php      release/php
-cp dev/php/recordtypes.php release/php
-cp dev/php/upload.php      release/php
+cp dev/php/*.php     release/php
+#cp dev/php/config.php      release/php
+#cp dev/php/recordtypes.php release/php
+#cp dev/php/upload.php      release/php
 
 echo 'copy js files...'
 mkdir release/js

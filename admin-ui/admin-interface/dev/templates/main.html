@@ -64,10 +64,31 @@
 		</table>
 
 		<!-- Select window -->
+		<script type="application/javascript">
+			function filterSelection( inp ) {
+				if ( $('select_window_selector_hidden').length <= 1 ) {
+					/* First time: Save options */
+					$('select_window_selector_hidden').innerHTML
+						= $('select_window_selector').innerHTML;
+				}
+				var opts = $('select_window_selector_hidden').options;
+				var new_opts = '';
+				for ( var i = 0; i < opts.length; i++ ) {
+				 	if ( opts[i].text.indexOf( inp.value ) != -1 ) {
+						new_opts += '<option value="' + opts[i].value + '">' 
+							+ opts[i].text + '</option>';
+					}
+				}
+				$('select_window_selector').innerHTML = new_opts;
+			}
+		</script>
 
-		<div id="select_window">
+		<div id="select_window" style="padding: 10px; border: 2px solid black;">
 			<div id="select_window_caption">Select option:</div>
 			<select id="select_window_selector" style="width:29em;"><option></option></select>
+			<select id="select_window_selector_hidden" style="display: none;"><option></option></select>
+			<div>Filter:</div>
+			<input type="text" onkeyup="filterSelection(this)" style="width:29em;">
 			<div style="margin-top: 0.5em; text-align: center;">
 				<input type="button" id="select_window_ok" disabled="disabled" onclick="eval(selectwnd_ok_action);" value="ok" />
 				<input type="button" onclick="hide_select_window();" value="cancel" />
