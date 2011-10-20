@@ -60,7 +60,7 @@ function lf_request_http_auth_basic() {
 	}
 	header( 'WWW-Authenticate: Basic realm="lernfunk::webservice"' );
 	header('HTTP/1.0 401 Unauthorized');
-	echo 'You have to be logged in to access the webservice.';
+	die( 'You have to be logged in to access the webservice.' );
 	
 }
 
