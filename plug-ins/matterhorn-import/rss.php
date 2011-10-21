@@ -20,7 +20,11 @@
  */
 
 //header( 'Content-Type: text/plain' );
-
+	
+	$filter = null;
+	if ( array_key_exists( 'filter', $_REQUEST ) && !empty( $_REQUEST['filter'] ) ) {
+		$filter = $_REQUEST['filter'];
+	}
 
 	$directory = "rss_data/";
 	// create a handler to the directory
@@ -49,7 +53,14 @@
 	echo '<pubDate>'.date( DATE_RSS ).'</pubDate>';
 
 	foreach ( $files as $itemfile ) {
-		echo file_get_contents( $directory.$itemfile );
+		$item_str = file_get_contents( $directory.$itemfile );
+		if ( $filter ) {
+			if ( strpos( $item_str, $filter ) ) {
+				echo $item_str;
+			}
+		} else {
+			echo $item_str;
+		}
 	}
 
 	echo '</channel>';
