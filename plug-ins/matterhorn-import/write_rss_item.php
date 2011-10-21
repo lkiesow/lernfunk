@@ -36,7 +36,7 @@ function write_rss_item( $title, $urls, $author, $description, $guid) {
 	$url = ''; /* generate imported mediapackage url */
 
 	$data = "<item>\n"
-		."\t<title>".$title."</title>\n"
+		."\t<title><![CDATA[".$title."]]></title>\n"
 		."\t<description>".$desc."</description>\n"
 		."\t<link>".$url."</link>\n"
 		."\t<guid>".$guid."</guid>\n"
