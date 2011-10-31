@@ -1,0 +1,143 @@
+REQUEST PARAMETER:
+ - filter
+ - limit
+ - order
+ - format
+ - detail
+ - path
+
+
+FILTER
+  Using this parameter you can filter the output using some operators.
+  Comparison operators:
+    - eq   : Only rows in which the value of field “k” equals “v” are
+             returned.
+             json: { "o":"eq", "k":"FIELD", "v":"VALUE" }
+             xml : <eq k="FIELD" v="VALUE" />
+    - neq  : Only rows in which the value of field “k” does not equal “v” are
+             returned.
+             json: { "o":"neq", "k":"FIELD", "v":"VALUE" }
+             xml : <neq k="FIELD" v="VALUE" />
+    - like : Only rows in which the value of field “k” is like “v”, using the
+             SQL meaning of like.
+             json: { "o":"like", "k":"FIELD", "v":"VALUE" }
+             xml : <like k="FIELD" v="VALUE" />
+    - in   : Only rows in which the value of field “k” contains “v” are
+             returned.
+             json: { "o":"in", "k":"FIELD", "v":"VALUE" }
+             xml : <in k="FIELD" v="VALUE" />
+  Logic operators:
+    - and :
+            json: { "o":"and", "p":[ OP1, OP2, ... ] }
+            xml : <and><OP1 ... /><OP2 ... /> ... </and>
+    - or  :
+            json: { "o":"or", "p":[ OP1, OP2, ... ] }
+            xml : <or><OP1 ... /><OP2 ... /> ... </or>
+
+  Using this operators you can simply construct even complex filter like the
+  following example:
+
+   <or>
+     <and>
+       <eq k="lecturer_id" v="99"/>
+       <in k="title" v="Test"/>
+     </and>
+     <and>
+       <eq k="lecturer_id" v="42"/>
+       <or>
+         <in k="title" v="Hitchhiker"/>
+         <in k="title" v="Galaxy"/>
+       </or>
+     </and>
+   </or>
+
+
+LIMIT:
+  Using this parameter you can specify a range of values to return.
+
+  json: { "s":"START", "c":"COUNT" }
+  xml : <limit s="START" c="COUNT" />
+
+  The parameter “s” specifies the first element to return, starting with 0. “c”
+  specifies the amount of values to return. Thus the following request will
+  return ten elements starting with the fifth element:
+
+  { "s":"4", "c":"10" }
+
+
+ORDER:
+  Using this parameter you can sort the response values.
+
+  json: { "f":"FIELD", "o":"ORDER" }
+  xml : <order f="FIELD" o="ORDER" />
+
+  The parameter “f” specifies the field that is used for sorting the elements.
+  The parameter “o” specifies the sort sequence. Permitted values are only
+  “asc” and “desc”.
+
+  Example:
+
+  { "f":"title", "c":"asc" }
+
+
+FORMAT
+  Specifies the format of the response. It can be either “xml” or “json” with
+  “json” being the default and fallback value.
+
+
+DETAIL
+  If this parameter is specified related elements are automatically added to
+  the response. For example each series data set will then contain a list of
+  mediapackage ids. This might be helpful but can result in _very_ slow
+  requests if a lot of data is requested. So you should never request a list of
+  all available series with the detail option activated.
+
+
+PATH
+  This parameter specifies the data to return. Following values are permitted:
+
+  /academy                                            fast
+  /academy/ACADEMY_ID                                 fast
+  /category                                           fast
+  /category/CATEGORY_ID                               fast
+  /department                                         fast
+  /department/DEPARTMENT_ID                           fast
+  /department/DEPARTMENT_ID/academy                   fast
+  /format                                             fast
+  /format/FORMAT_ID                                   fast
+  /language                                           fast
+  /language/LANGUAGE_ID                               fast
+  /lecturer                                           slow          (use limit)
+  /lecturer/LECTURER_ID                               fast
+  /lecturer/LECTURER_ID/academy                       fast
+  /lecturer/LECTURER_ID/department                    fast
+  /lecturer/LECTURER_ID/department/academy            fast
+  /lecturer/LECTURER_ID/series                        reasonable
+  /lms                                                fast
+  /lms/LMS_IDENTIFIER                                 fast
+  /lms/LMS_IDENTIFIER/series                          slow
+  /lms/LMS_IDENTIFIER/series/LMS_COURSE_ID            reasonable
+  /lms/LMS_IDENTIFIER/mediaobject                     slow          (use limit)
+  /lms/LMS_IDENTIFIER/mediapackage                    slow          (use limit)
+  /lms_connect                                        fast
+  /lms_connect/LMS_IDENTIFIER                         fast
+  /lms_connect/LMS_IDENTIFIER/series                  slow          (use limit)
+  /lms_connect/LMS_IDENTIFIER/series/LMS_COURSE_ID    reasonable
+  /series                                             slow          (use limit)
+  /series/SERIES_ID                                   fast
+  /series/SERIES_ID/term                              fast
+  /series/SERIES_ID/mediaobject                       reasonable
+  /series/SERIES_ID/mediapackage                      reasonable
+  /series/SERIES_ID/lecturer                          fast
+  /mediaobject                                        slow          (use limit)
+  /mediaobject/OBJECT_ID                              fast
+  /mediaobject/OBJECT_ID/format                       fast
+  /mediaobject/OBJECT_ID/series                       fast
+  /mediapackage                                       slower        (use limit)
+  /mediapackage/SERIES_ID                             reasonable
+  /mediapackage/SERIES_ID/COU_ID                      fast
+  /mediapackage/SERIES_ID/COU_ID/mediaobject          fast
+  /mediapackage/SERIES_ID/COU_ID/series               fast
+
+  Fixed path elements are written in lower case. Variable path elements, those
+  which must be replaced by some kind of id, are written in upper case.
