@@ -134,6 +134,8 @@ class LFMatterhornInportQueue {
 	public static function adddata( $request ) {
 
 //		$formats = self::getFormat();
+		$created_series = false;
+		$no_server_set  = false;
 
 		$mediapackage = array_key_exists( 'mediapackage', $request ) 
 			?  $request['mediapackage']  :  null;
@@ -158,6 +160,22 @@ class LFMatterhornInportQueue {
 			$rs = self::query($query);
 			while ($r = mysql_fetch_object($rs)) {
 				$series_id = $r->series_id;
+			}
+		}
+		/* Insert new series if not present */
+
+		if ( $lrsid && !$series_id ) {
+			$new_portal_url = preg_replace( '/[^a-zA-Z0-9_ -]/s', '', $mediapackage['seriestitle'] ).date('Y');
+			$query = 'insert into series ( name, description, course_id, access_id, '
+				.'portal_url, thumbnail_url, lms_course_id, lrs_series_id, keywords ) '
+				.'values ( "'.mysql_escape_string( $mediapackage['seriestitle'] ).'", "", "", 2, '
+				.'"'.$new_portal_url.'", "", "", "'.mysql_escape_string( $lrsid ).'", "" ); ';
+			$rs = self::query($query);
+			$query = 'SELECT series_id FROM series where lrs_series_id = "'.mysql_escape_string( $lrsid ).'";';
+			$rs = self::query($query);
+			while ($r = mysql_fetch_object($rs)) {
+				$series_id = $r->series_id;
+				$created_series = true;
 			}
 		}
 
@@ -316,9 +334,16 @@ class LFMatterhornInportQueue {
 
 		// finally add matterhorn recording
 
-		$server = array_key_exists( 'server', $_REQUEST ) ? $_REQUEST['server'] : null;
+		$server = ( array_key_exists( 'server', $_REQUEST ) && !empty( $_REQUEST['server'] ) ) 
+			? $_REQUEST['server'] : '';
+
 		if ( !$server ) {
-			$server = $default_server;
+			$no_server_set = true;
+			json_encode( array(
+						'type'          => 'error', 
+						'errtype'       => 'parameter_error', 
+						'errmsg'        => 'No server parameter given.'
+					) );
 		}
 
 		if ($query)
@@ -336,7 +361,7 @@ class LFMatterhornInportQueue {
 			."'".$series_id."', "
 			."'".$metadata['creator']."', "
 			."'".$metadata['description']."')\n";
-		$format_urls[ $url ] = 'Opencast Matterhorn 1.1';
+		$format_urls[ $server."engage/ui/watch.html?id=".mysql_escape_string($id) ] = 'Opencast Matterhorn 1.1';
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
@@ -346,7 +371,20 @@ class LFMatterhornInportQueue {
 				.$query.';';
 		}
 
-		write_rss_item( $title, $format_urls, $metadata['creator'], $metadata['description'], $id );
+		$desc = 'Series: '.$mediapackage['seriestitle'].' (ID: '.$series_id.')<br />'
+			.$metadata['description'];
+		if ( $created_series ) {
+			$title .= ' !1 hint!';
+			$desc  .= '<br />'
+				.'Hint: Created one new series with series_id = '.$series_id;
+		}
+		if ( $no_server_set ) {
+			$title .= ' !1 warning!';
+			$desc  .= '<br />'
+				.'Warning: No server parameter was set. Import may be corrupt.';
+		}
+
+		write_rss_item( $title, $format_urls, $metadata['creator'], $desc, $id );
 
 		if (__DEBUG__)
 			print_r($query);
