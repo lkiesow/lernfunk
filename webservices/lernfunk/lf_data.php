@@ -607,22 +607,26 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 
 
 			case 'mediaobject':
+				if ( $access['r'] ) {
+					$faccess = array( 'o' => 'leq', 'k' => 'mediaobject_new.access_id', 'v' => intval($access['r']) );
+					$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $faccess ) ) : $faccess;
+				}
 				$result = null;
 				if ( $cnt == 1 ) {
 					return lf_request_table( 'mediaobject_new', array( '*' ), $filter, $limit, $order );
 				} elseif ( is_numeric( $path[1] ) ) {
-					$f = array( 'o' => 'eq', 'k' => 'm.object_id', 'v' => intval($path[1]) );
+					$f = array( 'o' => 'eq', 'k' => 'mediaobject_new.object_id', 'v' => intval($path[1]) );
 					$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $f ) ) : $f;
 					if ( $cnt == 2 ) {
-						return lf_request_table( 'mediaobject_new m', array( '*' ), $filter, $limit, $order );
+						return lf_request_table( 'mediaobject_new', array( '*' ), $filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'format' ) {
 						return lf_request_custom( 
-							'select f.* from format f left outer join mediaobject_new m '
-							.'on m.format_id = f.format_id ', $filter, $limit, $order );
+							'select f.* from format f left outer join mediaobject_new '
+							.'on mediaobject_new.format_id = f.format_id ', $filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'series' ) {
 						$result = lf_request_custom(
-							'select s.* from series s left outer join mediaobject_new m '
-							.'on s.series_id = m.series_id', $filter, $limit, $order );
+							'select s.* from series s left outer join mediaobject_new '
+							.'on s.series_id = mediaobject_new.series_id', $filter, $limit, $order );
 						if ( $result && $detail ) {
 							for ( $i = 0; $i < count($result); $i++ ) {
 								$mobjs = array();
