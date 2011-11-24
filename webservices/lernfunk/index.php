@@ -43,6 +43,11 @@ $uid = lf_request_http_auth_basic();
 //echo $_SERVER[ 'REQUEST_METHOD' ]."\n";
 //print_r( $_REQUEST )."\n";
 
+$access = lf_check_access( $uid, $_REQUEST[ 'path' ] );
+
+//$access['uid'] = $uid;
+//echo json_encode( $access );
+//exit;
 
 // function defination to convert array to xml
 function array_to_xml( $arr, &$xml ) {
@@ -73,10 +78,12 @@ if ( !array_key_exists( 'path', $_REQUEST ) || $_REQUEST[ 'path' ] == '' || $_RE
 }
 
 
-$result = lf_parse_path( $_REQUEST[ 'path' ], $_REQUEST['filter'], $_REQUEST['limit'], $_REQUEST['order'], $_REQUEST[ 'detail' ] );
+$result = lf_parse_path_get( $access, $_REQUEST[ 'path' ], $_REQUEST['filter'],
+	$_REQUEST['limit'], $_REQUEST['order'], $_REQUEST[ 'detail' ] );
 if ( $_REQUEST['format'] == 'xml' ) {
 	header( 'Content-Type: application/xml' );
-	$xml = new SimpleXMLElement("<?xml version=\"1.0\"?><lernfunk_request></lernfunk_request>");
+	$xml = new SimpleXMLElement( '<?xml version="1.0"?>'
+		.'<lernfunk_request></lernfunk_request>' );
 	array_to_xml( $result, $xml );
 	print $xml->asXML();
 } else {
