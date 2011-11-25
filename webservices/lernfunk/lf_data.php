@@ -407,7 +407,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 						for ( $i = 0; $i < count($result); $i++ ) {
 							$mobjs = array();
 							$mpkgs = array();
-							foreach ( lf_request_custom( 'select object_id, cou_id from mediaobject_new '
+							foreach ( lf_request_custom( 'select object_id, cou_id from prepared_mediaobject '
 								.'where series_id = '.$result[$i]['series_id'] ) as $m ) {
 								$mobjs[] = $m['object_id'];
 								$mpkgs[ $m['cou_id'] ] = '';
@@ -461,7 +461,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 							for ( $i = 0; $i < count($result); $i++ ) {
 								$mobjs = array();
 								$mpkgs = array();
-								foreach ( lf_request_custom( 'select object_id, cou_id from mediaobject_new '
+								foreach ( lf_request_custom( 'select object_id, cou_id from prepared_mediaobject '
 									.'where series_id = '.$result[$i]['series_id'] ) as $m ) {
 										$mobjs[] = $m['object_id'];
 										$mpkgs[ $m['cou_id'] ] = '';
@@ -479,13 +479,13 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 						return $result;
 					} elseif ( $cnt == 3 && $path[2] == 'mediaobject' ) {
 						return lf_request_custom( 
-							'select m.* from mediaobject_new m '
+							'select m.* from prepared_mediaobject m '
 							.'left outer join lms_connect c on m.series_id = c.series_id '
 							.'left outer join lms l on l.lms_id = c.lms_id ',
 							$filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'mediapackage' ) {
 						return lf_request_custom( 
-							'select p.* from mediapackage p '
+							'select p.* from prepared_mediapackage p '
 							.'left outer join lms_connect c on p.series_id = c.series_id '
 							.'left outer join lms l on l.lms_id = c.lms_id ',
 							$filter, $limit, $order );
@@ -525,7 +525,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 								for ( $i = 0; $i < count($result); $i++ ) {
 									$mobjs = array();
 									$mpkgs = array();
-									foreach ( lf_request_custom( 'select object_id, cou_id from mediaobject_new '
+									foreach ( lf_request_custom( 'select object_id, cou_id from prepared_mediaobject '
 										.'where series_id = '.$result[$i]['series_id'] ) as $m ) {
 											$mobjs[] = $m['object_id'];
 											$mpkgs[ $m['cou_id'] ] = '';
@@ -568,7 +568,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 							$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $faccess ) ) : $faccess;
 						}
 						return lf_request_custom(
-							'select m.* from mediaobject_new m left outer join series '
+							'select m.* from prepared_mediaobject m left outer join series '
 							.'on series.series_id = m.series_id', $filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'mediapackage' ) {
 						if ( $access['r'] ) {
@@ -576,7 +576,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 							$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $faccess ) ) : $faccess;
 						}
 						return lf_request_custom(
-							'select m.* from mediapackage m left outer join series '
+							'select m.* from prepared_mediapackage m left outer join series '
 							.'on series.series_id = m.series_id', $filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'lecturer' ) {
 						return lf_request_custom(
@@ -588,7 +588,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 					for ( $i = 0; $i < count($result); $i++ ) {
 						$mobjs = array();
 						$mpkgs = array();
-						foreach ( lf_request_custom( 'select object_id, cou_id from mediaobject_new '
+						foreach ( lf_request_custom( 'select object_id, cou_id from prepared_mediaobject '
 							.'where series_id = '.$result[$i]['series_id'] ) as $m ) {
 							$mobjs[] = $m['object_id'];
 							$mpkgs[ $m['cou_id'] ] = '';
@@ -608,30 +608,30 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 
 			case 'mediaobject':
 				if ( $access['r'] ) {
-					$faccess = array( 'o' => 'leq', 'k' => 'mediaobject_new.access_id', 'v' => intval($access['r']) );
-					$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $faccess ) ) : $faccess;
+					$faccess = array( 'o' => 'leq', 'k' => 'prepared_mediaobject.access_id', 'v' => intval($access['r']) );
+					$filter  = $filter ? array( 'o' => 'and', 'p' => array( $filter, $faccess ) ) : $faccess;
 				}
 				$result = null;
 				if ( $cnt == 1 ) {
-					return lf_request_table( 'mediaobject_new', array( '*' ), $filter, $limit, $order );
+					return lf_request_table( 'prepared_mediaobject', array( '*' ), $filter, $limit, $order );
 				} elseif ( is_numeric( $path[1] ) ) {
-					$f = array( 'o' => 'eq', 'k' => 'mediaobject_new.object_id', 'v' => intval($path[1]) );
+					$f = array( 'o' => 'eq', 'k' => 'prepared_mediaobject.object_id', 'v' => intval($path[1]) );
 					$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $f ) ) : $f;
 					if ( $cnt == 2 ) {
-						return lf_request_table( 'mediaobject_new', array( '*' ), $filter, $limit, $order );
+						return lf_request_table( 'prepared_mediaobject', array( '*' ), $filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'format' ) {
 						return lf_request_custom( 
-							'select f.* from format f left outer join mediaobject_new '
-							.'on mediaobject_new.format_id = f.format_id ', $filter, $limit, $order );
+							'select f.* from format f left outer join prepared_mediaobject '
+							.'on prepared_mediaobject.format_id = f.format_id ', $filter, $limit, $order );
 					} elseif ( $cnt == 3 && $path[2] == 'series' ) {
 						$result = lf_request_custom(
-							'select s.* from series s left outer join mediaobject_new '
-							.'on s.series_id = mediaobject_new.series_id', $filter, $limit, $order );
+							'select s.* from series s left outer join prepared_mediaobject '
+							.'on s.series_id = prepared_mediaobject.series_id', $filter, $limit, $order );
 						if ( $result && $detail ) {
 							for ( $i = 0; $i < count($result); $i++ ) {
 								$mobjs = array();
 								$mpkgs = array();
-								foreach ( lf_request_custom( 'select object_id, cou_id from mediaobject_new '
+								foreach ( lf_request_custom( 'select object_id, cou_id from prepared_mediaobject '
 									.'where series_id = '.$result[$i]['series_id'] ) as $m ) {
 										$mobjs[] = $m['object_id'];
 										$mpkgs[ $m['cou_id'] ] = '';
@@ -652,36 +652,40 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 
 
 			case 'mediapackage':
+				if ( $access['r'] ) {
+					$faccess = array( 'o' => 'leq', 'k' => 'm.access_id', 'v' => intval($access['r']) );
+					$filter  = $filter ? array( 'o' => 'and', 'p' => array( $filter, $faccess ) ) : $faccess;
+				}
 				$result = null;
 				if ( $cnt == 1 ) {
-					return lf_request_table( 'mediapackage', array( '*' ), $filter, $limit, $order );
+					return lf_request_table( 'prepared_mediapackage m', array( '*' ), $filter, $limit, $order );
 				} elseif ( $cnt == 2 && is_numeric( $path[1] ) ) {
 					$f = array( 'o' => 'eq', 'k' => 'm.series_id', 'v' => intval($path[1]) );
 					$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $f ) ) : $f;
-					return lf_request_table( 'mediapackage m', array( '*' ), $filter, $limit, $order );
+					return lf_request_table( 'prepared_mediapackage m', array( '*' ), $filter, $limit, $order );
 				} elseif ( is_numeric( $path[1] ) ) {
 					$f1 = array( 'o' => 'eq', 'k' => 'm.series_id', 'v' => intval($path[1]) );
 					$f2 = array( 'o' => 'eq', 'k' => 'm.cou_id', 'v' => mysql_escape_string($path[2]) );
 					$f3 = array( 'o' => 'and', 'p' => array( $f1, $f2 ) );
 					$filter = $filter ? array( 'o' => 'and', 'p' => array( $filter, $f1, $f2 ) ) : $f3;
 					if ( $cnt == 3 ) {
-						return lf_request_table( 'mediapackage m', array( '*' ), $filter, $limit, $order );
+						return lf_request_table( 'prepared_mediapackage m', array( '*' ), $filter, $limit, $order );
 					} elseif ( $cnt == 4 && $path[3] == 'mediaobject' ) {
 						return lf_request_custom( 
 							'select o.object_id, o.lrs_object_id, o.format_id, '
 							.'o.url, o.memory_size, o.thumbnail_url, o.preview_url, '
 							.'o.image_url, o.duration, o.location '
-							.'from mediaobject_new o left outer join mediapackage m '
+							.'from prepared_mediaobject o left outer join prepared_mediapackage m '
 							.'on ( m.series_id = o.series_id and m.cou_id = o.cou_id ) ', $filter, $limit, $order );
 					} elseif ( $cnt == 4 && $path[3] == 'series' ) {
 						$result = lf_request_custom(
-							'select s.* from series s left outer join mediapackage m '
+							'select s.* from series s left outer join prepared_mediapackage m '
 							.'on s.series_id = m.series_id', $filter, $limit, $order );
 						if ( $result && $detail ) {
 							for ( $i = 0; $i < count($result); $i++ ) {
 								$mobjs = array();
 								$mpkgs = array();
-								foreach ( lf_request_custom( 'select object_id, cou_id from mediaobject_new '
+								foreach ( lf_request_custom( 'select object_id, cou_id from prepared_mediaobject '
 									.'where series_id = '.$result[$i]['series_id'] ) as $m ) {
 										$mobjs[] = $m['object_id'];
 										$mpkgs[ $m['cou_id'] ] = '';
@@ -703,7 +707,7 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 					for ( $i = 0; $i < count($result); $i++ ) {
 						$result[$i]['mediaobject'] =  lf_request_custom( 
 							'select object_id, lrs_object_id, format_id, url, preview_url '
-							.'from mediaobject_new where cou_id = "'.$result[$i]['cou_id'].'"' );
+							.'from prepared_mediaobject where cou_id = "'.$result[$i]['cou_id'].'"' );
 					}
 				}
 				return $result;
