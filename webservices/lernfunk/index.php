@@ -71,15 +71,31 @@ function array_to_xml( $arr, &$xml ) {
 	}
 }
 
-if ( !array_key_exists( 'path', $_REQUEST ) || $_REQUEST[ 'path' ] == '' || $_REQUEST[ 'path' ] == '/' ) {
+/* Return readme if we do not have any valid request parameter. */
+if ( !array_key_exists( 'path', $_REQUEST ) 
+	|| $_REQUEST[ 'path' ] == '' 
+	|| $_REQUEST[ 'path' ] == '/' )
+{
 	header( 'Content-Type: text/plain' );
 	include( 'readme' );
 	exit;
 }
 
+$result = '';
+/* Get data from webserver. */
+if ( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
+	$result = lf_parse_path_get( $access, $_REQUEST[ 'path' ], $_REQUEST['filter'],
+		$_REQUEST['limit'], $_REQUEST['order'], $_REQUEST[ 'detail' ] );
 
-$result = lf_parse_path_get( $access, $_REQUEST[ 'path' ], $_REQUEST['filter'],
-	$_REQUEST['limit'], $_REQUEST['order'], $_REQUEST[ 'detail' ] );
+/* Create new datasets on webserver. */
+} elseif ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' ) {
+	$result = lf_parse_path_post( $access, $_REQUEST[ 'path' ], $_REQUEST['data'] );
+
+} else {
+	header( 'Content-Type: text/plain' );
+	echo 'Method “'.$_SERVER[ 'REQUEST_METHOD' ].'” is not available.';
+}
+
 if ( $_REQUEST['format'] == 'xml' ) {
 	header( 'Content-Type: application/xml' );
 	$xml = new SimpleXMLElement( '<?xml version="1.0"?>'

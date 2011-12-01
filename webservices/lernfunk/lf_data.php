@@ -1,6 +1,7 @@
 <?php
 
 require_once( dirname(__FILE__).'/lf_sql.php' );
+require_once( dirname(__FILE__).'/lf_db_fields.php' );
 
 
 function lf_build_limit( $limit ) {
@@ -712,7 +713,106 @@ function lf_parse_path_get( $access, $path_str, $filter_str, $limit_str, $order_
 				}
 				return $result;
 
+		} /* switch */
+	}
+
+}
+
+
+function lf_check_object_args( $tbl, $arr ) {
+
+	global $db_fields;
+	$req = $db_fields[ $tbl ][ 'required' ];
+	$opt = $db_fields[ $tbl ][ 'optional' ];
+
+	/* Check required attributes */
+	foreach ( $req as $r ) {
+		if ( array_key_exists( $r, $arr ) ) {
+			unset( $arr[ $r ] );
+		} else {
+			return false;
 		}
+	}
+	/* Check optional attributes */
+	foreach ( $arr as $a => $v ) {
+		if ( !in_array( $a, $opt ) ) {
+			/* We got an argument that is neither required nor optional. */
+			return false;
+		}
+	}
+	return true;
+
+}
+
+
+function lf_parse_object( $tbl, $data_str ) {
+
+	if ( !$tbl || !$data_str ) {
+		return null;
+	}
+	$new_obj = array();
+
+	/* Check if filter is XML or JSON */
+	if ( strpos( $data_str, '<' ) === 0 ) { /* XML */
+		$xml = simplexml_load_string( $data_str );
+		if ( !$xml || !$xml->getName() == $tbl ) {
+			return null;
+		}
+		foreach ( $xml->attributes() as $a => $b ) {
+			$new_obj[ $a ] = $b;
+		}
+		
+	} else { /* Should be JSON */
+		$new_obj = json_decode( $data_str, true );
+		if ( !is_array( $new_obj ) ) {
+			return null;
+		}
+	}
+
+	foreach ( $new_obj as $k => $v ) {
+		$new_obj[ $k ] = $v;
+	}
+
+	return lf_check_object_args( $tbl, $new_obj ) 
+		? $new_obj
+		: null;
+
+}
+
+
+function lf_create_dataset( $tbl, $obj_str ) {
+
+	$new_obj = lf_parse_object( $tbl, $obj_str );
+	if ( !$new_obj ) {
+		header( 'HTTP/1.1 400 Bad Request' );
+		exit();
+	}
+
+	/* Create SQL statement. */
+	$sql_keys = implode( ', ', array_keys(   $new_obj ) );
+	$sql_vals = '"'.implode( '", "', array_values( $new_obj ) ).'"';
+	$sql = 'INSERT INTO '.$tbl.' ( '.$sql_keys.' ) VALUES ( '.$sql_vals.' )';
+	header( 'HTTP/1.1 201 Created' );
+	return $sql;
+
+}
+
+
+function lf_parse_path_post( $access, $path_str, $obj_str ) {
+
+	$path   = explode( '/', trim( $path_str, ' /' ) );
+	$cnt    = count( $path );
+
+	if ( $cnt > 0 ) {
+		switch ( $path[0] ) {
+
+			case 'academy':
+				if ( $cnt == 1 ) {
+					return lf_create_dataset( 'academy', $obj_str );
+				}
+				return null;
+
+		} /* switch */
 	}
 
 }
