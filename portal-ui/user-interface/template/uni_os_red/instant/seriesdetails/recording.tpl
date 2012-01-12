@@ -3,7 +3,7 @@
 	<div style="font-size: 11px; font-weight: bold; padding: 0px 2px; line-height: 150%;" 
 		onclick=" loadRec( '#mediaobjectplayer', '(:cou_id:)' ); 
 		expandRecordingInfo( this.parentNode );">
-		&#9658;&#8194;(:title:)&nbsp;
+		&#9660;&#8194;(:title:)&nbsp;
 		<span style="font-size: smaller;">vom&nbsp;(:date:)</span>				
 	</div>
 

@@ -65,6 +65,11 @@ input#lflogo {
   padding: 0;
 }
 
+#logotext {
+  font-size: 14px;
+  color: #3E424A;  
+}
+
 div#titlebox {
 	background-color: #3e424a;
 	color: #ffffff;
@@ -172,6 +177,7 @@ img {
 
 div#footer {
 	width: 100%;
+	min-width: 940px;
 	margin: 0px;
 	padding: 0px;
 	color: #ffffff;
@@ -207,7 +213,6 @@ div#googleanalytics {
   margin-top: 10px;
   padding-left: 10px;
   font-size: 60%;
-  width: 500px;
   display: inline-block;
 }
 
@@ -245,7 +250,7 @@ div#main {
 
 div#leftblock {
 	position: fixed;
-	top: 15px;
+	top: 30px;
 	left: 0px;
 	width: 250px;
 }
@@ -299,7 +304,7 @@ div#content {
 }
 
 div#contentbox {
-	margin-left: 310px;
+	margin-left: 295px;
 	/* margin-right: 270px; */
 	margin-right: 40px;
 }

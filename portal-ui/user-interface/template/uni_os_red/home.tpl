@@ -21,7 +21,7 @@
 				</div>               
 			</div> 
 		</div>  
-		<div style="display: table-cell; background-color: white; width: 200px; padding-left: 15px;">
+		<div style="display: table-cell; background-color: white; width: 200px; padding-left: 9px;">
 			<div id="rcbx" style="display: block;">
 				<div id="datepicker" style="font-size: smaller; margin-bottom: 25px;"></div>
 				<div class="tagcloud">

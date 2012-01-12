@@ -33,7 +33,8 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ left ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<div id="leftblock">
 				<div id="logobox">
-					<a class="nohover" href="#"><input type="image" id="lflogo" src="(:tplpath:)/img/lflogo.png" onmouseout="this.src='(:tplpath:)/img/lflogo.png'" onmouseover="this.src='(:tplpath:)/img/lflogo_hover.png'" alt="Lernfunk" /></a>
+					<a class="nohover" href="#"><img id="lflogo" src="(:tplpath:)/img/lflogo.png" alt="Lernfunk" /></a>
+					<span id="logotext">Medienportal der Univeristät Osnabrück</span>
 				</div>
 
 				<div id="searchblock">
@@ -151,7 +152,7 @@
 						href="http://www.blogs.uni-osnabrueck.de/lernfunk/">lernfunk im Blog</a></div>
 				</div>
         <div id="googleanalytics">				  
-					 Auf dieser Seite wird Google Analytics eingesetzt: <a
+					 Auf dieser Seite wird Google Analytics eingesetzt:<br /><a
 					 href="#cmd=static&amp;title=Impressum&amp;std=1&amp;p=impressum">
 					 Weitere Informationen</a>.
 					 <br />Google Analytics 
