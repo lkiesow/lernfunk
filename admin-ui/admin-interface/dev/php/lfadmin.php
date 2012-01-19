@@ -293,9 +293,9 @@ class LFAdmin {
 
         // get mediaobjects
         $mediaobjects = array();
-        $sql = 'select object_id, title, format_id, cou_id as obj_count ' // , count(cou_id)
+        $sql = 'select object_id, series_id, title, format_id, cou_id as obj_count ' // , count(cou_id)
               .'from mediaobject where series_id = '.$id.' '
-              //.'group by title, date, cou_id '
+              .'group by series_id, cou_id '
               .'order by date, object_id asc';
         if ($rs = Lernfunk::query($sql)) {
 
@@ -303,11 +303,12 @@ class LFAdmin {
                 $t  = '<div style="padding: 5px 0px 5px 15px; text-indent: -15px; border-bottom: 1px solid #777777;">'
 					 	.'<a href="javascript:mediaobjecteditor.load('.$r->object_id.');">▸ '.$r->title.'</a>';
                 // add type
-                $t .= '<div style="display: inline; font-weight: bold; font-family: monospace; '
-                     .'font-size: smaller; text-transform: uppercase;" ';
-                $t .= 'title="Format: '.self::get_format($r->format_id, 'name').'"> ('
-					 	.substr( self::get_format($r->format_id, 'name'), 0, 1 ).') ';
-                $t .= '</div></div>';
+//                $t .= '<div style="display: inline; font-weight: bold; font-family: monospace; '
+//                     .'font-size: smaller; text-transform: uppercase;" ';
+//                $t .= 'title="Format: '.self::get_format($r->format_id, 'name').'"> ('
+//					 	.substr( self::get_format($r->format_id, 'name'), 0, 1 ).') ';
+//                $t .= '</div></div>';
+                $t .= '</div>';
                 $mediaobjects[] = $t;
             }
         }
@@ -748,7 +749,7 @@ class LFAdmin {
 			  $subs['author'] = $_SERVER['PHP_AUTH_USER'];
 
         // fill selects
-        $subs['series_options'] = self::make_options('series', 'series_id', array('name'), $ser_id);
+        $subs['series_options'] = self::make_options('series', 'series_id', array('name'), $ser_id, false, ' order by name asc');
         $subs['language_options'] = self::make_options('language', 'lang_id', array('language_long'), null);
         $subs['format_options'] = self::make_options('format', 'format_id', array('name'), null);
         $subs['access_options'] = self::make_options('access', 'access_id', array('status'), null);
@@ -773,7 +774,9 @@ class LFAdmin {
         $out = self::load_file('templates/mediaobjecteditor.html');
         $obj_id = $params['object_id'];
         
-        $sql = 'SELECT * FROM mediaobject WHERE object_id = "'.$obj_id.'";';
+		  $sql = 'SELECT *, '
+			  .'(select name from series s where s.series_id = mediaobject.series_id )'
+			  .' as series_name FROM mediaobject WHERE object_id = "'.$obj_id.'";';
         if ($rs = Lernfunk::query($sql)) {
 
             $obj = $rs[0];
@@ -800,7 +803,7 @@ class LFAdmin {
             $subs['related_objects'] = $related_objects;
 
             // fill selects
-            $subs['series_options'] = self::make_options('series', 'series_id', array('name'), $obj->series_id);
+            $subs['series_options'] = self::make_options('series', 'series_id', array('name'), $obj->series_id, false, ' order by name asc');
             $subs['language_options'] = self::make_options('language', 'lang_id', array('language_long'), $obj->language_id);
             $subs['format_options'] = self::make_options('format', 'format_id', array('name'), $obj->format_id);
             $subs['access_options'] = self::make_options('access', 'access_id', array('status'), $obj->access_id);
