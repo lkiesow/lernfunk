@@ -24,8 +24,7 @@ cp dev/templates/seriescreator.html       release/templates
 
 echo 'copy gfx files...'
 mkdir release/gfx
-cp dev/gfx/lfadmin.css release/gfx
-cp dev/gfx/loading.gif release/gfx
+cp dev/gfx/*  release/gfx
 
 echo 'copy php files...'
 mkdir release/php

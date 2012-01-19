@@ -11,18 +11,113 @@ input.readonly {
 }
 
 input[type=button] {
-    padding-left: 10px;
-    padding-right: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    padding: 5px 10px;
+    text-align: center;
+    background: #808080;
+    background-image: linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border: 1px solid #003366;
+    -moz-box-shadow:
+		  0px 1px 3px rgba(000,000,000,0.5),
+		  inset 0px 0px 1px rgba(255,255,255,1);
+    -webkit-box-shadow:
+		  0px 1px 3px rgba(000,000,000,0.5),
+		  inset 0px 0px 1px rgba(255,255,255,1);
+    box-shadow:
+		  0px 1px 3px rgba(000,000,000,0.5),
+		  inset 0px 0px 1px rgba(255,255,255,1);
+    text-shadow:
+		  0px -1px 0px rgba(000,000,000,0.7),
+		  0px 1px 0px rgba(255,255,255,0.3);
+		text-decoration: none;
+		
+}
+
+input[type=button]:hover {
+    background: #b3b3b3;
+    background-image: linear-gradient(bottom, rgb(148,148,148) 0%, rgb(179,179,179) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(148,148,148) 0%, rgb(179,179,179) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(148,148,148) 0%, rgb(179,179,179) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(148,148,148) 0%, rgb(179,179,179) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(148,148,148) 0%, rgb(179,179,179) 100%);
+    cursor: pointer;
+}
+
+input[disabled=disabled] {  
+    cursor: default;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #dddddd;
+    padding: 5px 10px;
+    text-align: center;
+    background: #808080;
+    background-image: linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border: 1px solid #003366;
+    -moz-box-shadow:
+		  0px 1px 3px rgba(000,000,000,0.5),
+		  inset 0px 0px 1px rgba(255,255,255,1);
+    -webkit-box-shadow:
+		  0px 1px 3px rgba(000,000,000,0.5),
+		  inset 0px 0px 1px rgba(255,255,255,1);
+    box-shadow:
+		  0px 1px 3px rgba(000,000,000,0.5),
+		  inset 0px 0px 1px rgba(255,255,255,1);
+    text-shadow:
+		  0px -1px 0px rgba(0,0,0,0.6);
+		text-decoration: none;
+}
+
+input[disabled=disabled]:hover {
+    background: #808080;
+    background-image: linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(128,128,128) 0%, rgb(161,161,161) 100%);
+    cursor: default;    
 }
 
 input {
     border: 1px solid grey;
-    padding: 2px;
+    padding: 4px 2px;
     margin: 1px;
 }
 
-input:focus, textarea:focus { 
-    background: rgb(250,250,250); 
+select {
+    padding: 4px 2px;
+    border: 1px solid grey;
+}
+
+textarea {
+    border: 1px solid grey;
+    padding: 4px 2px;    
+}
+
+input:focus, select:focus, textarea:focus { 
+    border-color: #ff9900;
+    -moz-box-shadow: 0px 0px 2px #ffcc66;
+    -webkit-box-shadow: 0px 0px 2px #ffcc66;
+    box-shadow: 0px 0px 2px #ffcc66;
+}
+
+.w80 {
+    width: 80px;
 }
 
 .w100 {
@@ -44,6 +139,10 @@ input:focus, textarea:focus {
 
 .w400 {
     width: 400px;
+}
+
+.selectfield {
+    width: 406px;
 }
 
 .hidden {
@@ -70,7 +169,7 @@ div#select_window {
 }
 
 div#navigation {
-    width: 350px; 
+    width: 430px; 
     height: 500px; 
     overflow-x: hidden; 
     overflow-y: scroll;
@@ -90,4 +189,43 @@ table#main_table {
     position: absolute;
     top: 0px;
     left: 0px;
+}
+
+.right {
+    text-align: right;
+}
+
+.navigationelement {
+    padding: 6px 0px 6px 25px;
+    background-color: #333333;
+    color: #FFFFFF;
+    border-top: 1px solid #888888;
+}
+
+.navigationelement:hover {
+    background-color: #444444;
+    color: #ff9900;    
+}
+
+.navigationdetails {
+    background-color: #555555;
+    color: #FFFFFF;
+    padding: 10px 10px 5px 35px;
+    -moz-box-shadow: inset 0px 0px 3px #000000;
+    -webkit-box-shadow: inset 0px 0px 3px #000000;
+    box-shadow: inset 0px 0px 3px #000000;
+}
+
+.navigationdetails a {
+    text-decoration: none;
+    color: #ff9900;
+}    
+
+.navigationdetails a:focus {
+    color: #ff6600; 
+}   
+
+.name {
+    font-size: 24px;
+    color: #333333;    
 }

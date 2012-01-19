@@ -6,56 +6,79 @@
 		<title>virtUOS: Lernfunk-Admin-Interface</title>
 
 		<script src="./js/imports/prototype.js" type="text/javascript"></script>
+		<script src="./js/imports/effects.js" type="text/javascript"></script>
+		<script src="./js/imports/window.js" type="text/javascript"></script>
+		<script src="./js/imports/window_effects.js" type="text/javascript"></script>
+		<script src="./js/imports/debug.js" type="text/javascript"></script>
+		<script src="./js/imports/datepicker/js/datepicker.js" type="text/javascript"></script>
+		<script src="./js/imports/datepicker/js/scriptaculous.js" type="text/javascript"></script>
 		<script src="./js/bin/lfadmin.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="./gfx/lfadmin.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="./gfx/style.css" type="text/css" media="screen" />
+		<link href="./gfx/alphacube.css" rel="stylesheet" type="text/css"/>
+		<link href="./js/imports/datepicker/css/datepicker.css" rel="stylesheet" type="text/css"/>
+		
 
 		<!-- calendar components: -->
-	<link rel="stylesheet" type="text/css" href="./js/imports/calendar/rich_calendar.css" />
-	<script type="text/javascript" src="./js/imports/calendar/rich_calendar.js"></script>
-	<script type="text/javascript" src="./js/imports/calendar/rc_lang_en.js"></script>
-	</head>
+<!--	<link rel="stylesheet" type="text/css" href="./js/imports/calendar/rich_calendar.css" />   -->
+<!--	<script type="text/javascript" src="./js/imports/calendar/rich_calendar.js"></script>      -->
+<!--	<script type="text/javascript" src="./js/imports/calendar/rc_lang_en.js"></script>         -->
+
+  
+  </head>
 	<body onload="try { init(); } catch (err) { alert(err); }">
-		<table id="main_table" border="1">
-			<tr style="height: 25px;">
+		<table id="main_table" border="0" cellspacing="0" cellpadding="0">
+			<!--
+      <tr style="height: 25px;">
 				<td colspan="2">
-					<a href="javascript:load_editor('academy');"	>Academies</a>
-					<a href="javascript:load_editor('access');"	 >Access</a>
-					<a href="javascript:load_editor('audience');"   >Audiences</a>
-					<a href="javascript:load_editor('category');"   >Categories</a>
-					<a href="javascript:load_editor('feeds');"	  >Feeds</a>
-					<a href="javascript:load_editor('feedtype');"   >Feedtypes</a>
-					<a href="javascript:load_editor('format');"	 >Formats</a>
-					<a href="javascript:load_editor('language');"   >Languages</a>
-					<a href="javascript:load_editor('lecturer');"   >Lecturer</a>
-					<a href="javascript:load_editor('lms');"		>LMS</a>
-					<a href="javascript:load_editor('lms_connect');">LMS-Connect</a>
-					<a href="javascript:load_editor('role');"	   >Roles</a>
-					<a href="javascript:load_editor('series');"	 >Series</a>
-					<a href="javascript:load_editor('terms');"	  >Terms</a>
+					
 				</td>
 			</tr>
-			<tr style="height:50px;">
-				<td style="width:352px;" align="center">
+			-->
+			<tr class="tabletop">
+				<td style="width:352px; border-bottom:1px solid #bbbbbb;" align="center">
 					Search:
 					<input type="text" 
 						   title="search for name of lecturer or series..." 
 						   id="searchbox" 
-						   style="width:280px;" 
+						   style="width:330px;" 
 						   onkeyup="trigger_search();" />
 				</td>
-				<td style="padding: 10px;">
-					Tools:
-					<button type="button" onclick="serieseditor.create();" >Series-Creator</button>
+				<td style="padding: 10px; border-bottom:1px solid #bbbbbb;">
 					<div style="float: right; margin: 5px;">
-						<a title="link to virtUOS-wiki..." href="http://code.google.com/p/lernfunk/issues/list">bugs, feedback, ...</a>
+						<a title="link to virtUOS-wiki..." href="http://code.google.com/p/lernfunk/issues/list" class="button1">bugs, feedback, ...</a>
 					</div>
+          
+          <div style="float: left; margin:5px;">
+            <a href="javascript:serieseditor.create();" class="button1">Series-Creator</a>
+            <a href="#" class="button1 settingsbutton" onclick="$('settings').style.display = ( $('settings').style.display == 'none')?'block':'none' ;">Settings</a>
+					</div>
+					
+          <div id="settings" style="display:none;">
+            <a href="javascript:load_editor('academy');"	>Academies</a>
+            <a href="javascript:load_editor('access');"	 >Access</a>
+            <a href="javascript:load_editor('audience');"   >Audiences</a>
+            <a href="javascript:load_editor('category');"   >Categories</a>
+            <a href="javascript:load_editor('feeds');"	  >Feeds</a>
+            <a href="javascript:load_editor('feedtype');"   >Feedtypes</a>
+            <a href="javascript:load_editor('format');"	 >Formats</a>
+            <a href="javascript:load_editor('language');"   >Languages</a>
+            <a href="javascript:load_editor('lecturer');"   >Lecturer</a>
+            <a href="javascript:load_editor('lms');"		>LMS</a>
+            <a href="javascript:load_editor('lms_connect');">LMS-Connect</a>
+            <a href="javascript:load_editor('role');"	   >Roles</a>
+            <a href="javascript:load_editor('series');"	 >Series</a>
+            <a href="javascript:load_editor('terms');"	  >Terms</a>
+          </div>
+					
+					
 					<div id="tabs" />
 				</td>
 			</tr>
 			<tr style="height:600px;" id="bottom_container">
-				<td valign="top"><div id="navigation" /></td>
-				<td valign="top" style="text-align: center;">
-					<div id="stage">
+				<td valign="top" style="border-right: 1px solid #BBBBBB;"><div id="navigation" /></td>
+				<td valign="top" style="text-align: center;"> 
+					<div id="stage">                              
 						<p>Last updated:</p>
 						<iframe src="buildtime.txt" style="border: none;" width="275px" height="35px"></iframe>
 					</div>
@@ -81,6 +104,7 @@
 				}
 				$('select_window_selector').innerHTML = new_opts;
 			}
+			
 		</script>
 
 		<div id="select_window" style="padding: 10px; border: 2px solid black;">
