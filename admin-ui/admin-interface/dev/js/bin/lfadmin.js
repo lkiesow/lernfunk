@@ -58,11 +58,10 @@ function init() {
 /* Fit interface in window                                                   */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function setSize() {
-    $('navigation').style.height = (window.innerHeight - 95) + 'px'; 
-    $('stage').style.height = (window.innerHeight - 95) + 'px'; 
-    $('bottom_container').style.height = (window.innerHeight - 90) + 'px'; 
+    $('navigation').style.height = (window.innerHeight - 50) + 'px'; 
+    $('stage').style.height = (window.innerHeight - 50) + 'px'; 
+    $('bottom_container').style.height = (window.innerHeight - 50) + 'px'; 
     $('main_table').style.width = (window.innerWidth - 10 ) + 'px';
-    //$('main_table').setAttribute('style', 'width: ' + window.innerWidth + 'px;');
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -108,6 +107,33 @@ function load_editor(t, id) {
                       parameters: {cmd:'get_editor', type:t, id:id}
                     });
 }
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Open a whole editor as dialog                                             */
+/*                                                                           */
+/* params:                                                                   */
+/*   t   {                        }                                          */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+function load_editor_as_dialog(t, id) {
+	new Ajax.Request( lf_url, {
+		method: 'post',
+		onSuccess: function(r) {
+			Dialog.alert(r.responseText, {
+				className: "alphacube",
+				position: "absolute", 
+				width: "700",
+				height: "500",
+				okLabel: "Close",
+				id: "d2"});
+			 editortype = t;
+		 },
+		 parameters: {cmd:'get_editor', type:t, id:id}
+	});
+                    
+   
+}
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* Open/close series attributes in search result                             */
@@ -372,6 +398,18 @@ mediaobjecteditor.save = function() {
         $('mediaobject_response').innerHTML = '<pre>saving feed...</pre>';
     }
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Convert Duration in hh:mm:ss                                              */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+function secondsToHms(duration) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+    return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
+    }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* Delete a specified mediaobject                                            */

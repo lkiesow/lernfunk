@@ -300,7 +300,7 @@ class LFAdmin {
         if ($rs = Lernfunk::query($sql)) {
 
             foreach ($rs as $r) {
-                $t  = '<div style="padding-left: 15px; text-indent: -15px;">'
+                $t  = '<div style="padding: 5px 0px 5px 15px; text-indent: -15px; border-bottom: 1px solid #777777;">'
 					 	.'<a href="javascript:mediaobjecteditor.load('.$r->object_id.');">▸ '.$r->title.'</a>';
                 // add type
                 $t .= '<div style="display: inline; font-weight: bold; font-family: monospace; '
@@ -318,7 +318,7 @@ class LFAdmin {
 		  	.'FROM playlist WHERE playlist.reciever_id = "'.$id.'";';
         if ($rs = Lernfunk::query($sql)) {
             foreach ($rs as $r)
-                $playlists[] = '<div style="padding-left: 15px; text-indent: -15px;">'
+                $playlists[] = '<div style="padding: 5px 0px 5px 15px; text-indent: -15px; border-bottom: 1px solid #777777;">'
 					 	.'<a href="javascript:playlisteditor.load('.$r->playlist_id.')">▸ '.$r->pl_description.'</a></div>';
         }
 
@@ -327,7 +327,7 @@ class LFAdmin {
         $sql = 'select f.feed_id, t.feedtype_desc from feeds f natural left outer join feedtype t where f.series_id = "'.$id.'";';
         if ($rs = Lernfunk::query($sql)) {
             foreach ($rs as $r)
-                $feeds[] = '<div style="padding-left: 15px; text-indent: -15px;">'
+                $feeds[] = '<div style="padding: 5px 0px 5px 15px; text-indent: -15px; border-bottom: 1px solid #777777;">'
 					 	.'<a href="javascript:feededitor.load('.$r->feed_id.')">▸ '.$r->feedtype_desc.'</a></div>';
         }
 
@@ -786,16 +786,16 @@ class LFAdmin {
                 $sql = 'select object_id, title, format_id from mediaobject where cou_id = "'.$obj->cou_id.'";';
                 if ($rs = Lernfunk::query($sql)) {
                     foreach ($rs as $r) {
-                        $related_objects .= '<option value="'.$r->object_id.'"';
+                        $related_objects .= '<span class="tabs" onclick="mediaobjecteditor.load('.$r->object_id.')"';
                         if ($r->object_id == $obj_id)
-                            $related_objects .= ' selected="true"';
-                        $related_objects .= '>'.self::get_format($r->format_id, 'name').' ('.$r->title.')</option>'."\n";
+                            $related_objects .= 'id="tabactive"';                     
+                        $related_objects .= '>'.self::get_format($r->format_id, 'name').'</span>'."\n";
                     }
                 }
             } else {
-                $related_objects  = '<option value="'.$obj_id.'" selected="true">';
+                $related_objects  = '<div href="'.$obj_id.'" class="tabactive">';
                 $related_objects .= $obj->title.' ('.self::get_format($obj->format_id, 'name').')';
-                $related_objects .= "</obtion>\n";
+                $related_objects .= "</div>\n";
             }
             $subs['related_objects'] = $related_objects;
 

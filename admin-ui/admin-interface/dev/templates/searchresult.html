@@ -1,15 +1,19 @@
-<div style="border:1px solid silver;">
-    <table border="0" style="width:100%;">
-        <tr>
-            <td><a href="javascript:serieseditor.load('(:result_id:)'); trigger_result((:result_id:));" title="(:name:)">(:short_name:)</a></td>
-            <td align="right" valign="top" style="width:50px; font-size: smaller;">(:term:)</td>
-        </tr>
-        <tr id="info_(:result_id:)" style="display:none;">
+<a href="javascript:serieseditor.load('(:result_id:)'); trigger_result((:result_id:));" title="(:name:)" style="text-decoration:none;">
+  <div class="navigationelement">      
+    <div style="float:right; width:70px; font-size: smaller;">(:term:)</div>
+    <div style="float: left;">(:short_name:)</div>   
+      <div style="clear:both"></div>
+  </div>
+</a>
+  
+<div id="info_(:result_id:)" style="display:none;" class="navigationdetails">
+  <div>_..._</div>
+</div>      
+     
+<!--        <tr id="info_(:result_id:)" style="display:none;">
             <td colspan="2">
                 _..._
             </td>
-        </tr>
-    </table>
-</div>
+        </tr>   -->
 
 

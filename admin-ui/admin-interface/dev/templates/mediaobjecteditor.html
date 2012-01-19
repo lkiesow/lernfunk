@@ -3,7 +3,9 @@
 	<iframe style="width: 100%; height: 80px; border: none;" src="php/upload.php?field=image_url&id=series_(:series_id:)_mediaobject_(:object_id:)"></iframe>
 </div>
 
-<table style="margin: 20px; padding-bottom: 20px; border-bottom: 1px solid grey;">
+<h1 class="name">(:title:)</h1>
+
+<!--<table style="margin: 20px 0px 0px 35px; padding-bottom: 20px; border-bottom: 1px solid grey;">
     <tr>
         <td>
             Related Mediaobjects:
@@ -11,20 +13,16 @@
         <td />
     </tr>
     <tr>
-        <td>
+        <td rowspan="2">
             <select id="related_object_select" size="4" style="width:400px;" 
-                ondblclick="mediaobjecteditor.load($('related_object_select').value)" 
+                onclick="mediaobjecteditor.load($('related_object_select').value)" 
                 style="border: 1px solid grey;">
-                    (:related_objects:)
+                    
             </select>
         </td>
-        <td valign="top">
-            <input type="button" 
-                onclick="mediaobjecteditor.load($('related_object_select').value);" 
-                style="width:80px" value="edit" /> <br />
-            <input type="button" 
-                onclick="$('object_id').value = '';" 
-                style="width:80px" value="dublicate" />
+        <td>
+          <div onclick="mediaobjecteditor.load($('related_object_select').value);" class="button2">edit</div>
+          <div>(:related_objects:)</div>  
             <!--
             <button type="button" 
                 onclick="mediaobjecteditor.add(array('cou_id' => (:cou_id:)));" 
@@ -32,18 +30,27 @@
             <button type="button" 
                 onclick="mediaobjecteditor.remove(document.getElementById('related_object_select').value)" 
                 style="width:80px">L&ouml;schen</button>
-            -->
+            
         </td>
-    </tr>
-</table>
+    </tr>    
+    <tr>  
+      <td>
+        <div onclick="$('object_id').value = '';" class="button2">duplicate</div>
+      </td>
+    </tr>    
+</table>      -->
+
+
+<div id="tabmenu">
+  <div>(:related_objects:)</div>
+</div>
+
 
 <form name="fields" id="fields" action="#">
-<table>
+<table style="margin-left: 35px; margin-top: 35px;">
 
     <tr>
-        <td>
-            Object-ID:
-        </td>
+        <td class="right">Object-ID:</td>
         <td>
             <input type="text" 
                 class="readonly w400" 
@@ -55,9 +62,7 @@
     </tr>
 
     <tr>
-        <td>
-            Title:
-        </td>
+        <td class="right">Title:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -69,23 +74,20 @@
     </tr>
 
     <tr>
-        <td>
-            Description:
-        </td>
+        <td class="right">Description:</td>
         <td>
             <textarea 
                 class="w400" 
                 rows="3"
                 id="description" 
                 name="description" 
-                onkeypress="$('savebutton').disabled = false;" >(:description:)</textarea>
+                onkeypress="$('savebutton').disabled = false;" 
+                style="width:400px; max-width:400px; min-width:400px;">(:description:)</textarea>
         </td>
     </tr>
 
     <tr>
-        <td>
-            COU-ID:
-        </td>
+        <td class="right"> COU-ID:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -97,24 +99,44 @@
     </tr>
 
     <tr>
-        <td>
-            Series:
-        </td>
+        <td class="right">Series:</td>
         <td>
             <select type="text" 
                 class="w400" 
                 id="series_id" 
                 name="series_id" 
-                onkeypress="$('savebutton').disabled = false;" >
+                onkeypress="$('savebutton').disabled = false;"
+                style="width:406px;" >
                     (:series_options:)
             </select>
         </td>
+        <td><a href="javascript:load_editor_as_dialog('series');" class="editbutton">Edit</a></td>
     </tr>
 
+	 <!--
     <tr>
-        <td>
-            Aufzeichnungsdatum:
-        </td>
+      <td>Test</td>
+      <td>
+	<form id="fx" method="post" action="#">
+	<input type="text" id="date" name="date" class="date" />
+	
+	<script type="text/javascript">
+		/*<[CDATA[*/
+		var datepicker	= new DatePicker({
+		relative	: 'date',
+		language	: 'de'
+		});
+		/*]]>*/
+	</script>
+	
+	</form>
+	
+      </td>
+	</tr>
+	-->
+    
+    <tr>
+        <td class="right">Aufzeichnungsdatum:</td>
         <td>
             <select name="day" id="day" onchange="$('savebutton').disabled=false;">(:day_options:)</select>.
             <select name="month" id="month" onchange="$('savebutton').disabled=false;">(:month_options:)</select>.
@@ -123,9 +145,7 @@
     </tr>
 
     <tr>
-        <td>
-            Uhrzeit:
-        </td>
+        <td class="right">Uhrzeit:</td>
         <td>
             <select name="hour" id="hour" onchange="$('savebutton').disabled=false;">(:hour_options:)</select>:
             <select name="minute" id="minute" onchange="$('savebutton').disabled=false;">(:minute_options:)</select>:
@@ -134,9 +154,7 @@
     </tr>
 
     <tr>
-        <td>
-            LRS-Object-ID:
-        </td>
+        <td class="right"> LRS-Object-ID:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -148,51 +166,49 @@
     </tr>
 
     <tr>
-        <td>
-            Sprache:
-        </td>
+        <td class="right">Sprache:</td>
         <td>
             <select id="language_id" 
                 name="language_id" 
                 class="w400" 
-                onchange="$('savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;"
+                style="width:406px;">
                     (:language_options:)
             </select>
         </td>
+        <td><a href="javascript:load_editor_as_dialog('language');" class="editbutton">Edit</a></td>
     </tr>
 
     <tr>
-        <td>
-            Format:
-        </td>
+        <td class="right">Format:</td>
         <td>
             <select id="format_id" 
                 name="format_id" 
                 class="w400" 
-                onchange="$('savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;"
+                style="width:406px;">
                     (:format_options:)
             </select>
         </td>
+        <td><a href="javascript:load_editor_as_dialog('format');" class="editbutton">Edit</a></td>
     </tr>
 
     <tr>
-        <td>
-            Access:
-        </td>
+        <td class="right">Access:</td>
         <td>
             <select id="access_id" 
                 name="access_id" 
                 class="w400" 
-                onchange="$('savebutton').disabled = false;">
+                onchange="$('savebutton').disabled = false;"
+                style="width:406px;">
                     (:access_options:)
             </select>
         </td>
+        <td><a href="javascript:load_editor_as_dialog('access');" class="editbutton">Edit</a></td>
     </tr>
 
     <tr>
-        <td>
-            URL:
-        </td>
+        <td class="right">URL:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -204,9 +220,7 @@
     </tr>
 
     <tr>
-        <td>
-            Memory-size:
-        </td>
+        <td class="right">Memory-size:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -218,9 +232,7 @@
     </tr>
 
     <tr>
-        <td>
-            Author:
-        </td>
+        <td class="right">Author:</td>
         <td>
             <input 
                 type="text"
@@ -233,9 +245,7 @@
     </tr>
 
     <tr>
-        <td>
-            Thumbnail-URL:
-        </td>
+        <td class="right">Thumbnail-URL:</td>
         <td>
             <input type="text" 
                 class="w400"
@@ -247,9 +257,7 @@
     </tr>
 
     <tr>
-        <td>
-            Preview-URL:
-        </td>
+        <td class="right">Preview-URL:</td>
         <td>
             <input type="text" 
                 class="w400"
@@ -261,25 +269,29 @@
     </tr>
 
     <tr>
-        <td>
-            Image-URL:
-        </td>
+        <td class="right">Image-URL:</td>
         <td>
             <input type="text" 
                 class="w300"
                 id="image_url" 
                 name="image_url" 
                 value="(:image_url:)" 
-                onkeypress="$('savebutton').disabled = false;" />
+                onkeypress="$('savebutton').disabled = false;" 
+                style="width:295px;" />
 				<button id="imguploadbtn" type="button" class="w100" 
 					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
         </td>
     </tr>
+    
+    <tr>
+      <td></td>
+      <td>
+        <img src="(:image_url:)" class="w400" />
+      </td>
+    </tr>
 
     <tr>
-        <td>
-            Spielzeit:
-        </td>
+        <td class="right">Spielzeit:</td>
         <td>
             <input type="text" 
                 class="w400"
@@ -291,9 +303,7 @@
     </tr>
 
     <tr>
-        <td>
-            Location:
-        </td>
+        <td class="right"> Location:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -305,9 +315,7 @@
     </tr>
 
     <tr>
-        <td>
-            Additional URL:
-        </td>
+        <td class="right">Additional URL:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -319,9 +327,7 @@
     </tr>
 
     <tr>
-        <td>
-            Additional-URL-text:
-        </td>
+        <td class="right">Additional-URL-text:</td>
         <td>
             <input type="text" 
                 class="w400" 
@@ -339,7 +345,7 @@
                 id="old_series_id" 
                 name="old_series_id"
                 value="(:series_id:)" />
-            <input type="button" id="savebutton" disabled="desabled" 
+            <input type="button" id="savebutton" disabled="disabled" 
                 onclick="mediaobjecteditor.save()" value="save" />
         </td>
     </tr>
@@ -352,7 +358,7 @@
     <tr>
         <td />
         <td style="text-align: center; padding-top: 15px; border-top: 1px solid grey;">
-            <input type="button" id="deletebutton"
+            <input type="button" class="button2" id="deletebutton"
                 onclick="mediaobjecteditor.remove((:object_id:), (:series_id:))" value="delete" />
         </td>
     </tr>   

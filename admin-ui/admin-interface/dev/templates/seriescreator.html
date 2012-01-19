@@ -1,10 +1,10 @@
 <h2>Series-Creator</h2>
 
 <form action="#" id="fields">
-<table style="margin-left: auto; margin-right: auto;">
+<table style="margin-left: 35px; margin-right: 35px;">
 
     <tr>
-        <td>Name:</td>
+        <td class="right">Name:</td>
         <td>
             <input type="text" 
                 class="w400"
@@ -16,123 +16,127 @@
     </tr>
 
     <tr>
-        <td>Beschreibung:</td>
+        <td class="right">Beschreibung:</td>
         <td>
             <textarea id="description" 
                 class="w400"
                 name="description" 
                 rows="5" 
-                onkeypress="$('savebutton').disabled=false;" /></textarea>
+                onkeypress="$('savebutton').disabled=false;"
+                style="width:400px; min-width:400px; max-width:400px;"></textarea>
         </td>
     </tr>
 
     <tr>
-        <td>Kurzbeschreibung:</td>
+        <td class="right">Kurzbeschreibung:</td>
         <td>
             <textarea id="description_sh" 
                 name="description_sh" 
                 cols="46" 
                 rows="3" 
                 onkeypress="$('savebutton').disabled=false;" 
-                style="width:400px;"></textarea>
+                style="width:400px; min-width:400px; max-width:400px;"></textarea>
         </td>
     </tr>
 
     <tr>
-        <td>Semester:</td>
+        <td class="right">Semester:</td>
         <td>
-            <select name="term_id" id="term_id" onchange="$('savebutton').disabled=false;" style="width:400px;">(:term_options:)</select>
+            <select name="term_id" id="term_id" onchange="$('savebutton').disabled=false;" style="width:406px;">(:term_options:)</select>
         </td>
+        <td><a href="javascript:load_editor_as_dialog('semester');" class="editbutton">Edit</a></td>
     </tr>
 
     <tr>
-        <td>Kurs ID:</td>
+        <td class="right">Kurs ID:</td>
         <td>
             <input type="text" name="course_id" id="course_id" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Zugriff:</td>
+        <td class="right">Zugriff:</td>
         <td>
-            <select name="access_id" id="access_id" onchange="$('savebutton').disabled=false;" style="width:400px;">(:access_options:)</select>
-        </td>
+            <select name="access_id" id="access_id" onchange="$('savebutton').disabled=false;" style="width:406px;">(:access_options:)</select>
+        </td> 
+        <td><a href="javascript:load_editor_as_dialog('access');" class="editbutton">Edit</a></td>
     </tr>
 
     <tr>
-        <td>Portal URL:</td>
+        <td class="right">Portal URL:</td>
         <td>
             <input type="text" name="portal_url" id="portal_url" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Klassifikation:</td>
+        <td class="right">Klassifikation:</td>
         <td>
-            <select name="clas_id" id="clas_id" onchange="$('savebutton').disabled=false;" style="width:400px;">(:clas_options:)</select>
-        </td>
+            <select name="clas_id" id="clas_id" onchange="$('savebutton').disabled=false;" style="width:406px;">(:clas_options:)</select>
+        </td> 
     </tr>
 
     <tr>
-        <td>Preview URL:</td>
+        <td class="right">Preview URL:</td>
         <td>
             <input type="text" name="thumbnail_url" id="thumbnail_url" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>LMS Kurs ID:</td>
+        <td class="right">LMS Kurs ID:</td>
         <td>
             <input type="text" name="lms_course_id" id="lms_course_id" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Add. URL:</td>
+        <td class="right">Add. URL:</td>
         <td>
             <input type="text" name="add_url" id="add_url" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Add. URL Text:</td>
+        <td class="right">Add. URL Text:</td>
         <td>
             <input type="text" name="add_url_text" id="add_url_text" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>LRS Series ID:</td>
+        <td class="right">LRS Series ID:</td>
         <td>
             <input type="text" name="lrs_series_id" id="lrs_series_id" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Social Web:</td>
+        <td class="right">Social Web:</td>
         <td>
             <input type="text" name="social_web" id="social_web" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Keywords:</td>
+        <td class="right">Keywords:</td>
         <td>
             <input type="text" name="keywords" id="keywords" value="" onkeypress="$('savebutton').disabled=false;" style="width:400px;">
         </td>
     </tr>
 
     <tr>
-        <td>Kategorie:</td>
+        <td class="right">Kategorie:</td>
         <td>
-            <select name="cat_id" id="cat_id" onchange="$('savebutton').disabled=false;" style="width:400px;">(:cat_options:)</select>
+            <select name="cat_id" id="cat_id" onchange="$('savebutton').disabled=false;" style="width:406px;">(:cat_options:)</select>
         </td>
+        <td><a href="javascript:load_editor_as_dialog('category');" class="editbutton">Edit</a></td>
     </tr>
 
     <tr>
-        <td>Lecturer</td>
+        <td class="right">Lecturer</td>
         <td>
-            <select id="lecturers" name="lecturer" size="3" class="w400" multiple="multiple"
+            <select id="lecturers" name="lecturer" size="4" class="w400" multiple="multiple" style="width:406px;"
                 title="hold ctrl to select/unselect multiple lecturer">(:lecturer_options:)</select>
         </td>
     </tr>
@@ -142,8 +146,8 @@
 <table style="margin-left: auto; margin-right: auto; max-width: 80%;">
     <tr>
         <td style="border-bottom: 1px solid gray; min-width: 500px;">
-            <button type="button" onclick="serieseditor.getLastRecordings($('mediaobject_count').value, false);" >Last recordings</button>
-            <button type="button" onclick="serieseditor.getLastRecordings($('mediaobject_count').value, true);" >Last recordings without series</button>
+            <input type="button" onclick="serieseditor.getLastRecordings($('mediaobject_count').value, false);" class="button2" style="width:220px" value="Last recordings">
+            <input type="button" onclick="serieseditor.getLastRecordings($('mediaobject_count').value, true);" class="button2" style="width:220px" value="Last recordings without series">
             Count: 
             <select id="mediaobject_count">
                 <option>10</option>
