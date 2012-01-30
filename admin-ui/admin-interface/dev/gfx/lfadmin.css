@@ -195,6 +195,10 @@ table#main_table {
     text-align: right;
 }
 
+.left {
+    text-align: left;
+}
+
 .navigationelement {
     padding: 6px 0px 6px 25px;
     background-color: #333333;

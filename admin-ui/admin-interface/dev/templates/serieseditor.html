@@ -7,7 +7,7 @@
 <h1 class="name">(:name:)</h1>
 
 <form action="#" id="fields">
-	<table style="margin-left: 35px; margin-top: 35px;">
+	<table style="margin-left: 35px; margin-top: 35px; padding-bottom: 20px; border-bottom: 1px solid #888888;">
 
 		<tr>
 			<td class="right">ID:</td>
@@ -62,7 +62,9 @@
 					onchange="$('savebutton').disabled=false;" 
 					style="width:406px;">(:term_options:)</select>
 			</td>
-			<td><a href="javascript:load_editor_as_dialog('terms');" class="editbutton">Edit</a></td>
+			<td class="left">
+        <a href="javascript:load_editor_as_dialog('terms');" class="editbutton">Edit</a>
+      </td>
 		</tr>
 
 		<tr>
@@ -103,14 +105,17 @@
 				<button id="uploadbtn" type="button" class="w100" 
 					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
 			</td>
+			<td class="left">
+        <a href="#" class="editbutton" onclick="$('showthumb').style.display = ( $('showthumb').style.display == 'none')?'block':'none' ;">Prev</a>
+      </td>
 		</tr>
 		
 		<tr>
-		  <td></td>
-      <td>
+      <td></td>
+      <td id="showthumb" class="left" style="display:none;">
         <img src="(:thumbnail_url:)" />
       </td>
-		</tr>
+    </tr>
 
 		<tr>
 			<td class="right">LMS Kurs ID:</td>
@@ -170,8 +175,10 @@
 					onchange="$('savebutton').disabled=false;" 
 					class="selectfield">(:cat_options:)</select>
 			</td>
-			<td><a href="javascript:load_editor_as_dialog('category');" class="editbutton">Edit</a></td>
-		</tr>
+			<td class="left">
+        <a href="javascript:load_editor_as_dialog('category');" class="editbutton">Edit</a>
+      </td>		
+    </tr>
 
 		<tr>
 			<td class="right">Default Playlist:</td>
@@ -192,7 +199,6 @@
 	</table>
 </form>
 
-<hr>
 
 <table style="margin: 10px 0px 0px 35px;">
 	<tr>
