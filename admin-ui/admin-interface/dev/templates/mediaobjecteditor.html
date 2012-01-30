@@ -3,7 +3,43 @@
 	<iframe style="width: 100%; height: 80px; border: none;" src="php/upload.php?field=image_url&id=series_(:series_id:)_mediaobject_(:object_id:)"></iframe>
 </div>
 
-<h1 id="mediaobjecttitle" class="name">(:series_name:): (:title:)</h1>
+<h1 class="name">(:title:)</h1>
+
+<!--<table style="margin: 20px 0px 0px 35px; padding-bottom: 20px; border-bottom: 1px solid grey;">
+    <tr>
+        <td>
+            Related Mediaobjects:
+        </td>
+        <td />
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <select id="related_object_select" size="4" style="width:400px;" 
+                onclick="mediaobjecteditor.load($('related_object_select').value)" 
+                style="border: 1px solid grey;">
+                    
+            </select>
+        </td>
+        <td>
+          <div onclick="mediaobjecteditor.load($('related_object_select').value);" class="button2">edit</div>
+          <div>(:related_objects:)</div>  
+            <!--
+            <button type="button" 
+                onclick="mediaobjecteditor.add(array('cou_id' => (:cou_id:)));" 
+                style="width:80px">Neu</button><br />
+            <button type="button" 
+                onclick="mediaobjecteditor.remove(document.getElementById('related_object_select').value)" 
+                style="width:80px">L&ouml;schen</button>
+            
+        </td>
+    </tr>    
+    <tr>  
+      <td>
+        <div onclick="$('object_id').value = '';" class="button2">duplicate</div>
+      </td>
+    </tr>    
+</table>      -->
+
 
 <div id="tabmenu">
   <div>(:related_objects:)</div>
@@ -140,7 +176,9 @@
                     (:language_options:)
             </select>
         </td>
-        <td><a href="javascript:load_editor_as_dialog('language');" class="editbutton">Edit</a></td>
+        <td class="left">
+          <a href="javascript:load_editor_as_dialog('language');" class="editbutton">Edit</a>
+        </td>    
     </tr>
 
     <tr>
@@ -154,7 +192,9 @@
                     (:format_options:)
             </select>
         </td>
-        <td><a href="javascript:load_editor_as_dialog('format');" class="editbutton">Edit</a></td>
+        <td class="left">
+          <a href="javascript:load_editor_as_dialog('format');" class="editbutton">Edit</a>
+        </td>   
     </tr>
 
     <tr>
@@ -168,7 +208,9 @@
                     (:access_options:)
             </select>
         </td>
-        <td><a href="javascript:load_editor_as_dialog('access');" class="editbutton">Edit</a></td>
+        <td class="left">
+          <a href="javascript:load_editor_as_dialog('access');" class="editbutton">Edit</a>
+        </td>    
     </tr>
 
     <tr>
@@ -180,6 +222,9 @@
                 name="url" 
                 value="(:url:)" 
                 onkeypress="$('savebutton').disabled = false;" />
+        </td>
+        <td>
+          <a class="editbutton" target="_blank" href="(:url:)">Prev</a>
         </td>
     </tr>
 
@@ -209,18 +254,6 @@
     </tr>
 
     <tr>
-        <td class="right">Thumbnail-URL:</td>
-        <td>
-            <input type="text" 
-                class="w400"
-                id="thumbnail_url" 
-                name="thumbnail_url" 
-                value="(:thumbnail_url:)" 
-                onkeypress="$('savebutton').disabled = false;" />
-        </td>
-    </tr>
-
-    <tr>
         <td class="right">Preview-URL:</td>
         <td>
             <input type="text" 
@@ -245,12 +278,37 @@
 				<button id="imguploadbtn" type="button" class="w100" 
 					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
         </td>
+        <td>
+          <a href="#" class="editbutton" onclick="$('showimg').style.display = ( $('showimg').style.display == 'none')?'block':'none' ;">Prev</a>
+        </td>
     </tr>
     
     <tr>
       <td></td>
-      <td>
+      <td id="showimg" style="display:none;">
         <img src="(:image_url:)" class="w400" />
+      </td>
+    </tr>
+
+    <tr>
+        <td class="right">Thumbnail-URL:</td>
+        <td>
+            <input type="text" 
+                class="w400"
+                id="thumbnail_url" 
+                name="thumbnail_url" 
+                value="(:thumbnail_url:)" 
+                onkeypress="$('savebutton').disabled = false;" />
+        </td>
+        <td>
+          <a href="#" class="editbutton" onclick="$('showthumb').style.display = ( $('showthumb').style.display == 'none')?'block':'none' ;">Prev</a>
+        </td>
+    </tr> 
+    
+    <tr>
+      <td></td>
+      <td id="showthumb" style="display:none;">
+        <img src="(:thumbnail_url:)" />
       </td>
     </tr>
 
@@ -304,7 +362,7 @@
 
     <tr>
         <td></td>
-        <td align="center">
+        <td style="text-align: center; padding-top: 15px;">
             <input type="hidden" 
                 id="old_series_id" 
                 name="old_series_id"
@@ -325,7 +383,7 @@
             <input type="button" class="button2" id="deletebutton"
                 onclick="mediaobjecteditor.remove((:object_id:), (:series_id:))" value="delete" />
         </td>
-    </tr>   
+    </tr>  
 </table>
 </form>
 
