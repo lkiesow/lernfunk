@@ -5,49 +5,7 @@ require_once( dirname(__FILE__).'/lf_data.php' );
 
 $uid = lf_request_http_auth_basic();
 
-//header( 'Content-Type: text/plain' );
-//
-//$uid = lf_check_authetification( 'test', 'uosmedia' );
-//
-//echo 'Trying to authetificate user »test« (passwd: uosmedia): '.( $uid < 0 ? 'FAILED' : 'SUCEEDED' )."\n";
-//echo 'Current user ID: '.$uid."\n";
-//
-//$uid = lf_check_authetification( 'virtmm', 'uosmedia' );
-//
-//echo 'Trying to authetificate user »virtmm« (passwd: uosmedia): '.( $uid < 0 ? 'FAILED' : 'SUCEEDED' )."\n";
-//echo 'Current user ID: '.$uid."\n";
-//
-//$a = lf_check_access( $uid, '/' );
-//echo "Trying to access »/«:\n"
-//	."\tRead  access: ".( $a[ 'r' ] >= 0 ? 'YES'.", level ".$a[ 'r' ] : 'NO' )."\n"
-//	."\tWrite access: ".( $a[ 'w' ] >= 0 ? 'YES'.", level ".$a[ 'w' ] : 'NO' )."\n"
-//	."\tApplied rule: ".$a[ 'rule_path' ]."\n";
-//
-//$a = lf_check_access( $uid, '/mediaobject' );
-//echo "Trying to access »/mediaobject«:\n"
-//	."\tRead  access: ".( $a[ 'r' ] >= 0 ? 'YES'.", level ".$a[ 'r' ] : 'NO' )."\n"
-//	."\tWrite access: ".( $a[ 'w' ] >= 0 ? 'YES'.", level ".$a[ 'w' ] : 'NO' )."\n"
-//	."\tApplied rule: ".$a[ 'rule_path' ]."\n";
-//
-//$a = lf_check_access( $uid, '/series/' );
-//echo "Trying to access »/series/«:\n"
-//	."\tRead  access: ".( $a[ 'r' ] >= 0 ? 'YES'.", level ".$a[ 'r' ] : 'NO' )."\n"
-//	."\tWrite access: ".( $a[ 'w' ] >= 0 ? 'YES'.", level ".$a[ 'w' ] : 'NO' )."\n"
-//	."\tApplied rule: ".$a[ 'rule_path' ]."\n";
-//$a = lf_check_access( $uid, $_REQUEST[ 'path' ] );
-//echo "Trying to access »".$_REQUEST[ 'path' ]."«:\n"
-//	."\tRead  access: ".( $a[ 'r' ] >= 0 ? 'YES'.", level ".$a[ 'r' ] : 'NO' )."\n"
-//	."\tWrite access: ".( $a[ 'w' ] >= 0 ? 'YES'.", level ".$a[ 'w' ] : 'NO' )."\n"
-//	."\tApplied rule: ".$a[ 'rule_path' ]."\n";
-//
-//echo $_SERVER[ 'REQUEST_METHOD' ]."\n";
-//print_r( $_REQUEST )."\n";
-
 $access = lf_check_access( $uid, $_REQUEST[ 'path' ] );
-
-//$access['uid'] = $uid;
-//echo json_encode( $access );
-//exit;
 
 // function defination to convert array to xml
 function array_to_xml( $arr, &$xml ) {
@@ -103,8 +61,13 @@ if ( $_REQUEST['format'] == 'xml' ) {
 	array_to_xml( $result, $xml );
 	print $xml->asXML();
 } else {
-	header( 'Content-Type: application/json' );
-	echo json_encode( $result );
+	if ( array_key_exists( 'jsonp', $_REQUEST ) ) {
+		header( 'Content-Type: application/javascript' );
+		echo $_REQUEST['jsonp'].'('.json_encode( $result ).');';
+	} else {
+		header( 'Content-Type: application/json' );
+		echo json_encode( $result );
+	}
 }
 
 ?>
