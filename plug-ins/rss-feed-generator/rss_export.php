@@ -18,7 +18,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with virtPresenter.  If not, see <http://www.gnu.org/licenses/>.
 */
-include_once('../lernfunk/lernfunk.php');
+//include_once('../lernfunk/lernfunk.php');
+include_once(dirname(__FILE__).'/../../libraries/base/lernfunk.php');
 
 class RSSExporter {
 	
@@ -50,7 +51,8 @@ class RSSExporter {
 				$mediaobject[format_id] = 12;
 			}
 		}
-		$mediaobject['title'] = htmlentities( $mediaobject['title'] );
+		$mediaobject['title'] = str_replace( '&', '&#38;', $mediaobject['title'] );
+//		$mediaobject['title'] = htmlentities( $mediaobject['title'], ENT_XML1 );
 		$subs = $mediaobject;
 		$subs['site_link'] = $series_subs['series_link'];   
 		$subs['item_num'] = $item_num;
@@ -86,6 +88,7 @@ class RSSExporter {
 		}
 		$subs['build_date'] = $builddate;
 		$subs['pub_date'] = $builddate;
+		$subs['year'] = date('Y');
 
 		// find author/owner
 		$sql = 'SELECT * FROM lecturer '
