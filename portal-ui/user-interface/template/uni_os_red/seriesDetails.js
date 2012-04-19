@@ -35,12 +35,15 @@ for ( var id in l ) {
 
 /* load first recording */
 var cou_id = $.bbq.getState( 'couid' );
-if ( tplData.firstrecording_cou_id && !cou_id ) {
-	loadRec( '#mediaobjectplayer', tplData.firstrecording_cou_id );
-}
-
-if ( !cou_id ) {
-	expandRecordingInfo( $( '.recordingslistitem' )[0] );
+if (cou_id) {
+	loadRec( '#mediaobjectplayer', cou_id );
+} else {
+	if ( tplData.details.firstrecording_cou_id ) {
+		loadRec( '#mediaobjectplayer', tplData.details.firstrecording_cou_id );
+		expandRecordingInfo( $( '.recordingslistitem' )[0] );
+	} else {
+		expandRecordingInfo( $( '.recordingslistitem' )[0] );
+	}
 }
 
 /* Autoscrolling function for preview player */
@@ -105,3 +108,4 @@ function expandRecordingInfo( it ) {
 	$( '.dllcontainer' ).children( '.epl' ).hide();
 
 }
+
