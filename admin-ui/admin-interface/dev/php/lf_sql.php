@@ -1,11 +1,6 @@
 <?php
 
-$mysql = array(
-	'server' => '',
-	'user'   => '',
-	'passwd' => '',
-	'db'     => 'lernfunk'
-);
+require_once(dirname(__FILE__).'/config.php');
 
 function query($query) {
 
