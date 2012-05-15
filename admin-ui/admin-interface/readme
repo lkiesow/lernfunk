@@ -19,6 +19,8 @@
 ################################################################################
 # How to build/deploy the admin-ui                                             #
 ################################################################################
+# On Unix/Linux:                                                               #
+#                                                                              #
 # 1. Run  ./make_release_build.sh  A folder "release" is created, containing   #
 #    the ready to work admin-ui.                                               #
 # 2. Change directory to "release/php"                                         #
@@ -26,8 +28,22 @@
 #    baselib                                                                   #
 # 4. Copy the contens of release to a webserver                                #
 #                                                                              #
-################################################################################
-# Warning                                                                      #
-################################################################################
-# There is no login mechanism! You should use your webserver to protect it.    #
+#                                                                              #
+# On Windows:                                                                  #
+#                                                                              #
+# 1. Istall Python for Windows:                                                #
+#    http://www.python.org/download/releases/2.7.3/                            #
+# 2. Install Git for Windows:                                                  #
+#    http://tinyurl.com/cuzmbn2                                                #
+#    You might also want to install a graphical user interface for git:        #
+#    http://code.google.com/p/tortoisegit/downloads/list                       #
+# 3. Check out lernfunk and go to                                              #
+#    lernfunk/admin-ui/admin-interface                                         #
+# 4. Run make_release_build.py. A folder "release" is created, containing      #
+#    the ready to work admin-ui.                                               #
+# 5. Go to release/php.                                                        #
+# 6. Edit "config.php" (Most important is the correct path to the Lernfunk-    #
+#    baselib                                                                   #
+# 7. Copy the contens of release to a webserver                                #
+#                                                                              #
 ################################################################################
