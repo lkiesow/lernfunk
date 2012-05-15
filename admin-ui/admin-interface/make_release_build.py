@@ -8,7 +8,11 @@ import datetime
 os.chdir( os.getcwd() )
 
 print( 'cleaning up release folder...' )
-shutil.rmtree( 'release' )
+try:
+	shutil.rmtree( 'release' )
+except OSError:
+	pass
+
 os.makedirs( 'release' )
 
 
