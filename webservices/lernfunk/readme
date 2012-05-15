@@ -1,3 +1,7 @@
+################################################################################
+## GET DATA                                                                   ##
+################################################################################
+
 REQUEST PARAMETER:
  - filter
  - limit
@@ -141,3 +145,11 @@ PATH
 
   Fixed path elements are written in lower case. Variable path elements, those
   which must be replaced by some kind of id, are written in upper case.
+
+################################################################################
+## SET DATA                                                                   ##
+################################################################################
+
+REQUEST PARAMETER:
+ - data
+ - path

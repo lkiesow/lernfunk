@@ -793,7 +793,9 @@ function lf_create_dataset( $tbl, $obj_str ) {
 	$sql_vals = '"'.implode( '", "', array_values( $new_obj ) ).'"';
 	$sql = 'INSERT INTO '.$tbl.' ( '.$sql_keys.' ) VALUES ( '.$sql_vals.' )';
 	header( 'HTTP/1.1 201 Created' );
-	return $sql;
+
+	/* Insert into database */
+	return lf_query( $sql );
 
 }
 
