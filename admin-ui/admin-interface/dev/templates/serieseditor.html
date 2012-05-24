@@ -1,7 +1,6 @@
-
-<div id="uploadform" style="width: 300px; height: 100px; position: fixed; top: 50%; margin-top: -50px; margin-left: auto; margin-right: auto; background-color: #fff; text-align: right; border: 1px solid black; display: none;">
-	<a onclick="document.getElementById('uploadform').style.display = 'none'">X</a>
-	<iframe style="width: 100%; height: 80px; border: none;" src="php/upload.php?field=thumbnail_url&id=series_(:series_id:)"></iframe>
+<div id="uploadform">
+	<a class="close" onclick="document.getElementById('uploadform').style.display = 'none'">X</a>
+	<iframe src="php/upload.php?field=thumbnail_url&id=series_(:series_id:)"></iframe>
 </div>
 
 <h1 class="name">(:name:)</h1>
@@ -102,8 +101,8 @@
 			<td>
 				<input type="text" name="thumbnail_url" id="thumbnail_url" style="width:295px;" 
 				value="(:thumbnail_url:)" onkeypress="$('savebutton').disabled=false;">
-				<button id="uploadbtn" type="button" class="w100" 
-					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</button>
+				<a id="uploadbtn" style="width: 78px; display: inline-block;" class="editbutton"
+					onclick="document.getElementById('uploadform').style.display = 'block';">upload file</a>
 			</td>
 			<td class="left">
         <a href="#" class="editbutton" onclick="$('showthumb').style.display = ( $('showthumb').style.display == 'none')?'block':'none' ;">Prev</a>

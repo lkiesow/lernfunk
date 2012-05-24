@@ -17,6 +17,7 @@
 // case you use Windows) can _not_ be omittet.
 	$uploaddir = '/var/www/html/release/static/preview/';
 	$uploadurl = 'http://lernfunk.de/static/preview/';
+	$previewfooter = 'http://lernfunk.de/gfx/uni-footer.jpg';
 
 // Set access data for mysql database
 $mysql = array(
