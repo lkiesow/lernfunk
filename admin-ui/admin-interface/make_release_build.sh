@@ -42,8 +42,6 @@ cp dev/js/bin/lfadmin.js release/js/bin
 
 echo 'copy general files...'
 cp dev/index.php release
-cp dev/.htaccess release
-cp dev/.htusers  release
 
 echo 'writing build time...'
 date > release/buildtime.txt
