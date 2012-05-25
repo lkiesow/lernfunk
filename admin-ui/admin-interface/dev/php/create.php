@@ -58,8 +58,8 @@ imagecopy($canvas, $watermark, 0, 210, 0, 0, 300, 90);
 
 
 
-$new_filename = preg_replace('/\..+$/', '.' . "new.jpg", $filename);
-$new_fileurl = preg_replace('/\..+$/', '.' . "new.jpg", $_POST['fileurl']);
+$new_filename = preg_replace('/\.[^\.]+$/', '.' . "new.jpg", $filename);
+$new_fileurl = preg_replace('/\.[^\.]+$/', '.' . "new.jpg", $_POST['fileurl']);
 
 //Bild speichern 
 imagejpeg($canvas, $new_filename, 100);
