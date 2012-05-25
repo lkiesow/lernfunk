@@ -4,6 +4,7 @@ import os
 import shutil
 import io
 import datetime
+import sys
 
 os.chdir( os.getcwd() )
 
@@ -48,7 +49,10 @@ f = io.open( 'dev/js/src/serieseditor.js', 'r' )
 jsfile += f.read()
 
 f = open( 'dev/js/bin/lfadmin.js', 'wb' )
-f.write( jsfile )
+if sys.version_info < (3, 0):
+	f.write( jsfile )
+else:
+	f.write( bytes(jsfile, 'UTF-8') )
 
 print( 'copy template files...' )
 shutil.copytree( 'dev/templates', 'release/templates' )
@@ -70,4 +74,7 @@ shutil.copy( 'dev/index.php', 'release' )
 
 print( 'writing build time...' )
 f = open( 'release/buildtime.txt', 'wb' )
-f.write( str(datetime.datetime.now()) )
+if sys.version_info < (3, 0):
+	f.write( str(datetime.datetime.now()) )
+else:
+	f.write( bytes(str(datetime.datetime.now()), 'UTF-8') )
