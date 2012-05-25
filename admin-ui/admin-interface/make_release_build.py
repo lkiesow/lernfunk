@@ -78,3 +78,5 @@ if sys.version_info < (3, 0):
 	f.write( str(datetime.datetime.now()) )
 else:
 	f.write( bytes(str(datetime.datetime.now()), 'UTF-8') )
+
+print( "Please remember to \033[1mupdate the php/config.php!\033[0m" )
