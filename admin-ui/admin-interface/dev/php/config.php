@@ -10,6 +10,11 @@
 	// mb_internal_encoding('UTF-8');
 	// mb_http_output('UTF8');
 
+// Set default timezone
+// For a list of valid options visit:
+// http://de3.php.net/manual/en/timezones.php
+date_default_timezone_set( 'Europe/Berlin' );
+
 // include lernfunk library
 	include_once($_SERVER['DOCUMENT_ROOT'].'/libraries/base/lernfunk.php');
 
