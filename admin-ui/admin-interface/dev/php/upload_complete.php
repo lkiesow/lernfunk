@@ -1,7 +1,9 @@
 <?php
-// filename: upload_complete.php
-	$filename = $_FILES['uploadedfile']['name'];
-	$info     = pathinfo( $_FILES['uploadedfile']['name'] ); 
+
+/* Require propper authentication. */
+include_once(dirname(__FILE__).'/lf_authetification.php');
+lf_request_http_auth_basic();
+
 	$field    = $_REQUEST['field'];
 
 

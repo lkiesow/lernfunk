@@ -1,5 +1,10 @@
 <?php
 require_once(dirname(__FILE__).'/config.php');
+
+/* Require propper authentication. */
+include_once(dirname(__FILE__).'/lf_authetification.php');
+lf_request_http_auth_basic();
+
 ini_set('display_errors', true);
 
 // Original image

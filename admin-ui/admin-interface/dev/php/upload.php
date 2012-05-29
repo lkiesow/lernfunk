@@ -1,5 +1,10 @@
 <?php
 
+/* Require propper authentication. */
+include_once(dirname(__FILE__).'/lf_authetification.php');
+lf_request_http_auth_basic();
+
+
   //print_r($_FILES);
 	require_once(dirname(__FILE__).'/config.php');
 
