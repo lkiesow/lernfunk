@@ -1,22 +1,22 @@
 /* 
 	Copyright (c) 2006 - 2010  Universitaet Osnabrueck, virtUOS 
-	Authors: Lars Kiesow
+Authors: Lars Kiesow
 
-	This file is part of Lernfunk. 
+This file is part of Lernfunk. 
 
-	Lernfunk is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, either version 3 of the License, or 
-	(at your option) any later version. 
+Lernfunk is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version. 
 
-	Lernfunk is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+Lernfunk is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+GNU General Public License for more details. 
 
-	You should have received a copy of the GNU General Public License 
-	along with Lernfunk.  If not, see <http://www.gnu.org/licenses/>. 
-*/
+You should have received a copy of the GNU General Public License 
+along with Lernfunk.  If not, see <http://www.gnu.org/licenses/>. 
+ */
 
 #include <algorithm>
 #include <cerrno>
@@ -40,15 +40,15 @@ using namespace std;
 #define null 0
 
 #if defined(__WIN32__) || defined(_WIN32) || defined(WIN32) || defined(__WINDOWS__) || defined(__TOS_WIN__)
-	#include <windows.h>
-	inline void delay( unsigned long ms ) {
-		Sleep( ms );
-	}
+#include <windows.h>
+inline void delay( unsigned long ms ) {
+	Sleep( ms );
+}
 #else  /* presume POSIX */
-	#include <unistd.h>
-	inline void delay( unsigned long ms ) {
-		usleep( ms * 1000 );
-	}
+#include <unistd.h>
+inline void delay( unsigned long ms ) {
+	usleep( ms * 1000 );
+}
 #endif
 
 typedef unsigned int uint;
@@ -196,9 +196,9 @@ void read_config(config & cfg, const string & filename) {
 					exit(EXIT_FAILURE);
 				}
 			} else {
-					cerr << "ERROR: syntax error in configuration file '" << filename << "' on line " << line << endl;
-					exit(EXIT_FAILURE);
-				}
+				cerr << "ERROR: syntax error in configuration file '" << filename << "' on line " << line << endl;
+				exit(EXIT_FAILURE);
+			}
 		}
 
 	}
@@ -219,11 +219,11 @@ void get_tags(const config & cfg, const string & str, tagmap & tags) {
 				task  = 1;
 			} 
 		} else if (task == 1) {
-				// find end of word
-				if ( ( (str[i] < 'A') && (str[i] >= 0) )  || ( (str[i] > 'Z') && (str[i] < 'a') ) ) {
-					task = 0;
-					insert_tag(cfg, tags, str, start, i - start);
-				}
+			// find end of word
+			if ( ( (str[i] < 'A') && (str[i] >= 0) )  || ( (str[i] > 'Z') && (str[i] < 'a') ) ) {
+				task = 0;
+				insert_tag(cfg, tags, str, start, i - start);
+			}
 		}
 	}
 	if (task == 1)
@@ -269,8 +269,8 @@ void generate_tags(const config & cfg) {
 
 	/* Connect to database */
 	if (!mysql_real_connect(conn, cfg.mysql.server.c_str(),
-			cfg.mysql.user.c_str(), cfg.mysql.password.c_str(),
-			cfg.mysql.database.c_str(), 0, NULL, 0)) {
+				cfg.mysql.user.c_str(), cfg.mysql.password.c_str(),
+				cfg.mysql.database.c_str(), 0, NULL, 0)) {
 		log_error(cfg, mysql_error(conn));
 		exit(EXIT_FAILURE);
 	}
@@ -355,15 +355,15 @@ void generate_tags(const config & cfg) {
 	mysql_close(conn);
 
 	log_success(cfg, "Tags successful generated.");
-		// show content:
-		// map<string, unsigned int>::iterator it;
-		/*
+	// show content:
+	// map<string, unsigned int>::iterator it;
+	/*
 		for ( it=tags.begin(); it != tags.end(); it++ ) {
-			// filter
-			if (it->second > cfg.tag.minquantity)
-				cout << (*it).first << " => " << (*it).second << endl;
-		}
-		*/
+	// filter
+	if (it->second > cfg.tag.minquantity)
+	cout << (*it).first << " => " << (*it).second << endl;
+	}
+	 */
 
 }
 
@@ -374,7 +374,7 @@ void generate_tags(const config & cfg) {
  * @param cfg Pointer to the configuration-struct
  */
 time_t next_runtime(config & cfg) {
-	
+
 	// check if there is no next time
 	if ( cfg.timer.hours.empty() || cfg.timer.wdays.empty() )
 		return 0;
@@ -409,62 +409,66 @@ time_t next_runtime(config & cfg) {
 
 int main(int argc, char ** argv) {
 
-		// set standard configuration
-		config cfg;
-		set_default_config(cfg);
+	// set standard configuration
+	config cfg;
+	set_default_config(cfg);
 
-		if (argc == 2)
-			read_config(cfg, argv[1]);
+	if (argc != 2) {
+		printf( "Usage: %s configfile\n", *argv );
+		return 0;
+	}
 
-		/* become a daemon */
+	read_config(cfg, argv[1]);
 
-		/* Our process ID and Session ID */
-		pid_t pid, sid;
+	/* become a daemon */
 
-		/* Fork off the parent process */
-		pid = fork();
-		if (pid < 0) {
-			log_error(cfg, "Could not fork parent process.");
-			exit(EXIT_FAILURE);
+	/* Our process ID and Session ID */
+	pid_t pid, sid;
+
+	/* Fork off the parent process */
+	pid = fork();
+	if (pid < 0) {
+		log_error(cfg, "Could not fork parent process.");
+		exit(EXIT_FAILURE);
+	}
+	/* If we got a good PID, then we can exit the parent process. */
+	if (pid > 0) {
+		log_success(cfg, "Exit parent process.");
+		exit(EXIT_SUCCESS);
+	}
+
+	/* Create a new SID for the child process */
+	sid = setsid();
+	if (sid < 0) {
+		log_error(cfg, "Could not create a new SID for the child process.");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Change the current working directory */
+	if ((chdir("/")) < 0) {
+		log_error(cfg, "Could not change the current working directory.");
+		exit(EXIT_FAILURE);
+	}
+
+
+	// first: do this once
+	generate_tags(cfg);
+
+	// second: check if this should run as daemon
+	time_t nexttime = next_runtime(cfg);
+	while (nexttime > 0) {
+
+		// log next runtime
+		string next( ctime( &nexttime ) );
+		next.resize(next.length() - 1); // remove \n
+		log_success(cfg, "Next runtime is " + next);
+
+		// wait
+		while ( time(null) < nexttime ) {
+			delay(5000); // sleep 5 seconds
 		}
-		/* If we got a good PID, then we can exit the parent process. */
-		if (pid > 0) {
-			log_success(cfg, "Exit parent process.");
-			exit(EXIT_SUCCESS);
-		}
-
-		/* Create a new SID for the child process */
-		sid = setsid();
-		if (sid < 0) {
-			log_error(cfg, "Could not create a new SID for the child process.");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Change the current working directory */
-		if ((chdir("/")) < 0) {
-			log_error(cfg, "Could not change the current working directory.");
-			exit(EXIT_FAILURE);
-		}
-
-
-		// first: do this once
 		generate_tags(cfg);
+		nexttime = next_runtime(cfg);
+	}
 
-		// second: check if this should run as daemon
-		time_t nexttime = next_runtime(cfg);
-		while (nexttime > 0) {
-
-			// log next runtime
-			string next( ctime( &nexttime ) );
-			next.resize(next.length() - 1); // remove \n
-			log_success(cfg, "Next runtime is " + next);
-
-			// wait
-			while ( time(null) < nexttime ) {
-				delay(5000); // sleep 5 seconds
-			}
-			generate_tags(cfg);
-			nexttime = next_runtime(cfg);
-		}
-		
 }
