@@ -1,0 +1,28 @@
+== HTML-TAG ===================================================================
+  <object id="oc_Videodisplay" type="application/x-shockwave-flash"
+    data="Videodisplay.swf"
+    style="width: 360px; height: 206px;">
+      <param name="allowScriptAccess" value="always" />
+      <param name="allowFullScreen" value="true" />
+      <param name="movie" value="Videodisplay.swf" />
+      <param name="quality" value="high" />
+      <param name="bgcolor" value="#000000" />
+      <param name="flashvars" value="(* OPTIONS *)" />
+  </object>
+  
+  
+== OPTIONS ====================================================================
+All options must be provided in the form KEY=VALUE and are separated by &amp;
+  
+KEY                  VALUE
+----------------------------------------
+bridgeName           Must be b_Videodisplay
+video_url            The URL of the video
+autoplay             If playback is started automatically (true/false)
+aspectRatio          Explicit specification aspect ratio of the displayed video
+defaultZoomButton    Whether there sould be a defaultZoomButton or not (true [default]/false)
+videoSizeZoomButton  Whether there sould be a videoSizeZoomButton or not (true [default]/false)
+zoomOutButton        Whether there sould be a zoomOutButton or not (true [default]/false)
+zoomInButton         Whether there sould be a zoomInButton or not (true [default]/false)
+fullScreenButton     Whether there sould be a fullScreenButton or not (true [default]/false)
+downloadButton       Whether there sould be a downloadButton or not (true/false [default])
