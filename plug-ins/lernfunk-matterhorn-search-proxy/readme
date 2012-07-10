@@ -1,0 +1,33 @@
+Lernfunk-Matterhorn-Search-Service-Proxy
+===============================================================================
+
+This software is part of the lernfunk-project, an open source media
+distribution layer for audio-visual content and more.
+
+It is free software available under the terms of the GPLv3.
+
+===============================================================================
+
+The purpose of this plugin is to combine any number of Matterhorn search
+endpoints into a single one and at the same time enforce the lernfunk access
+rights in a way, that only recordings that should be available in public are
+available in public.
+
+
+Requirements:
+ - Apache with mod_python
+ - Cron
+ - Lernfunk database
+
+Installation:
+ - Put all files into one apache directory and enable mod_python for the .py
+	files or at least for “proxy.py”.
+ - Deny the access to all files which sould not be available (at least series/*
+	and episodes/*). If mod_python is enabled for “accumulate_data.py” is will
+	only provide the date of the last update and not the configuration details.
+	If not, make shour your database access configuration is protected.
+ - Make “accumulate_data.py” executable.
+ - Edit “accumulate_data.py” and insert the lernfunk database access data and
+	the search service URLs to get the data from.
+ - Make cron execute “accumulate_data.py” in regular time steps to
+	automatically update the data. For an example see “crontab.txt”.
