@@ -30,7 +30,7 @@ def get_xml(path,req,q=None,offset=0,limit=999999):
 			f = open( path + s, 'r' )
 			res = f.read()
 			f.close()
-			if q in res:
+			if q.lower() in res.lower():
 				if count >= offset and count < offset + limit:
 					body += res
 				count += 1
@@ -52,6 +52,8 @@ class series:
 
 class episode:
 	def xml(self,req,q=None,offset=0,limit=999999):
+		if q:
+			q = '<series>' + q + '</series>'
 		return get_xml(__episodesdir__,req,q,offset,limit)
 
 
