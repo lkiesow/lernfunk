@@ -51,8 +51,8 @@ class series:
 
 
 class episode:
-	def xml(self,req,q=None,offset=0,limit=999999):
-		if q:
+	def xml(self,req,q=None,offset=0,limit=999999,lfunk=None):
+		if q and lfunk:
 			q = '<series>' + q + '</series>'
 		return get_xml(__episodesdir__,req,q,offset,limit)
 
