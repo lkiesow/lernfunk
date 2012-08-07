@@ -46,19 +46,29 @@ def get_xml(path,req,q=None,offset=0,limit=999999):
 
 
 class series:
-	def xml(self,req,q=None,offset=0,limit=999999):
+	def xml(self,req,q=None,offset=0,limit=999999,id=None):
+		if id:
+			q = ' id="' + id + '"'
 		return get_xml(__seriesdir__,req,q,offset,limit)
 
 
 class episode:
-	def xml(self,req,q=None,offset=0,limit=999999,lfunk=None):
+	def xml(self,req,q=None,offset=0,limit=999999,lfunk=None,id=None):
 		if q and lfunk:
 			q = '<series>' + q + '</series>'
+		if id:
+			q = ' id="' + id + '"'
 		return get_xml(__episodesdir__,req,q,offset,limit)
+
+
+class search:
+	series  = series()
+	episode = episode()
 
 
 series  = series()
 episode = episode()
+search  = search()
 
 
 def index(req):
