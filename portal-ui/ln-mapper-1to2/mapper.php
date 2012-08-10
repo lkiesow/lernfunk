@@ -1,4 +1,4 @@
-<?
+<?php
 /* 
 	Copyright (c) 2006 - 2010  Universitaet Osnabrueck, virtUOS 
 	Authors: Nils Birnbaum, Lars Kiesow, Benjamin Wulff
