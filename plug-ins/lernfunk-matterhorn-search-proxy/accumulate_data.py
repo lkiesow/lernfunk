@@ -3,19 +3,20 @@
 
 import urllib2
 import os
+import re
 import time
 import datetime
 import MySQLdb as mdb
 
 # List of matterhorn search services:
 services = [
-		'http://example.com:8080/search/series.xml?limit=999999&episodes=true&series=true',
-		'http://example2.com:8080/search/series.xml?limit=999999&episodes=true&series=true'
+		'http://video.virtuos.uos.de:8080/search/series.xml?limit=999999&episodes=true&series=true',
+		'http://video2.virtuos.uos.de:8080/search/series.xml?limit=999999&episodes=true&series=true'
 	]
 
-__DBSERVER__ = 'serveruri'
-__DBUSER__   = 'user'
-__DBPASSWD__ = 'password'
+__DBSERVER__ = 'mysql5.serv.uni-osnabrueck.de'
+__DBUSER__   = 'vader'
+__DBPASSWD__ = 'vr2go!_st'
 __DBNAME__   = 'lernfunk'
 
 __dir__         = os.path.dirname(__file__)
@@ -49,7 +50,12 @@ def _main():
 					access = str(access[0]) if access else str(access)
 					if not os.path.isdir(__episodesdir__+access):
 						os.makedirs(__episodesdir__+access)
-					f = open(__episodesdir__+access+'/'+k,"w")
+					modified = re.search('<modified>(.*)<\/modified>', v)
+					try:
+						modified = modified.group(1)
+					except IndexError:
+						modified = '1970-01-01T00:00:00.000+00:00'
+					f = open(__episodesdir__+access+'/'+modified+'_'+k,"w")
 					f.write(v)
 					f.close()
 				else:
@@ -58,7 +64,12 @@ def _main():
 					access = str(access[0]) if access else str(access)
 					if not os.path.isdir(__seriesdir__+access):
 						os.makedirs(__seriesdir__+access)
-					f = open(__seriesdir__+access+'/'+k,"w")
+					modified = re.search('<modified>(.*)<\/modified>', v)
+					try:
+						modified = modified.group(1)
+					except IndexError:
+						modified = '1970-01-01T00:00:00.000+00:00'
+					f = open(__seriesdir__+access+'/'+modified+'_'+k,"w")
 					f.write(v)
 					f.close()
 		finally:    

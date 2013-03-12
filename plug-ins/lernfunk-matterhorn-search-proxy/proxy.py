@@ -10,6 +10,7 @@ def get_xml(path,req,q=None,offset=0,limit=999999):
 	limit  = int(limit)
 	offset = int(offset)
 	files = os.listdir(path)
+	files.sort(reverse=True)
 
 	head  = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
 	head += '<ns2:search-results xmlns:ns2="http://search.opencastproject.org" ' \
