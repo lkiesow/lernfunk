@@ -60,6 +60,8 @@ class RSSExporter {
 		$subs['mimetype'] = $this->mimetypes[$subs['format_id']];
 		if (!$subs['author'])
 			$subs['author'] = $series_subs['author'];
+		if (!$subs['duration'])
+			$subs['duration'] = 0;
 		return $this->process($this->item_template, $subs);
 	}
 	
@@ -78,7 +80,7 @@ class RSSExporter {
 	} 
 	
 	public function generateRSS() {
-		$builddate = date('D, d M Y H:i:s Z', time());
+		$builddate = date('r', time());
 
 		$subs = $this->series->toArray();
 		if ($subs['add_url']) {
