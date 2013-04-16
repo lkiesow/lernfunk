@@ -1,0 +1,2 @@
+MAILTO=someone@example.com
+0,10,20,30,40,50 * * * * /var/www/html/release/plug-ins/lernfunk-matterhorn-search-proxy/accumulate_data.py
