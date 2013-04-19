@@ -1,4 +1,4 @@
-curl -s 'http://vm083.rz.uos.de/test/plug-ins/matterhorn-import/' \
+curl -i 'http://vm083.rz.uos.de/test/plug-ins/matterhorn-import/' \
 --data 'cmd=adddata&key=uzl3ek12ex7th1aFR1ja&server=http://video.virtuos.uni-osnabrueck.de:8080/&mediapackage={
    "mediapackage" : {
       "attachments" : {

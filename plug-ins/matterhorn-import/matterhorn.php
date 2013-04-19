@@ -328,7 +328,8 @@ class LFMatterhornInportQueue {
 				."'".mysql_escape_string($image)."', "
 				."'".$duration."', '".ACCESS_ID."', NULL, '".$series_id."', "
 				."'".$metadata['creator']."', "
-				."'".$metadata['description']."')\n";
+				."'".$metadata['description']."', "
+				."'".$start."')\n";
 				$format_urls[ $url ] = $format_id;
 		}
 
@@ -360,18 +361,20 @@ class LFMatterhornInportQueue {
 			."'".$server."engage/ui/embed.html?id=".mysql_escape_string($id)."', "
 			."'".$series_id."', "
 			."'".$metadata['creator']."', "
-			."'".$metadata['description']."')\n";
+			."'".$metadata['description']."', "
+			."'".$start."')\n";
 		$format_urls[ $server."engage/ui/watch.html?id=".mysql_escape_string($id) ] = 'Opencast Matterhorn 1.1';
 
 		if ($query) {
 			$query = "INSERT INTO `mediaobject` "
 				."( `title`, `format_id` , `url`, `cou_id`, `lrs_object_id`, `thumbnail_url`, "
 				."`image_url`, `duration`, `access_id`, `preview_url`, `series_id`, "
-				."`author`, `description` ) VALUES \n"
+				."`author`, `description`, `date` ) VALUES \n"
 				.$query.';';
 		}
 
-		$desc = 'Series: '.$mediapackage['seriestitle'].' (ID: '.$series_id.')<br />'
+		$desc = 'Series: '.$mediapackage['seriestitle'].' (ID: '.$series_id.')<br />';
+		$desc = 'Request from: '.$_SERVER['REMOTE_ADDR'].'<br />'
 			.$metadata['description'];
 		if ( $created_series ) {
 			$title .= ' !1 hint!';
