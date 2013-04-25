@@ -114,17 +114,13 @@ def get_xml(path,req,q=None,id=None,offset=0,limit=999999):
 
 class series:
 	def xml(self,req,q=None,offset=0,limit=999999,id=None):
-		if id:
-			q = ' id="' + id + '"'
 		return get_xml(__seriesdir__,req,q,id,offset,limit)
 
 
 class episode:
-	def xml(self,req,q=None,offset=0,limit=999999,lfunk=None,id=None):
-		if q and lfunk:
-			q = '<series>' + q + '</series>'
-		if id:
-			q = ' id="' + id + '"'
+	def xml(self,req,q=None,offset=0,limit=999999,lfunk=None,id=None,sid=None):
+		if sid:
+			q = '<series>' + sid + '</series>'
 		return get_xml(__episodesdir__,req,q,id,offset,limit)
 
 
@@ -142,7 +138,7 @@ def index(req):
 	req.content_type = 'text/plain'
 	return "success"
 
-def j_spring_security_check(req,j_username, j_password):
+def j_spring_security_check(req, j_username=None, j_password=None):
 	if not j_username in user.keys():
 		req.status = 401
 		return 'Invalid username'
